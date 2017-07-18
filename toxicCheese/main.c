@@ -16,8 +16,14 @@ int main(int argc, char *argv[]){
 		puts("could not open: %s", filename);
 		exit(1);	
 	}
-	size_t bytesRead = read(fd, buffer, 1);
-
+	size_t bytesToRead = 4;
+	size_t bytesRead = read(fd, buffer, bytesToRead);
+	
+	if(bytesRead != bytesRead){
+		puts("error reading from: %s", filename);
+		close(fd);
+		exit(1);
+	}
 	
 	close(fd);
 	return 0;
