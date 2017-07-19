@@ -23,7 +23,9 @@ int main(int argc, char *argv[]){
 		exit(1);	
 	}
 	size_t bytesToRead = 1;
+	while(1){
 	size_t bytesRead = read(fd, buffer, bytesToRead);
+	int x = 0;
 	
 	if(bytesRead != bytesToRead){
 		printf("error reading from: %s", filename);
@@ -31,7 +33,11 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 	printf("humidity: %d, %d %d\n", buffer[0], buffer[1], buffer[2]);
-	
+	sleep(3);
+	if(x == 10)
+		break;
+	x++;
 	close(fd);
 	return 0;
+	}
 }
