@@ -50,8 +50,8 @@ int main(int argc, char *argv[]){
 		exit(1);	
 	}
 	int humidity = 0; 
-	short H0_T0_OUT = 0;
-	short H1_T0_OUT = 0;
+	int16_t H0_T0_OUT = 0;
+	int16_t H1_T0_OUT = 0;
 	uint8_t rH0 = 0;
 	uint8_t rH1 = 0;
 	while(1){
