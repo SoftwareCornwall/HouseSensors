@@ -55,6 +55,6 @@ while True:
     Hummidfile.close()
     Temperaturefile.close()
     
-    sleep(3)
+    sleep(3) #Time in seconds between each reading
     
  
