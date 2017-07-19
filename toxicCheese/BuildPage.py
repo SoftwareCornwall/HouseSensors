@@ -8,6 +8,7 @@ while True:
     sPage = ""
     sPage +="<html> "
     sPage +=" <head> "
+    sPage += "<meta http-equiv=\"refresh\" content=\"5\" >"
     sPage += " </head> "
     sPage += "<body> <p> "
     sPage += str(lineList[-1])
