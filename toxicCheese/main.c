@@ -11,7 +11,7 @@
 char * filename = "/dev/i2c-1";
 
 void readBytes(int fd, char buffer[], char offset){
-	size_t bytesToRead= 1;
+	size_t bytesToRead= 2;
 	write(fd, &offset, 1);
 	size_t bytesRead = read(fd, buffer, bytesToRead);
 	if(bytesRead != bytesToRead){
@@ -40,9 +40,9 @@ int main(int argc, char *argv[]){
 
 		int x = 0;
 		readBytes(fd, buffer, 0x28);
-		int humidity = (buffer[0] << 8); 
-		readBytes(fd, buffer, 0x29);
-		humidity |= buffer[0];
+		int humidity = (buffer[0] << 8) | buffer[1]; 
+		//readBytes(fd, buffer, 0x29);
+		//humidity |= buffer[0];
 		
 		printf("humidity: %d\n", humidity);
 		sleep(3);
