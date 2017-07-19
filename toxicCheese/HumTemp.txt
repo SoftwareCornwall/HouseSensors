@@ -1,0 +1,3 @@
+
+TimeStamp: 2017-07-19 11:10:56   Humidity: 47.06   Temp: 30.48
+TimeStamp: 2017-07-19 11:10:59   Humidity: 46.87   Temp: 30.25
