@@ -55,9 +55,6 @@ int main(int argc, char *argv[]){
 		readBytes(fd, buffer, 0x2A);
 		readBytes(fd, buffer, 0x2B);
 		#endif
-		//int humidity = (buffer[0] << 8); 
-		///readBytes(fd, buffer, 0x29);
-		//humidity |= buffer[0];
 		readBytes(fd, buffer, 0x29);
 		int humidity = (buffer[0] << 8); 
 		readBytes(fd, buffer, 0x28);
