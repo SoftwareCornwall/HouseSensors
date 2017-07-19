@@ -19,7 +19,7 @@ void readBytes(int fd, char buffer[], char offset){
 		close(fd);
 		exit(1);
 	}
-	printf("%s", buffer);
+	printf("%X\n", buffer[0]);
 }
 
 int main(int argc, char *argv[]){
