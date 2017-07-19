@@ -4,6 +4,7 @@
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 #include <time.h>
+#include <stdio.h>
 
 #define READ 0x5F
 
@@ -13,17 +14,22 @@ int main(int argc, char *argv[]){
 	int fd = 0;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0){
-		puts("could not open: %s", filename);
+		printf("could not open: %s", filename);
 		exit(1);	
 	}
-	size_t bytesToRead = 4;
+	if(ioctl(fd, I2C_SLAVE, READ)){
+		printf("error setting up i2c port");
+		exit(1);	
+	}
+	size_t bytesToRead = 1;
 	size_t bytesRead = read(fd, buffer, bytesToRead);
 	
-	if(bytesRead != bytesRead){
-		puts("error reading from: %s", filename);
+	if(bytesRead != bytesToRead){
+		printf("error reading from: %s", filename);
 		close(fd);
 		exit(1);
 	}
+	printf("humidity: %s", buffer);
 	
 	close(fd);
 	return 0;
