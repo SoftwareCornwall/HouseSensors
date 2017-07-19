@@ -1,5 +1,9 @@
 dist: trusty
 
 script:
-  - echo Hello World
-
+  - echo -----------------------------------
+  - echo > Building toxicCheese Software
+  - echo -----------------------------------
+  - cd toxicCheese
+  - make
+  - cd ..
