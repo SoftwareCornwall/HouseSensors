@@ -10,9 +10,9 @@
 
 char * filename = "/dev/i2c-1";
 
-void readBytes(int fd, char buffer[], void* offset){
-	write(fd, offset, 1);
-	size_t bytesToRead = 1;
+void readBytes(int fd, char buffer[], char offset){
+	size_t bytesToRead= 2;
+	write(fd, &offset, 1);
 	size_t bytesRead = read(fd, buffer, bytesToRead);
 	if(bytesRead != bytesToRead){
 		printf("error reading from: %s\n", filename);
@@ -20,6 +20,7 @@ void readBytes(int fd, char buffer[], void* offset){
 		exit(1);
 	}
 }
+
 int main(int argc, char *argv[]){
 	char *outputFile = "~/.humidity";
 	char buffer[20];
@@ -37,10 +38,11 @@ int main(int argc, char *argv[]){
 
 	while(1){
 
-		//buffer[0] = 0x28;
 		int x = 0;
-
-		printf("humidity: %d, %d %d\n", buffer[0], buffer[1], buffer[2]);
+		readBytes(fd, buffer, 0x28);
+		int humidity = (buffer[0] << 8) | buffer[1];
+		
+		printf("humidity: %d\n", humidity);
 		sleep(3);
 		if(x == 10)
 			break;
