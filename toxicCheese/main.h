@@ -28,6 +28,8 @@ enum addresses {
 	HUMIDITY_OUT_H = 0x29, 
 	TEMP_OUT_L = 0x2A,
 	TEMP_OUT_H = 0x2B,
+	H0_rH_x2 = 0x30,
+	H1_rH_x2 = 0x31,
 	H0_T0_OUT_L = 0x36,
 	H0_T0_OUT_H = 0x37,
 	H1_T0_OUT_L = 0x3A,

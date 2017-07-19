@@ -5,6 +5,7 @@
 #include <sys/ioctl.h> //for ioctl
 #include <time.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "main.h"
 
 #define READ 0x5F
@@ -50,7 +51,10 @@ int main(int argc, char *argv[]){
 		exit(1);	
 	}
 	int humidity = 0; 
-	int HX_T0_OUT  = 0;
+	short H0_T0_OUT = 0;
+	short H1_TO_OUT = 0;
+	uint8_t rH0 = 0;
+	uint8_t rH1 = 0;
 	while(1){
 
 		int x = 0;
@@ -67,10 +71,14 @@ int main(int argc, char *argv[]){
 		readBytes(fd, buffer, TEMP_OUT_L);
 		readBytes(fd, buffer, TEMP_OUT_H);
 	#endif
-		humidity = shift(fd, buffer, HUMIDITY_OUT_H);
-		printf("%d\n", humidity);
-		
-		//printf("humidity: %d\n", humidity);
+		//humidity = shift(fd, buffer, HUMIDITY_OUT_H);
+		H0_T0_OUT = shift(fd, buffer, H0_T0_OUT_H);
+		H1_TO_OUT = shift(fd, buffer, H1_T0_OUT_H);
+
+		rH0 = shift(fd, buffer, H0_rH_x2);
+		rH1 = shift(fd, buffer, H1_rH_x2);
+
+		printf("humidity: %d\n", humidity);
 		sleep(3);
 		if(x == 10)
 			break;
