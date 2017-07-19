@@ -43,7 +43,9 @@ int main(int argc, char *argv[]){
 
 		int x = 0;
 		puts("reading bytes");
-		readBytes(fd, buffer, 0x0F);
+		readBytes(fd, buffer, 0x10);
+		readBytes(fd, buffer, 0x20);
+		readBytes(fd, buffer, 0x21);
 		//int humidity = (buffer[0] << 8); 
 		///readBytes(fd, buffer, 0x29);
 		//humidity |= buffer[0];
