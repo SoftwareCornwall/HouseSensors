@@ -26,11 +26,13 @@ int main(int argc, char *argv[]){
 	char *outputFile = "~/.humidity";
 	char buffer[20];
 	int fd = 0;
+	puts("opening file");
 	fd = open(filename, O_RDWR);
 	if (fd < 0){
 		printf("could not open: %s\n", filename);
 		exit(1);	
 	}
+	puts("setting up i2c port");
 
 	if(ioctl(fd, I2C_SLAVE, READ)){
 		printf("error setting up i2c port\n");
@@ -40,6 +42,7 @@ int main(int argc, char *argv[]){
 	while(1){
 
 		int x = 0;
+		puts("reading bytes");
 		readBytes(fd, buffer, 0x0F);
 		//int humidity = (buffer[0] << 8); 
 		///readBytes(fd, buffer, 0x29);
