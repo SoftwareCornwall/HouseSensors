@@ -21,7 +21,7 @@ void readBytes(int fd, char buffer[], char offset){
 		close(fd);
 		exit(1);
 	}
-	printf("%X: %X\n",offset, buffer[0]);
+	//printf("%X: %X\n",offset, buffer[0]);
 }
 
 //call shift with the higher byte
@@ -31,7 +31,6 @@ int shift(int fd, char buffer[], int offset){
 	returnValue = buffer[0] >>  8;
 	readBytes(fd, buffer, offset-1);
 	returnValue |= buffer[0];
-
 	return returnValue;
 }
 int main(int argc, char *argv[]){
@@ -52,7 +51,7 @@ int main(int argc, char *argv[]){
 	}
 	int humidity = 0; 
 	short H0_T0_OUT = 0;
-	short H1_TO_OUT = 0;
+	short H1_T0_OUT = 0;
 	uint8_t rH0 = 0;
 	uint8_t rH1 = 0;
 	while(1){
@@ -73,12 +72,12 @@ int main(int argc, char *argv[]){
 	#endif
 		//humidity = shift(fd, buffer, HUMIDITY_OUT_H);
 		H0_T0_OUT = shift(fd, buffer, H0_T0_OUT_H);
-		H1_TO_OUT = shift(fd, buffer, H1_T0_OUT_H);
+		H1_T0_OUT = shift(fd, buffer, H1_T0_OUT_H);
 
 		rH0 = shift(fd, buffer, H0_rH_x2);
 		rH1 = shift(fd, buffer, H1_rH_x2);
-
-		printf("humidity: %d\n", humidity);
+		printf("rH0: %x\nrH1: %x\nH0: %x\nH1: %x\n", rH0, 
+			rH1, H0_T0_OUT, H1_T0_OUT);
 		sleep(3);
 		if(x == 10)
 			break;
