@@ -40,13 +40,13 @@ int main(int argc, char *argv[]){
 	puts("opening file");
 	fd = open(filename, O_RDWR);
 	if (fd < 0){
-		printf("could not open: %s\n", filename);
+		fprintf(stderr, "could not open: %s\n", filename);
 		exit(1);	
 	}
 	puts("setting up i2c port");
 
 	if(ioctl(fd, I2C_SLAVE, READ)){
-		printf("error setting up i2c port\n");
+		fprintf(stderr, "error setting up i2c port\n");
 		exit(1);	
 	}
 	int humidity = 0; 
@@ -80,6 +80,7 @@ int main(int argc, char *argv[]){
 		printf("humidity: %x\n", humidity );
 		printf("rH0: %x\nrH1: %x\nH0: %x\nH1: %x\n", rH0, 
 			rH1, H0_T0_OUT, H1_T0_OUT);
+		printf("sizeof var %lu\n",sizeof(H1_T0_OUT));
 		sleep(3);
 		if(x == 10)
 			break;
