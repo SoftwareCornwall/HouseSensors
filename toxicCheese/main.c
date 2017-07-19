@@ -76,6 +76,8 @@ int main(int argc, char *argv[]){
 
 		rH0 = shift(fd, buffer, H0_rH_x2);
 		rH1 = shift(fd, buffer, H1_rH_x2);
+		humidity = shift(fd, buffer, HUMIDITY_OUT_H);
+		printf("humidity: %x", humidity );
 		printf("rH0: %x\nrH1: %x\nH0: %x\nH1: %x\n", rH0, 
 			rH1, H0_T0_OUT, H1_T0_OUT);
 		sleep(3);
