@@ -40,7 +40,9 @@ int main(int argc, char *argv[]){
 
 		int x = 0;
 		readBytes(fd, buffer, 0x28);
-		int humidity = (buffer[0] << 8) | buffer[1];
+		int humidity = (buffer[0] << 8); 
+		readBytes(fd, buffer, 0x29);
+		humidity |= buffer[0];
 		
 		printf("humidity: %d\n", humidity);
 		sleep(3);
