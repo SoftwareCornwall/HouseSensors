@@ -1,9 +1,11 @@
 <?php
-class DB_Connect {
+class DB_Connect
+{
     private $conn;
 
     // Connecting to database
-    public function connect() {
+    public function Connect()
+    {
         require_once 'config.php';
 
         // Connecting to mysql database
