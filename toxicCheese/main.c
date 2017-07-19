@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
 		close(fd);
 		exit(1);
 	}
-	printf("humidity: %d\n", buffer[0]);
+	printf("humidity: %d, %d %d\n", buffer[0], buffer[1], buffer[2]);
 	
 	close(fd);
 	return 0;
