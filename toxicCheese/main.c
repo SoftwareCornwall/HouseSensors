@@ -5,6 +5,7 @@
 #include <sys/ioctl.h> //for ioctl
 #include <time.h>
 #include <stdio.h>
+#include "main.h"
 
 #define READ 0x5F
 
@@ -22,6 +23,16 @@ void readBytes(int fd, char buffer[], char offset){
 	printf("%X: %X\n",offset, buffer[0]);
 }
 
+//call shift with the higher byte
+int shift(int fd, char buffer[], int offset){
+	int returnValue = 0;
+	readBytes(fd, buffer, offset);
+	returnValue = buffer[0] >>  8;
+	readBytes(fd, buffer, offset-1);
+	returnValue |= buffer[0];
+
+	return returnValue;
+}
 int main(int argc, char *argv[]){
 	char *outputFile = "~/.humidity";
 	char buffer[20];
@@ -38,28 +49,25 @@ int main(int argc, char *argv[]){
 		printf("error setting up i2c port\n");
 		exit(1);	
 	}
-
+	int humidity = 0; 
+	int HX_T0_OUT  = 0;
 	while(1){
 
 		int x = 0;
 		puts("reading bytes");
-		#ifdef DEBUG
-		readBytes(fd, buffer, 0x0F);
-		readBytes(fd, buffer, 0x10);
-		readBytes(fd, buffer, 0x20);
-		readBytes(fd, buffer, 0x21);
-		readBytes(fd, buffer, 0x22);
-		readBytes(fd, buffer, 0x27);
-		readBytes(fd, buffer, 0x28);
-		readBytes(fd, buffer, 0x29);
-		readBytes(fd, buffer, 0x2A);
-		readBytes(fd, buffer, 0x2B);
-		#endif
-
-		readBytes(fd, buffer, 0x29);
-		int humidity = (buffer[0] << 8); 
-		readBytes(fd, buffer, 0x28);
-		humidity |= buffer[0];
+	#ifdef DEBUG
+		readBytes(fd, buffer, WHO_AM_I);
+		readBytes(fd, buffer, AV_CONF);
+		readBytes(fd, buffer, CTRL_REG1);
+		readBytes(fd, buffer, CTRL_REG2);
+		readBytes(fd, buffer, CTRL_REG3);
+		readBytes(fd, buffer, STATUS_REG);
+		readBytes(fd, buffer, HUMIDITY_OUT_L);
+		readBytes(fd, buffer, HUMIDITY_OUT_H);
+		readBytes(fd, buffer, TEMP_OUT_L);
+		readBytes(fd, buffer, TEMP_OUT_H);
+	#endif
+		humidity = shift(fd, buffer, HUMIDITY_OUT_H);
 		printf("%d\n", humidity);
 		
 		//printf("humidity: %d\n", humidity);
