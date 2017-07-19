@@ -28,7 +28,7 @@ void readBytes(int fd, char buffer[], char offset){
 int shift(int fd, char buffer[], int offset){
 	int returnValue = 0;
 	readBytes(fd, buffer, offset);
-	returnValue = buffer[0] >>  8;
+	returnValue = buffer[0] <<  8;
 	readBytes(fd, buffer, offset-1);
 	returnValue |= buffer[0];
 	return returnValue;
