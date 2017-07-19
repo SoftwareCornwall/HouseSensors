@@ -1,8 +1,8 @@
 #include <stdlib.h>
-#include <fcntl.h>
+#include <fcntl.h> // for open and flags
 #include <unistd.h>
 #include <linux/i2c-dev.h>
-#include <sys/ioctl.h>
+#include <sys/ioctl.h> //for ioctl
 #include <time.h>
 #include <stdio.h>
 
@@ -10,6 +10,7 @@
 
 int main(int argc, char *argv[]){
 	char * filename = "/dev/i2c-1";
+	char *outputFile = "~/.humidity";
 	char buffer[20];
 	int fd = 0;
 	fd = open(filename, O_RDONLY);
@@ -29,7 +30,7 @@ int main(int argc, char *argv[]){
 		close(fd);
 		exit(1);
 	}
-	printf("humidity: %s", buffer);
+	printf("humidity: %s\n", buffer);
 	
 	close(fd);
 	return 0;
