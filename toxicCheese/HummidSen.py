@@ -1,18 +1,22 @@
 from sense_hat import SenseHat
 from time import sleep
 from datetime import datetime
+import os
 
 
 
 sense = SenseHat()
+fileLocation = "/var/www/html/HumTemp.txt"
 Time = ""
 sMessage = ""
-file = open("HumTemp.txt","w")
-file.close()
+
+if os.path.isfile(fileLocation) == False:
+    file = open(fileLocation,"w")
+    file.close()
 
 while True:
     
-    file = open("HumTemp.txt","a")
+    file = open(fileLocation,"a")
     humidity = sense.get_humidity()
     temp = sense.get_temperature()
 
