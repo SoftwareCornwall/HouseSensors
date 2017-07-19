@@ -8,8 +8,19 @@
 
 #define READ 0x5F
 
+char * filename = "/dev/i2c-1";
+
+void readBytes(int fd, char buffer[], void* offset){
+	write(fd, offset, 1);
+	size_t bytesToRead = 1;
+	size_t bytesRead = read(fd, buffer, bytesToRead);
+	if(bytesRead != bytesToRead){
+		printf("error reading from: %s\n", filename);
+		close(fd);
+		exit(1);
+	}
+}
 int main(int argc, char *argv[]){
-	char * filename = "/dev/i2c-1";
 	char *outputFile = "~/.humidity";
 	char buffer[20];
 	int fd = 0;
@@ -24,25 +35,17 @@ int main(int argc, char *argv[]){
 		exit(1);	
 	}
 
-	size_t bytesToRead = 1;
 	while(1){
 
-		buffer[0] = 0x28;
-		write(fd, buffer, 1);
-		size_t bytesRead = read(fd, buffer, bytesToRead);
+		//buffer[0] = 0x28;
 		int x = 0;
 
-		if(bytesRead != bytesToRead){
-			printf("error reading from: %s\n", filename);
-			close(fd);
-			exit(1);
-		}
 		printf("humidity: %d, %d %d\n", buffer[0], buffer[1], buffer[2]);
 		sleep(3);
 		if(x == 10)
 			break;
 		x++;
-		close(fd);
-		return 0;
 	}
+	close(fd);
+	return 0;
 }
