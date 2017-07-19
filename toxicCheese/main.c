@@ -11,7 +11,7 @@
 char * filename = "/dev/i2c-1";
 
 void readBytes(int fd, char buffer[], char offset){
-	size_t bytesToRead= 2;
+	size_t bytesToRead= 1;
 	write(fd, &offset, 1);
 	size_t bytesRead = read(fd, buffer, bytesToRead);
 	if(bytesRead != bytesToRead){
