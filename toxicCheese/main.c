@@ -11,7 +11,7 @@
 int main(int argc, char *argv[]){
 	char * filename = "/dev/i2c-1";
 	char *outputFile = "~/.humidity";
-	char buffer[20];
+	int *buffer;
 	int fd = 0;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0){
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
 		close(fd);
 		exit(1);
 	}
-	printf("humidity: %s\n", buffer);
+	printf("humidity: %d\n", *buffer);
 	
 	close(fd);
 	return 0;
