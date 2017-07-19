@@ -7,72 +7,103 @@ bool isSetup;
 RTIMU *imu;
 RTHumidity *humidity;
 
-bool setup()
+bool Setup()
 {
+    cout << "Setting up... ";
+
     ///RTIMU Setup
-
-    RTIMUSettings *settings = new RTIMUSettings("RTIMULib");
-
-    imu = RTIMU::createIMU(settings);
-    humidity = RTHumidity::createHumidity(settings);
-
-    if((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL))
+    if (!isSetup) // If setup hasn't already happened,
     {
-        cout << "Error when setting up.\nimu is null or imutype is null." << endl;
-        return false;
+        RTIMUSettings *settings = new RTIMUSettings("RTIMULib");
+
+        imu = RTIMU::createIMU(settings);
+        humidity = RTHumidity::createHumidity(settings);
+
+        if((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL))
+        {
+            cout << "Error when setting up.\nimu is null or imutype is null." << endl;
+            return false;
+        }
+
+        if (!(imu->IMUInit())) // If initialisation fails.
+        {
+            cout << "Initialisation failed." << endl;
+            return false;
+        }
+
+        cout << "Initialisation succeeded." << endl;
+
+        if (humidity != NULL)
+        {
+            humidity->humidityInit();
+        }
+
+        isSetup = true;
+    }
+    else
+    {
+        cout << "Setup failed. Setup has already occured." << endl;
     }
 
-    if (!(imu->IMUInit())) // If initialisation fails.
-    {
-        cout << "Initialisation failed." << endl;
-        return false;
-    }
-
-    cout << "Initialisation succeeded." << endl;
-
-    if (humidity != NULL)
-    {
-        humidity->humidityInit();
-    }
-
-    isSetup = true;
     return true;
+}
+
+bool Cleanup()
+{
+    cout << "Cleaning up... ";
+
+    curl_global_cleanup();
+
+    cout << "Complete." << endl;
 }
 
 int main()
 {
-    cout << "Setting up... ";
-
-    if (setup())
+    if (Setup())
     {
         cout << "Success" << endl;
     }
     else
     {
         cout << "Failure" << endl;
+        Cleanup();
         exit(1);
     }
 
-    float humidity = GetIMUHumidity();
 
-    cout << "Sending humidity (" << humidity << ") to server (" << SERVER_URL << ")... ";
 
-    if (CurlHumidityToServer(humidity, SERVER_URL))
+
+    for(;;) // Main Loop
     {
-        cout << "Success" << endl;
+
+        float humidity = GetIMUHumidity();
+
+        cout << "Sending humidity (" << humidity << ") to server (" << SERVER_URL << ")... ";
+
+        if (CurlHumidityToServer(humidity, SERVER_URL))
+        {
+            cout << "Success" << endl;
+        }
+        else
+        {
+            cout << "Failure" << endl;
+            break;
+            // TODO: Add failure code.
+        }
+
+        std::this_thread::sleep_for(std::chrono::seconds(5 * MINUTE));
     }
-    else
-    {
-        cout << "Failure" << endl;
-        exit(1);
-    }
+
+
+
+    Cleanup();
 
     exit(0);
 }
 
 float GetIMUHumidity()
 {
-    if (!isSetup) return false;
+    if (!isSetup) return -1;
 
     if (imu->IMURead()) // Read data from IMU, if it succeeds...
     {
@@ -87,7 +118,7 @@ float GetIMUHumidity()
         }
     }
 
-    return 0;
+    return -1;
 }
 
 bool CurlHumidityToServer(float humidity, std::string serverURL)
@@ -113,8 +144,6 @@ bool CurlHumidityToServer(float humidity, std::string serverURL)
 
         result = (res == CURLE_OK);
     }
-
-    curl_global_cleanup();
 
     return result;
 }
