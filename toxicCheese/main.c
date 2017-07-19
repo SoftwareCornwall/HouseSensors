@@ -25,7 +25,7 @@ int main(int argc, char *argv[]){
 	char *outputFile = "~/.humidity";
 	char buffer[20];
 	int fd = 0;
-	fd = open(filename, O_RDONLY);
+	fd = open(filename, O_RDWR);
 	if (fd < 0){
 		printf("could not open: %s\n", filename);
 		exit(1);	
