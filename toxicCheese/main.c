@@ -19,7 +19,7 @@ void readBytes(int fd, char buffer[], char offset){
 		close(fd);
 		exit(1);
 	}
-	printf("%X\n", buffer[0]);
+	printf("%X: %X\n",offset, buffer[0]);
 }
 
 int main(int argc, char *argv[]){
@@ -43,9 +43,18 @@ int main(int argc, char *argv[]){
 
 		int x = 0;
 		puts("reading bytes");
+		#ifdef DEBUG
+		readBytes(fd, buffer, 0x0F);
 		readBytes(fd, buffer, 0x10);
 		readBytes(fd, buffer, 0x20);
 		readBytes(fd, buffer, 0x21);
+		readBytes(fd, buffer, 0x22);
+		readBytes(fd, buffer, 0x27);
+		readBytes(fd, buffer, 0x28);
+		readBytes(fd, buffer, 0x29);
+		readBytes(fd, buffer, 0x2A);
+		readBytes(fd, buffer, 0x2B);
+		#endif
 		readBytes(fd, buffer, 0x29);
 		int humidity = (buffer[0] << 8); 
 		readBytes(fd, buffer, 0x28);
