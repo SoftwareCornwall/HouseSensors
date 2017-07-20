@@ -3,17 +3,66 @@
 using namespace std;
 
 bool isSetup;
-
 RTIMU *imu;
 RTHumidity *humidity;
+char curlErrorBuffer[CURL_ERROR_SIZE];
+
+int main()
+{
+    if(Setup())
+    {
+        cout << "Setup successful." << endl;
+    }
+    else
+    {
+        cerr << "Setup failed. Exiting..." << endl;
+
+        Cleanup();
+        exit(1);
+    }
+
+
+
+    std::string postFields;
+    CURLcode result;
+
+    for(;;) // Main Loop
+    {
+        float humidity = GetIMUHumidity();
+
+        postFields = "timestamp=" + GetSecondsSinceEpoch() + "&humidityValue=" + std::to_string(humidity);
+
+        cout << "Posting data (" << postFields << ") to server (" << SERVER_URL << ")... ";
+
+        result = PostDataToServer(postFields, SERVER_URL);
+
+        if(result == CURLE_OK)
+        {
+            cout << "Success" << endl;
+        }
+        else
+        {
+            cerr << "Failure:\nError Code: " << result << "\n" << curlErrorBuffer << endl;
+        }
+
+        std::this_thread::sleep_for(std::chrono::seconds(5)); // Wait 5 minutes.
+    }
+
+
+
+    Cleanup();
+
+    exit(0);
+}
 
 bool Setup()
 {
-    cout << "Setting up... ";
+    cout << "Setting up... " << endl;
 
-    ///RTIMU Setup
     if (!isSetup) // If setup hasn't already happened,
     {
+        // RTIMU Setup
+
         RTIMUSettings *settings = new RTIMUSettings("RTIMULib");
 
         imu = RTIMU::createIMU(settings);
@@ -21,17 +70,17 @@ bool Setup()
 
         if((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL))
         {
-            cout << "Error when setting up.\nimu is null or imutype is null." << endl;
+            cerr << "Error when setting up.\n  imu is null or imutype is null." << endl;
             return false;
         }
 
-        if (!(imu->IMUInit())) // If initialisation fails.
+        if (!(imu->IMUInit()))
         {
-            cout << "Initialisation failed." << endl;
+            cerr << "IMU Initialisation failed." << endl;
             return false;
         }
 
-        cout << "Initialisation succeeded." << endl;
+        cout << "IMU Initialisation succeeded." << endl;
 
         if (humidity != NULL)
         {
@@ -39,10 +88,15 @@ bool Setup()
         }
 
         isSetup = true;
+
+
+
+        // Curl Setup
+
     }
     else
     {
-        cout << "Setup failed. Setup has already occured." << endl;
+        cerr << "Cannot set up, setup has already occured." << endl;
     }
 
     return true;
@@ -55,55 +109,13 @@ bool Cleanup()
     curl_global_cleanup();
 
     cout << "Complete." << endl;
-}
 
-int main()
-{
-    if (Setup())
-    {
-        cout << "Success" << endl;
-    }
-    else
-    {
-        cout << "Failure" << endl;
-        Cleanup();
-        exit(1);
-    }
-
-
-
-
-    for(;;) // Main Loop
-    {
-
-        float humidity = GetIMUHumidity();
-
-        cout << "Sending humidity (" << humidity << ") to server (" << SERVER_URL << ")... ";
-
-        if (CurlHumidityToServer(humidity, SERVER_URL))
-        {
-            cout << "Success" << endl;
-        }
-        else
-        {
-            cout << "Failure" << endl;
-            break;
-            // TODO: Add failure code.
-        }
-
-        std::this_thread::sleep_for(std::chrono::seconds(5 * MINUTE));
-    }
-
-
-
-    Cleanup();
-
-    exit(0);
+    return true;
 }
 
 float GetIMUHumidity()
 {
-    if (!isSetup) return -1;
+    if (!isSetup) throw "Setup not completed.";
 
     if (imu->IMURead()) // Read data from IMU, if it succeeds...
     {
@@ -112,8 +124,6 @@ float GetIMUHumidity()
         if (humidity != NULL)
         {
             humidity->humidityRead(imuData);
-            cout << "Humidity: " << imuData.humidity << endl;
-
             return static_cast<float>(imuData.humidity); // returns the humidity as afloat (cast from RTFloat).
         }
     }
@@ -121,29 +131,29 @@ float GetIMUHumidity()
     return -1;
 }
 
-bool CurlHumidityToServer(float humidity, std::string serverURL)
+CURLcode PostDataToServer(std::string postFields, std::string serverURL)
 {
-    bool result = false;
-
     CURL *curl;
-    CURLcode res;
+    CURLcode result = CURLE_FAILED_INIT;
     curl_global_init(CURL_GLOBAL_ALL);
 
     curl = curl_easy_init();
 
     if(curl)
     {
-        std::string humidityPostField = "humidityValue=" + std::to_string(humidity);
-
         curl_easy_setopt(curl, CURLOPT_URL, serverURL.c_str()); // Sets the destination.
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, humidityPostField.c_str()); // Sets the data to be sent.
-
-        res = curl_easy_perform(curl);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postFields.c_str()); // Sets the data to be sent.
+        curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, curlErrorBuffer); // Sets curlErrorBuffer to the curl's error message.
+        result = curl_easy_perform(curl);
 
         curl_easy_cleanup(curl);
-
-        result = (res == CURLE_OK);
     }
 
     return result;
+}
+
+std::string GetSecondsSinceEpoch()
+{
+    std::time_t time = std::time(nullptr);
+    return std::to_string(static_cast<unsigned int>(time));
 }

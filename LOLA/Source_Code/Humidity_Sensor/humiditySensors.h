@@ -7,8 +7,7 @@
 #include <thread>
 #include <chrono>
 #include <curl/curl.h>
-
-#include "RTIMULib.h"
+#include <RTIMULib.h>
 
 #define SERVER_URL "http://10.160.50.153/humidity_sensor.php"
 #define MINUTE 60
@@ -19,6 +18,7 @@ int main();
 bool Setup();
 bool Cleanup();
 float GetIMUHumidity();
-bool CurlHumidityToServer(float humidity, std::string serverURL);
+std::string GetSecondsSinceEpoch();
+CURLcode PostDataToServer(std::string postFields, std::string serverURL);
 
 #endif

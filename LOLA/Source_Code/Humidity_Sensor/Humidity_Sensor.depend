@@ -532,15 +532,17 @@
 1500458282 source:/home/pi/Desktop/HouseSensors/LOLA/Source_Code/Humidity_Sensor/example.cpp
 	"RTIMULib.h"
 
-1500470757 source:/home/pi/Desktop/HouseSensors/LOLA/Source_Code/Humidity_Sensor/humiditySensors.cpp
+1500541073 source:/home/pi/Desktop/HouseSensors/LOLA/Source_Code/Humidity_Sensor/humiditySensors.cpp
 	"humiditySensors.h"
 
-1500470990 /home/pi/Desktop/HouseSensors/LOLA/Source_Code/Humidity_Sensor/humiditySensors.h
+1500541091 /home/pi/Desktop/HouseSensors/LOLA/Source_Code/Humidity_Sensor/humiditySensors.h
 	<stdio.h>
 	<string>
 	<iostream>
+	<thread>
+	<chrono>
 	<curl/curl.h>
-	"RTIMULib.h"
+	<RTIMULib.h>
 
 1500460351 /home/pi/Desktop/HouseSensors/LOLA/Source_Code/Humidity_Sensor/curl/curl.h
 	"curlver.h"
@@ -575,4 +577,33 @@
 	"curl.h"
 
 1500460351 /home/pi/Desktop/HouseSensors/LOLA/Source_Code/Humidity_Sensor/curl/typecheck-gcc.h
+
+1500481276 /home/pi/Desktop/HouseSensors/LOLA/Source_Code/Humidity_Sensor/RTIMULibraries.h
+	<RTMath.h>
+	<RTIMULib.h>
+	<RTIMULibDefs.h>
+	<RTIMUHal.h>
+	<RTFusion.h>
+	<RTFusionKalman4.h>
+	<RTFusionRTQF.h>
+	<RTIMUSettings.h>
+	<RTIMUAccelCal.h>
+	<RTIMUMagCal.h>
+	<RTIMUCalDefs.h>
+	<IMUDrivers/RTIMU.h>
+	<IMUDrivers/RTIMUNull.h>
+	<IMUDrivers/RTIMUMPU9150.h>
+	<IMUDrivers/RTIMUMPU9250.h>
+	<IMUDrivers/RTIMUGD20HM303D.h>
+	<IMUDrivers/RTIMUGD20M303DLHC.h>
+	<IMUDrivers/RTIMUGD20HM303DLHC.h>
+	<IMUDrivers/RTIMULSM9DS0.h>
+	<IMUDrivers/RTIMULSM9DS1.h>
+	<IMUDrivers/RTIMUBMX055.h>
+	<IMUDrivers/RTIMUBNO055.h>
+	<IMUDrivers/RTPressure.h>
+	<IMUDrivers/RTPressureBMP180.h>
+	<IMUDrivers/RTPressureLPS25H.h>
+	<IMUDrivers/RTPressureMS5611.h>
+	<IMUDrivers/RTPressureMS5637.h>
 
