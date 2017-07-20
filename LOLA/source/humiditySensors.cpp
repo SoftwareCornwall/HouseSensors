@@ -58,23 +58,23 @@ int main()
         postFields = "timestamp=" + GetSecondsSinceEpoch() + "&mac=" + mACAddress + "&humidityValue=" + std::to_string(humidity);
 
         cout << "\nPosting data to server (" << SERVER_URL << ")... " << endl;
-        cout << "  MAC Address: " << mACAddress << endl;
-        cout << "    Timestamp: " << GetSecondsSinceEpoch() << endl;
-        cout << "     Humidity: " << humidity << endl;
-        cout << "       Status: ";
+        cout <<   "  MAC Address: " << mACAddress << endl;
+        cout <<   "    Timestamp: " << GetSecondsSinceEpoch() << endl;
+        cout <<   "     Humidity: " << humidity << endl;
+        cout <<   "       Status: ";
 
         result = PostDataToServer(postFields, SERVER_URL);
 
         if(result == CURLE_OK)
         {
-            cout << "Success!\n\n" << endl;
+            cout << "Success!" << endl;
         }
         else
         {
             cerr << "Failure!\n               Error Code: " << result << "\n               " << curlErrorBuffer << endl;
         }
 
-        std::this_thread::sleep_for(std::chrono::seconds(20)); // Wait 5 minutes.
+        std::this_thread::sleep_for(std::chrono::minutes(5)); // Wait 5 minutes.
     }
 
 
