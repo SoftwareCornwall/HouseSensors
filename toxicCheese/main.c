@@ -68,7 +68,6 @@ int main(int argc, char *argv[]){
 	//char *outputFile = "~/.humidity";
 	char *buffer;
 	int fd = init();
-	int humidity = 0; 
 	int16_t H0_T0_OUT = 0;
 	int H1_T0_OUT = 0;
 	uint8_t rH0 = 0;
@@ -82,6 +81,8 @@ int main(int argc, char *argv[]){
 	printf("rH0: 0x%x\nrH1: 0x%x\n", rH0, rH1);
 	printf("H0: 0x%x\nH1: 0x%x\n",H0_T0_OUT, H1_T0_OUT);
 	while(1){
+
+		int humidity = 0; 
 		puts("reading bytes");
 #ifdef DEBUG
 		readBytes(fd, buffer, WHO_AM_I);
