@@ -55,7 +55,7 @@ int main(int argc, char *argv[]){
 	}
 	int humidity = 0; 
 	int16_t H0_T0_OUT = 0;
-	int16_t H1_T0_OUT = 0;
+	int H1_T0_OUT = 0;
 	uint8_t rH0 = 0;
 	uint8_t rH1 = 0;
 	while(1){
@@ -85,8 +85,8 @@ int main(int argc, char *argv[]){
 		humidity = shift(fd, buffer, HUMIDITY_OUT_H);
 		
 		printf("humidity: %x\n", humidity );
-		printf("rH0: %x\nrH1: %x\nH0: %x\nH1: %x\n", rH0, 
-			rH1, H0_T0_OUT,(unsigned int) H1_T0_OUT);
+		printf("rH0: 0x%x\nrH1: 0x%x\n", rH0, rH1);
+		printf("H0: 0x%x\nH1: 0x%x",H0_T0_OUT, H1_T0_OUT);
 		sleep(3);
 	}
 	close(fd);
