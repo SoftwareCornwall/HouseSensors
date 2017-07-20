@@ -1,6 +1,6 @@
------ House_Sensors -----
+# :sparkles: House_Sensors :sparkles: 
 
----- Dependencies ----
+## Dependencies
 
-RTIMULib - librtimulib-dev
-libcurl - libcurl4-openssl-dev:armhf
+* RTIMULib - librtimulib-dev
+* libcurl - libcurl4-openssl-dev:armhf
