@@ -15,7 +15,7 @@ int main()
     }
     else
     {
-        cerr << "Setup failed. Exiting..." << endl;
+        cerr << "Setup failed." << endl;
 
         Cleanup();
         exit(1);
@@ -104,7 +104,7 @@ bool Setup()
 
 bool Cleanup()
 {
-    cout << "Cleaning up... ";
+    cout << "Cleaning up. ";
 
     curl_global_cleanup();
 
