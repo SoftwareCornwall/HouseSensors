@@ -29,14 +29,14 @@ void readBytes(int fd, char buffer[], char offset){
 int shift(int fd, char buffer[], int offset){
 	int returnValue = 0;
 	readBytes(fd, buffer, offset);
-	returnValue = buffer[0] <<  8;
+	returnValue = buffer[0];
+	returnValue =returnValue <<  8;
 	readBytes(fd, buffer, offset-1);
 	returnValue |= buffer[0];
 	return returnValue;
 }
 int main(int argc, char *argv[]){
 	char *outputFile = "~/.humidity";
-	FILE *output = fopen(outputFile, "rw");
 	char buffer[20];
 	int fd = 0;
 	puts("opening file");
@@ -82,9 +82,8 @@ int main(int argc, char *argv[]){
 		humidity = shift(fd, buffer, HUMIDITY_OUT_H);
 		
 		printf("humidity: %x\n", humidity );
-		fprintf(output, "rH0: %x\nrH1: %x\nH0: %x\nH1: %x\n", rH0, 
-			rH1, H0_T0_OUT,(int) H1_T0_OUT);
-		printf("sizeof var %lu\n",sizeof(H1_T0_OUT));
+		printf("rH0: %x\nrH1: %x\nH0: %x\nH1: %x\n", rH0, 
+			rH1, H0_T0_OUT,(unsigned int) H1_T0_OUT);
 		sleep(3);
 	}
 	close(fd);
