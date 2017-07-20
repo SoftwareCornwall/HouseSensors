@@ -8,7 +8,7 @@ def paragraph(sText):
     
 
 while True:
-    HumFile = open("/var/www/html/HumidtyData.csv","r")
+    HumFile = open("/var/www/html/HumidityData.csv","r")
     TempFile = open("/var/www/html/TemperatureData.csv","r")
     HummidList = HumFile.readlines()
     TempList = TempFile.readlines() 
@@ -31,9 +31,11 @@ while True:
     sPage += paragraph("Date: " + str(HummidList[-1][0:10]))
     sPage += paragraph("Humidity: " + str(HummidList[-1][20:22]) + "%,---" + "(Last Update: " + str(HummidList[-1][11:19]) + ")")
     sPage += paragraph("Temperature: " + str(TempList[-1][20:22]) + "&deg;C,---" + "(Last Update: " + str(TempList[-1][11:19]) + ")")
-    sPage += paragraph("<a href='http://10.160.50.195/HummidtyData.csv'> Raw Humidity Data</a>" )
+    sPage += paragraph("<a href='http://10.160.50.195/HumidityData.csv'> Raw Humidity Data</a>" )
     sPage += paragraph("<a href='http://10.160.50.195/TemperatureData.csv'> Raw Temperature Data</a>" )
-    
+
+    sPage += "<img class='resize' src='toxic_cheese_logo.png' width='132' height='187'>"
+  
     sPage += "</body> </html>"
 
     file = open("/var/www/html/SensorData.html","w")
