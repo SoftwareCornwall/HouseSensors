@@ -34,7 +34,7 @@ while True:
     
     #Hummidity
     humidity = sense.get_humidity()
-    sMessageHummid += str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    sMessageHummid += str(datetime.now().strftime("%Y-%m-%d,%H:%M:%S"))
     sMessageHummid += ","
     sMessageHummid += str(round(sense.humidity, 2))
 
@@ -42,7 +42,7 @@ while True:
     
     #Temperature
     temp = sense.get_temperature()
-    sMessageTemp += str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    sMessageTemp += str(datetime.now().strftime("%Y-%m-%d,%H:%M:%S"))
     sMessageTemp += ","        
     sMessageTemp += str(round(sense.temperature, 2))
 
