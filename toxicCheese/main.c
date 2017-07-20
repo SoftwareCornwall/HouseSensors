@@ -3,11 +3,11 @@
 #include <unistd.h>
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h> //for ioctl
-#include <time.h>
 #include <stdio.h>
 #include <stdint.h>
 #include "main.h"
 
+#define DEBUG
 #define READ 0x5F
 
 char * filename = "/dev/i2c-1";
@@ -22,7 +22,7 @@ int accurateHumidity(int16_t humidity, int16_t H0_T0_OUT, int16_t H1_T0_OUT, uin
 }
 void readBytes(char buffer[], char offset){
 	size_t bytesToRead = 1;
-	puts("writing");
+	printf("writing %x\n", offset);
 	write(fd, &offset, 1);
 	size_t bytesRead = read(fd, buffer, bytesToRead);
 	if(bytesRead != bytesToRead){
