@@ -15,10 +15,11 @@ class DB_Connect
         return $this->conn;
     }
 
-    public function Update($humidity)
+
+    public function Update($humidity, $timestamp)
     {
-        $stmt = $this->conn->prepare("UPDATE humidity SET humiditycol = ? WHERE id = 1");
-        $stmt->bind_param("s", $humidity);
+        $stmt = $this->conn->prepare("INSERT INTO humidity (humiditycol, humidity_timestamp) values (?, ?)");
+        $stmt->bind_param("ss", $humidity, $timestamp);
         $result = $stmt->execute();
         $stmt->close();
     }
