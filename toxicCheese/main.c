@@ -6,6 +6,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <assert.h>
 #include "main.h"
 
 #define READ 0x5F
@@ -35,6 +36,7 @@ int shift(int fd, char buffer[], int offset){
 }
 int main(int argc, char *argv[]){
 	char *outputFile = "~/.humidity";
+	FILE *output = fopen(outputFile, "rw");
 	char buffer[20];
 	int fd = 0;
 	puts("opening file");
@@ -73,14 +75,14 @@ int main(int argc, char *argv[]){
 		//humidity = shift(fd, buffer, HUMIDITY_OUT_H);
 		H0_T0_OUT = shift(fd, buffer, H0_T0_OUT_H);
 		H1_T0_OUT = shift(fd, buffer, H1_T0_OUT_H);
-
+	
 		rH0 = shift(fd, buffer, H0_rH_x2);
 		rH1 = shift(fd, buffer, H1_rH_x2);
-
+		char degbugarray[2048];
 		humidity = shift(fd, buffer, HUMIDITY_OUT_H);
-
+		
 		printf("humidity: %x\n", humidity );
-		printf("rH0: %x\nrH1: %x\nH0: %x\nH1: %x\n", rH0, 
+		fprintf(output, "rH0: %x\nrH1: %x\nH0: %x\nH1: %x\n", rH0, 
 			rH1, H0_T0_OUT,(int) H1_T0_OUT);
 		printf("sizeof var %lu\n",sizeof(H1_T0_OUT));
 		sleep(3);
