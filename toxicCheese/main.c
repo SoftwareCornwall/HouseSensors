@@ -74,7 +74,11 @@ int main(int argc, char *argv[]){
 	#endif
 		//humidity = shift(fd, buffer, HUMIDITY_OUT_H);
 		H0_T0_OUT = shift(fd, buffer, H0_T0_OUT_H);
-		H1_T0_OUT = shift(fd, buffer, H1_T0_OUT_H);
+
+		readBytes(fd, buffer, H1_T0_OUT_H);
+		H1_T0_OUT = buffer[0] << 16;
+		readBytes(fd, buffer, H1_T0_OUT_L);
+		H1_T0_OUT |= buffer[0];
 	
 		rH0 = shift(fd, buffer, H0_rH_x2);
 		rH1 = shift(fd, buffer, H1_rH_x2);
