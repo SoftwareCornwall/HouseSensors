@@ -86,7 +86,7 @@ int main(int argc, char *argv[]){
 		
 		printf("humidity: %x\n", humidity );
 		printf("rH0: 0x%x\nrH1: 0x%x\n", rH0, rH1);
-		printf("H0: 0x%x\nH1: 0x%x",H0_T0_OUT, H1_T0_OUT);
+		printf("H0: 0x%x\nH1: 0x%x\n",H0_T0_OUT, H1_T0_OUT);
 		sleep(3);
 	}
 	close(fd);
