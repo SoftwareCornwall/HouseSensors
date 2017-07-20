@@ -65,7 +65,7 @@ int init(void){
 }
 
 int main(int argc, char *argv[]){
-	char *outputFile = "~/.humidity";
+	//char *outputFile = "~/.humidity";
 	char *buffer;
 	int fd = init();
 	int humidity = 0; 
@@ -82,8 +82,6 @@ int main(int argc, char *argv[]){
 	printf("rH0: 0x%x\nrH1: 0x%x\n", rH0, rH1);
 	printf("H0: 0x%x\nH1: 0x%x\n",H0_T0_OUT, H1_T0_OUT);
 	while(1){
-
-		int x = 0;
 		puts("reading bytes");
 #ifdef DEBUG
 		readBytes(fd, buffer, WHO_AM_I);
