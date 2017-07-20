@@ -2,8 +2,9 @@
 include 'config.php';
 
 
-$humidityData = $pdo->prepare("SELECT * FROM humidity LIMIT 288");
+$humidityData = $pdo->prepare("SELECT * FROM humidity ORDER BY id DESC LIMIT 288");
 
+$temperatureData = $pdo->prepare("SELECT * FROM temperature ORDER BY id DESC LIMIT 288");
 
 
 
@@ -157,11 +158,11 @@ header("Refresh: $sec");
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
-                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                        <a href="index.php"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
-                   <!-- <li>
-                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
-                    </li>-->
+                    <li>
+                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Reports</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -175,19 +176,27 @@ header("Refresh: $sec");
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Area Chart</h3>
+                                <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Relative Humidity (%)</h3>
                             </div>
                             <div class="panel-body">
-
-
-
-                                <div id="myfirstchart" style="height: 250px;"></div>
+                                <div id="humidityChart" style="height: 250px;"></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- /.row -->
-
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Temperature (&#8451;)</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div id="temperatureChart" style="height: 250px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- /.row -->
 
             </div>
@@ -220,7 +229,7 @@ header("Refresh: $sec");
         <script>
             new Morris.Line({
       // ID of the element in which to draw the chart.
-      element: 'myfirstchart',
+      element: 'humidityChart',
       // Chart data records -- each entry in this array corresponds to a point on
       // the chart.
       data: [
@@ -229,7 +238,7 @@ header("Refresh: $sec");
             {
                 while ($row = $humidityData->fetch())
                 {
-                    $humidityValue = $row['humiditycol'];
+                    $humidityValue = $row['humidity_value'];
                     $humidityTime = $row['humidity_timestamp'];
 
                     $newTime = date("Y-m-d H:i:s", substr($humidityTime, 0, 10));
@@ -238,10 +247,6 @@ header("Refresh: $sec");
                 }
             }
             echo "
-
-
-         
-
       ],
       // The name of the data record attribute that contains x-values.
       xkey: 'time',
@@ -254,6 +259,42 @@ header("Refresh: $sec");
     </script>
     "
 ?>
+
+    <?php
+    echo "
+        <script>
+            new Morris.Line({
+      // ID of the element in which to draw the chart.
+      element: 'temperatureChart',
+      // Chart data records -- each entry in this array corresponds to a point on
+      // the chart.
+      data: [
+           ";
+    if ($temperatureData->execute())
+    {
+        while ($row = $temperatureData->fetch())
+        {
+            $temperatureValue = $row['temperature_value'];
+            $temperatureTime = $row['temperature_timestamp'];
+
+            $newTime = date("Y-m-d H:i:s", substr($temperatureTime, 0, 10));
+
+            echo"{ time: '". $newTime ."', value: " . $temperatureValue . " },";
+        }
+    }
+    echo "
+      ],
+      // The name of the data record attribute that contains x-values.
+      xkey: 'time',
+      // A list of names of data record attributes that contain y-values.
+      ykeys: ['value'],
+      // Labels for the ykeys -- will be displayed when you hover over the
+      // chart.
+      labels: ['Value']
+    });
+    </script>
+    "
+    ?>
 
 
 </body>
