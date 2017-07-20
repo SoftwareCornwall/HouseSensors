@@ -43,10 +43,10 @@ int shift(char buffer[], int offset){
 	printf("\nreturn value for %x: %x\n", offset, returnValue);
 #endif
 	returnValue =returnValue <<  8;
-	readBytes(buffer, offset-1);
+	readBytes(buffer, offset - 1);
 	returnValue |= buffer[0];
 	if(offset == HUMIDITY_OUT_H)
-		printf("return Value:%x\n",returnValue);
+		printf("return Value:%x\n", returnValue);
 #ifdef DEBUG
 	printf("return value: %x\n", returnValue);
 #endif
@@ -70,16 +70,13 @@ void init(void){
 int main(int argc, char *argv[]){
 	//char *outputFile = "~/.humidity";
 	char *buffer;
-<<<<<<< HEAD
 	int humidity = 0; 
-=======
-	int fd = init();
->>>>>>> e5b8d151a8f39a39626df509bd02d3dae1901cef
 	int16_t H0_T0_OUT = 0;
 	int H1_T0_OUT = 0;
 	uint8_t rH0 = 0;
 	uint8_t rH1 = 0;
 	int H_OUT;
+
 	init();
 
 	H0_T0_OUT = shift(buffer, H0_T0_OUT_H);
@@ -90,11 +87,8 @@ int main(int argc, char *argv[]){
 	printf("rH0: 0x%x\nrH1: 0x%x\n", rH0, rH1);
 	printf("H0: 0x%x\nH1: 0x%x\n",H0_T0_OUT, H1_T0_OUT);
 	while(1){
-<<<<<<< HEAD
-=======
 
 		int humidity = 0; 
->>>>>>> e5b8d151a8f39a39626df509bd02d3dae1901cef
 		puts("reading bytes");
 #ifdef DEBUG
 		readBytes(buffer, WHO_AM_I);
