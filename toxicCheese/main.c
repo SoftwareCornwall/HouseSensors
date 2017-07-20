@@ -30,9 +30,11 @@ int shift(int fd, char buffer[], int offset){
 	int returnValue = 0;
 	readBytes(fd, buffer, offset);
 	returnValue = buffer[0];
+	printf("\nreturn value for %x: %x\n", offset, returnValue);
 	returnValue =returnValue <<  8;
 	readBytes(fd, buffer, offset-1);
 	returnValue |= buffer[0];
+	printf("return value: %x\n", returnValue);
 	return returnValue;
 }
 int main(int argc, char *argv[]){
@@ -75,11 +77,8 @@ int main(int argc, char *argv[]){
 		//humidity = shift(fd, buffer, HUMIDITY_OUT_H);
 		H0_T0_OUT = shift(fd, buffer, H0_T0_OUT_H);
 
-		readBytes(fd, buffer, H1_T0_OUT_H);
-		H1_T0_OUT = buffer[0] << 16;
-		readBytes(fd, buffer, H1_T0_OUT_L);
-		H1_T0_OUT |= buffer[0];
-	
+		H1_T0_OUT = shift(fd, buffer, H1_T0_OUT_H);
+
 		rH0 = shift(fd, buffer, H0_rH_x2);
 		rH1 = shift(fd, buffer, H1_rH_x2);
 		char degbugarray[2048];
