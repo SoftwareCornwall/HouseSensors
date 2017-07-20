@@ -71,7 +71,7 @@ int main(int argc, char *argv[]){
 	//char *outputFile = "~/.humidity";
 	char *buffer;
 	int humidity = 0; 
-	int16_t H0_T0_OUT = 0;
+	int H0_T0_OUT = 0;
 	int16_t H1_T0_OUT = 0;
 	uint8_t rH0 = 0;
 	uint8_t rH1 = 0;
