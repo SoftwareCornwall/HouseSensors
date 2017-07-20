@@ -22,6 +22,7 @@ int accurateHumidity(int16_t humidity, int16_t H0_T0_OUT, int16_t H1_T0_OUT, uin
 }
 void readBytes(char buffer[], char offset){
 	size_t bytesToRead = 1;
+	puts("writing");
 	write(fd, &offset, 1);
 	size_t bytesRead = read(fd, buffer, bytesToRead);
 	if(bytesRead != bytesToRead){
