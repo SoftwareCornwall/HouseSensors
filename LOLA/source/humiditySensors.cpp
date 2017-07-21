@@ -2,14 +2,23 @@
 #include "Humidity.h"
 #include "Curl.h"
 
+#include <signal.h>
+
 #define SENSOR_READ_INTERVAL 300
 
 using namespace std;
 
+bool doLoop;
 bool isSetup;
 Humidity humidity;
 Curl curl;
 sensorData_t sensorData;
+
+void handleSIGINT(int param)
+{
+    cout << "\nInterrupt detected. Now exiting..." << endl;
+    doLoop = false;
+}
 
 int main()
 {
@@ -29,9 +38,13 @@ int main()
    \_\                       /_/
 )" << endl;
 
+    signal(SIGINT, handleSIGINT); // Sets up Ctrl+C handler to exit main loop, not entire program.
+
     if(Setup())
     {
         cout << "Setup successful." << endl;
+
+        cout << "Sensor started at " << GetSecondsSinceEpoch() << " Unix Time, waiting for " << GetSecondsUntilNextPost() << " seconds until first POST." << endl;
     }
     else
     {
@@ -45,7 +58,9 @@ int main()
 
     for(;;) // Main Loop
     {
-        while (GetSecondsSinceEpoch() % SENSOR_READ_INTERVAL  != 0); // Hangs until unix time is divisible by SENSOR_READ_INTERVAL
+        while(doLoop && (GetSecondsSinceEpoch() % SENSOR_READ_INTERVAL  != 0)); // Hangs until unix time is divisible by SENSOR_READ_INTERVAL | DoLoop eval means program will immediately stop on Ctrl+C.
+
+        if (!doLoop) break;
 
         cout << "\nNEW POST\nGetting sensor data... " << endl;
 
@@ -70,8 +85,14 @@ int main()
     exit(0);
 }
 
+unsigned int GetSecondsUntilNextPost()
+{
+    return SENSOR_READ_INTERVAL - (GetSecondsSinceEpoch() % SENSOR_READ_INTERVAL);
+}
+
 bool Setup()
 {
+    doLoop = true;
     return true;
 }
 

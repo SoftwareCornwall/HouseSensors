@@ -16,7 +16,8 @@ int main();
 
 bool Setup();
 bool Cleanup();
-unsigned long long GetSecondsSinceEpoch();
 bool GetMACAddress(std::string& address);
+unsigned int GetSecondsUntilNextPost();
+unsigned long long GetSecondsSinceEpoch();
 
 #endif
