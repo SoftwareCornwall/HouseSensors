@@ -13,10 +13,9 @@
 struct sensorData_t;
 
 int main();
-
+void handleSIGINT(int param);
+void Cleanup();
 bool Setup();
-bool Cleanup();
-bool GetMACAddress(std::string& address);
 unsigned int GetSecondsUntilNextPost();
 unsigned long long GetSecondsSinceEpoch();
 

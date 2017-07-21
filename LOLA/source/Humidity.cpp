@@ -11,11 +11,11 @@ Humidity::Humidity()
 
     if((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL))
     {
-        cerr << "Error when setting up.\n  imu is null or imutype is null." << endl;
+        cerr << "Error when setting up.\n  imu is NULL or imutype is NULL." << endl;
         throw exception();
     }
 
-    if (!(imu->IMUInit()))
+    if(!(imu->IMUInit()))
     {
         cerr << "IMU Initialisation failed." << endl;
         throw exception();
@@ -29,11 +29,9 @@ Humidity::Humidity()
     }
 }
 
-
-
 bool Humidity::GetSensorData(sensorData_t* sensorData)
 {
-    if (imu->IMURead()) // Read data from IMU, if it succeeds...
+    if (imu->IMURead()) // Read data from IMU. If it succeeds...
     {
         RTIMU_DATA imuData = imu->getIMUData(); // ... get the read data.
 
