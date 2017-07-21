@@ -29,73 +29,16 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="References/CMakeLists.txt" />
-		<Unit filename="References/IMUDrivers/RTHumidity.cpp" />
-		<Unit filename="References/IMUDrivers/RTHumidity.h" />
-		<Unit filename="References/IMUDrivers/RTHumidityDefs.h" />
-		<Unit filename="References/IMUDrivers/RTHumidityHTS221.cpp" />
-		<Unit filename="References/IMUDrivers/RTHumidityHTS221.h" />
-		<Unit filename="References/IMUDrivers/RTHumidityHTU21D.cpp" />
-		<Unit filename="References/IMUDrivers/RTHumidityHTU21D.h" />
-		<Unit filename="References/IMUDrivers/RTIMU.cpp" />
-		<Unit filename="References/IMUDrivers/RTIMU.h" />
-		<Unit filename="References/IMUDrivers/RTIMUBMX055.cpp" />
-		<Unit filename="References/IMUDrivers/RTIMUBMX055.h" />
-		<Unit filename="References/IMUDrivers/RTIMUBNO055.cpp" />
-		<Unit filename="References/IMUDrivers/RTIMUBNO055.h" />
-		<Unit filename="References/IMUDrivers/RTIMUDefs.h" />
-		<Unit filename="References/IMUDrivers/RTIMUGD20HM303D.cpp" />
-		<Unit filename="References/IMUDrivers/RTIMUGD20HM303D.h" />
-		<Unit filename="References/IMUDrivers/RTIMUGD20HM303DLHC.cpp" />
-		<Unit filename="References/IMUDrivers/RTIMUGD20HM303DLHC.h" />
-		<Unit filename="References/IMUDrivers/RTIMUGD20M303DLHC.cpp" />
-		<Unit filename="References/IMUDrivers/RTIMUGD20M303DLHC.h" />
-		<Unit filename="References/IMUDrivers/RTIMULSM9DS0.cpp" />
-		<Unit filename="References/IMUDrivers/RTIMULSM9DS0.h" />
-		<Unit filename="References/IMUDrivers/RTIMULSM9DS1.cpp" />
-		<Unit filename="References/IMUDrivers/RTIMULSM9DS1.h" />
-		<Unit filename="References/IMUDrivers/RTIMUMPU9150.cpp" />
-		<Unit filename="References/IMUDrivers/RTIMUMPU9150.h" />
-		<Unit filename="References/IMUDrivers/RTIMUMPU9250.cpp" />
-		<Unit filename="References/IMUDrivers/RTIMUMPU9250.h" />
-		<Unit filename="References/IMUDrivers/RTIMUNull.cpp" />
-		<Unit filename="References/IMUDrivers/RTIMUNull.h" />
-		<Unit filename="References/IMUDrivers/RTPressure.cpp" />
-		<Unit filename="References/IMUDrivers/RTPressure.h" />
-		<Unit filename="References/IMUDrivers/RTPressureBMP180.cpp" />
-		<Unit filename="References/IMUDrivers/RTPressureBMP180.h" />
-		<Unit filename="References/IMUDrivers/RTPressureDefs.h" />
-		<Unit filename="References/IMUDrivers/RTPressureLPS25H.cpp" />
-		<Unit filename="References/IMUDrivers/RTPressureLPS25H.h" />
-		<Unit filename="References/IMUDrivers/RTPressureMS5611.cpp" />
-		<Unit filename="References/IMUDrivers/RTPressureMS5611.h" />
-		<Unit filename="References/IMUDrivers/RTPressureMS5637.cpp" />
-		<Unit filename="References/IMUDrivers/RTPressureMS5637.h" />
-		<Unit filename="References/RTFusion.cpp" />
-		<Unit filename="References/RTFusion.h" />
-		<Unit filename="References/RTFusionKalman4.cpp" />
-		<Unit filename="References/RTFusionKalman4.h" />
-		<Unit filename="References/RTFusionRTQF.cpp" />
-		<Unit filename="References/RTFusionRTQF.h" />
-		<Unit filename="References/RTIMUAccelCal.cpp" />
-		<Unit filename="References/RTIMUAccelCal.h" />
-		<Unit filename="References/RTIMUCalDefs.h" />
-		<Unit filename="References/RTIMUHal.cpp" />
-		<Unit filename="References/RTIMUHal.h" />
-		<Unit filename="References/RTIMULIB LICENSE" />
-		<Unit filename="References/RTIMULib.h" />
-		<Unit filename="References/RTIMULib.pri" />
-		<Unit filename="References/RTIMULibDefs.h" />
-		<Unit filename="References/RTIMUMagCal.cpp" />
-		<Unit filename="References/RTIMUMagCal.h" />
-		<Unit filename="References/RTIMUSettings.cpp" />
-		<Unit filename="References/RTIMUSettings.h" />
-		<Unit filename="References/RTMath.cpp" />
-		<Unit filename="References/RTMath.h" />
-		<Unit filename="main.cpp" />
+		<Linker>
+			<Add library="curl" />
+			<Add library="RTIMULib" />
+		</Linker>
+		<Unit filename="humiditySensors.cpp" />
+		<Unit filename="humiditySensors.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
