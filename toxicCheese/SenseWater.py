@@ -1,10 +1,19 @@
 #!/usr/bin/env python
-
+import os
 import time
 import RPi.GPIO as GPIO
 import datetime
 now = datetime.datetime.now()
 GPIO.setwarnings(False)
+
+
+def mkdir_p(path):
+    try:
+        os.makedirs(path)
+    except OSError as exc: # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else: raise
 
 #relation ship between raw number and liters
 timesFactorForMin = 230
@@ -21,10 +30,13 @@ icounter = 0
 start = 0
 end = 0
 
-try:
-    print (WaterDataLocation+10)
-except:
-    print ("Error")
+sMessageWater = ""
+
+if os.path.isfile(WaterDataLocation) == False:
+    mkdir_p(os.path.dirname(WaterDataLocation))
+    Waterfile = open(WaterDataLocation,"w")
+    Waterfile.close()
+
  
 # handle the button event
 def buttonEventHandler (pin):
@@ -64,9 +76,12 @@ def main():
     while True:
         TimeDiff = time.time() - start
         if (TimeDiff < 1.01) and (TimeDiff > 0.99):
-            print (str(icounter/timesFactorForMin))
+            sWaterMessage = str(now.strftime("%H:%M:%S")) + "," + str(icounter/timesFactorForMin)
+            print (sWaterMessage)
             GPIO.cleanup()
-            return(icounter/timesFactorForMin)
+            Waterfile = open(WaterDataLocation,"a")
+            Waterfile.write(sWaterMessage)
+            return(sWaterMessage)
             icounter = 0
             start = 0
             
@@ -77,5 +92,6 @@ def main():
 
 
 
-
+icounter = 0
+start = 0
 print (main())
