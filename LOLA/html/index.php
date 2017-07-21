@@ -161,7 +161,7 @@ header("Refresh: $sec");
                         <a href="index.php"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Reports</a>
+                        <a href="reports.php"><i class="fa fa-fw fa-bar-chart-o"></i> Reports</a>
                     </li>
                 </ul>
             </div>
@@ -198,7 +198,6 @@ header("Refresh: $sec");
                     </div>
                 </div>
                 <!-- /.row -->
-
             </div>
             <!-- /.container-fluid -->
 
@@ -238,7 +237,7 @@ header("Refresh: $sec");
             {
                 while ($row = $humidityData->fetch())
                 {
-                    $humidityValue = $row['humidity_value'];
+                    $humidityValue = round($row['humidity_value']);
                     $humidityTime = $row['humidity_timestamp'];
 
                     $newTime = date("Y-m-d H:i:s", substr($humidityTime, 0, 10));
@@ -274,7 +273,7 @@ header("Refresh: $sec");
     {
         while ($row = $temperatureData->fetch())
         {
-            $temperatureValue = $row['temperature_value'];
+            $temperatureValue = round($row['temperature_value']);
             $temperatureTime = $row['temperature_timestamp'];
 
             $newTime = date("Y-m-d H:i:s", substr($temperatureTime, 0, 10));
