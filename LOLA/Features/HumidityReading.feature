@@ -19,5 +19,3 @@ Scenario: Update reading
 Given humidity changed from 10% to 20%
 When 5 minutes has elapsed
 Then check different reading from sensor
-
-

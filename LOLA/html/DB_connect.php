@@ -16,10 +16,18 @@ class DB_Connect
     }
 
 
-    public function Update($humidity, $timestamp)
+    public function SaveHumidity($humidity, $timestamp, $macAddress)
     {
-        $stmt = $this->conn->prepare("INSERT INTO humidity (humiditycol, humidity_timestamp) values (?, ?)");
-        $stmt->bind_param("ss", $humidity, $timestamp);
+        $stmt = $this->conn->prepare("INSERT INTO humidity (humidity_value, humidity_timestamp, mac_address) values (?, ?, ?)");
+        $stmt->bind_param("sss", $humidity, $timestamp, $macAddress);
+        $result = $stmt->execute();
+        $stmt->close();
+    }
+
+    public function SaveTemperature($temperature, $timestamp, $macAddress)
+    {
+        $stmt = $this->conn->prepare("INSERT INTO temperature (temperature_value, temperature_timestamp, mac_address) values (?, ?, ?)");
+        $stmt->bind_param("sss", $temperature, $timestamp, $macAddress);
         $result = $stmt->execute();
         $stmt->close();
     }
