@@ -10,15 +10,20 @@
 #include <curl/curl.h>
 #include <RTIMULib.h>
 
-#define SERVER_URL "http://10.160.50.153/humidity_sensor.php"
+#define SERVER_URL "http://raspberrypi-b.local"
+#define HUMIDITY_TEMPERATURE_DIR "/humidity_temperature_sensor.php"
 #define MAC_ADDRESS_FILE "/sys/class/net/wlan0/address"
+
+struct sensorData_t;
 
 int main();
 
+CURLcode SubmitDataToServer(sensorData_t sensorData);
+
 bool Setup();
 bool Cleanup();
-float GetIMUHumidity();
-std::string GetSecondsSinceEpoch();
+bool GetSensorData(sensorData_t sensorData);
+unsigned long long GetSecondsSinceEpoch();
 CURLcode PostDataToServer(std::string postFields, std::string serverURL);
 bool GetMACAddress(std::string& address);
 

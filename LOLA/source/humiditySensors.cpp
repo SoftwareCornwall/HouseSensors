@@ -4,7 +4,7 @@ using namespace std;
 
 struct sensorData_t
 {
-    u_int64_t timestamp;
+    unsigned long long timestamp;
     float temperature;
     float humidity;
 };
@@ -13,6 +13,7 @@ std::string mACAddress;
 bool isSetup;
 RTIMU *imu;
 RTHumidity *humidity;
+
 char curlErrorBuffer[CURL_ERROR_SIZE];
 
 int main()
@@ -48,33 +49,29 @@ int main()
 
 
     std::string postFields;
-    CURLcode result;
+    sensorData_t sensorData;
 
     for(;;) // Main Loop
     {
 
-        float humidity = GetIMUHumidity();
+        cout << "\nNEW POST\n  Getting sensor data... ";
 
-        postFields = "timestamp=" + GetSecondsSinceEpoch() + "&mac=" + mACAddress + "&humidityValue=" + std::to_string(humidity);
-
-        cout << "\nPosting data to server (" << SERVER_URL << ")... " << endl;
-        cout <<   "  MAC Address: " << mACAddress << endl;
-        cout <<   "    Timestamp: " << GetSecondsSinceEpoch() << endl;
-        cout <<   "     Humidity: " << humidity << endl;
-        cout <<   "       Status: ";
-
-        result = PostDataToServer(postFields, SERVER_URL);
-
-        if(result == CURLE_OK)
+        if (GetSensorData(sensorData)) // Gives sensordata info from IMU, if successfull...
         {
-            cout << "Success!" << endl;
+            cout << "Success" << endl;
+
+            SubmitDataToServer(sensorData);
         }
         else
         {
-            cerr << "Failure!\n               Error Code: " << result << "\n               " << curlErrorBuffer << endl;
+            cout << "Failure, skipping post" << endl;
         }
 
-        std::this_thread::sleep_for(std::chrono::minutes(5)); // Wait 5 minutes.
+        cout << "END POST\nWaiting..." << endl;
+
+
+
+        std::this_thread::sleep_for(std::chrono::seconds(3)); // Wait 5 minutes.
     }
 
 
@@ -82,6 +79,42 @@ int main()
     Cleanup();
 
     exit(0);
+}
+
+CURLcode SubmitDataToServer(sensorData_t sensorData)
+{
+    std::string postFields;
+    postFields = "timestamp=" +
+                  std::to_string(sensorData.timestamp) +
+                  "&mac=" +
+                  mACAddress +
+                  "&humidityValue=" +
+                  std::to_string(sensorData.humidity) +
+                  "&temperatureValue=" +
+                  std::to_string(sensorData.temperature);
+
+    cout << "Posting data to server (" << SERVER_URL << ")... " << endl;
+    cout <<   "  MAC Address: " << mACAddress << endl;
+    cout <<   "    Timestamp: " << sensorData.timestamp << endl;
+    cout <<   "     Humidity: " << sensorData.humidity << endl;
+    cout <<   "  Temperature: " << sensorData.temperature << endl;
+    cout <<   "       Status: ";
+
+    CURLcode result = PostDataToServer(postFields,
+                                       SERVER_URL HUMIDITY_TEMPERATURE_DIR);
+
+    if (result == CURLE_OK)
+    {
+        cout << "Success" << endl;
+    }
+    else
+    {
+        cout << "Failure" << endl;
+    }
+
+    cout << "               Error Code: " << result << "\n               " << curlErrorBuffer << endl;
+
+    return result;
 }
 
 bool Setup()
@@ -150,7 +183,7 @@ bool Cleanup()
     return true;
 }
 
-float GetIMUHumidity()
+bool GetSensorData(sensorData_t sensorData)
 {
     if (!isSetup) throw "Setup not completed.";
 
@@ -161,11 +194,16 @@ float GetIMUHumidity()
         if (humidity != NULL)
         {
             humidity->humidityRead(imuData);
-            return static_cast<float>(imuData.humidity); // returns the humidity as afloat (cast from RTFloat).
+
+            sensorData.humidity = static_cast<float>(imuData.humidity); // gets the humidity as afloat (cast from RTFloat).
+            sensorData.temperature = static_cast<float>(imuData.temperature); // gets tempererature as a float (cast from RTFloat).
+            sensorData.timestamp = GetSecondsSinceEpoch();
+
+            return true;
         }
     }
 
-    return -1;
+    return false;
 }
 
 CURLcode PostDataToServer(std::string postFields, std::string serverURL)
@@ -189,10 +227,9 @@ CURLcode PostDataToServer(std::string postFields, std::string serverURL)
     return result;
 }
 
-std::string GetSecondsSinceEpoch()
+unsigned long long GetSecondsSinceEpoch()
 {
-    std::time_t time = std::time(nullptr);
-    return std::to_string(static_cast<unsigned int>(time));
+    return static_cast<unsigned long long>(std::time(nullptr)); // returns Unix time as a LLU.
 }
 
 bool GetMACAddress(std::string& address)
