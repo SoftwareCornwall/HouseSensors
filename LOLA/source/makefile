@@ -11,5 +11,4 @@ stop_sensor:
 
 Restart_Sensor: stop_sensor Humidity_Sensor 
 	./Humidity_Sensor&
-	disown
 
