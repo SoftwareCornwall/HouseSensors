@@ -622,13 +622,23 @@
 	<RTIMULib.h>
 	<memory>
 
-1500634952 source:/home/pi/Desktop/HouseSensors/LOLA/source/Humidity.cpp
+1500636630 source:/home/pi/Desktop/HouseSensors/LOLA/source/Humidity.cpp
 	"Humidity.h"
 
-1500634953 /home/pi/Desktop/HouseSensors/LOLA/source/Humidity.h
+1500637110 /home/pi/Desktop/HouseSensors/LOLA/source/Humidity.h
 	<RTIMULib.h>
 	<memory>
 	<string>
 	<iostream>
 	<exception>
+
+1500637090 source:/home/pi/Desktop/HouseSensors/LOLA/source/Curl.cpp
+	"Curl.h"
+	<iostream>
+	<fstream>
+
+1500637220 /home/pi/Desktop/HouseSensors/LOLA/source/Curl.h
+	<curl/curl.h>
+	<string>
+	"Humidity.h"
 

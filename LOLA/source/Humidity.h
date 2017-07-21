@@ -1,5 +1,5 @@
 #ifndef HUMIDITY_DEFINED
-#define HUMIDITY
+#define HUMIDITY_DEFINED
 
 #include <RTIMULib.h>
 #include <memory>
@@ -7,7 +7,6 @@
 #include <iostream>
 #include <exception>
 
-using namespace std;
 
 struct sensorData_t
 {
@@ -23,7 +22,7 @@ public:
 private:
     RTIMU *imu;
     RTHumidity *humidity;
-    unique_ptr<RTIMUSettings> settings;
+    std::unique_ptr<RTIMUSettings> settings;
 };
 
 #endif

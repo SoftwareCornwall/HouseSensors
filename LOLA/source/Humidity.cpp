@@ -1,5 +1,7 @@
 #include "Humidity.h"
 
+using namespace std;
+
 Humidity::Humidity()
 {
     settings = unique_ptr<RTIMUSettings>(new RTIMUSettings("RTIMULib"));

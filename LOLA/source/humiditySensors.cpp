@@ -1,10 +1,10 @@
 #include "humiditySensors.h"
 #include "Humidity.h"
+#include "Curl.h"
 
-std::string mACAddress;
 bool isSetup;
-char curlErrorBuffer[CURL_ERROR_SIZE];
 Humidity humidity;
+Curl curl;
 sensorData_t sensorData;
 
 int main()
@@ -50,7 +50,7 @@ int main()
         {
             cout << "Success" << endl;
 
-            SubmitDataToServer();
+            curl.SubmitDataToServer(GetSecondsSinceEpoch(), sensorData);
         }
         else
         {
@@ -71,68 +71,10 @@ int main()
     exit(0);
 }
 
-CURLcode SubmitDataToServer()
-{
-    std::string postFields;
-    postFields = "timestamp=" +
-                  std::to_string(GetSecondsSinceEpoch()) +
-                  "&mac=" +
-                  mACAddress +
-                  "&humidityValue=" +
-                  std::to_string(sensorData.humidity) +
-                  "&temperatureValue=" +
-                  std::to_string(sensorData.temperature);
 
-    cout << "Posting data to server (" << SERVER_URL << ")... " << endl;
-    cout <<   "  MAC Address: " << mACAddress << endl;
-    cout <<   "    Timestamp: " << GetSecondsSinceEpoch() << endl;
-    cout <<   "     Humidity: " << sensorData.humidity << endl;
-    cout <<   "  Temperature: " << sensorData.temperature << endl;
-    cout <<   "       Status: ";
-
-    CURLcode result = PostDataToServer(postFields,
-                                       SERVER_URL HUMIDITY_TEMPERATURE_DIR);
-
-    if (result == CURLE_OK)
-    {
-        cout << "Success" << endl;
-    }
-    else
-    {
-        cout << "Failure" << endl;
-    }
-
-    cout << "               Error Code: " << result << "\n               " << curlErrorBuffer << endl;
-
-    return result;
-}
 
 bool Setup()
 {
-    cout << "Setting up... " << endl;
-
-    if (!isSetup) // If setup hasn't already happened,
-    {
-        // MAC Setup
-
-        if (!GetMACAddress(mACAddress))
-        {
-            cerr << "Failed to obtain MAC address from " << MAC_ADDRESS_FILE << ".";
-            return false;
-        }
-
-        isSetup = true;
-
-
-
-        // Curl Setup
-
-    }
-    else
-    {
-        cerr << "Cannot set up, setup has already occured." << endl;
-    }
-
     return true;
 }
 
@@ -147,46 +89,10 @@ bool Cleanup()
     return true;
 }
 
-CURLcode PostDataToServer(std::string postFields, std::string serverURL)
-{
-    CURL *curl;
-    CURLcode result = CURLE_FAILED_INIT;
-    curl_global_init(CURL_GLOBAL_ALL);
-
-    curl = curl_easy_init();
-
-    if(curl)
-    {
-        curl_easy_setopt(curl, CURLOPT_URL, serverURL.c_str()); // Sets the destination.
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postFields.c_str()); // Sets the data to be sent.
-        curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, curlErrorBuffer); // Sets curlErrorBuffer to the curl's error message.
-        result = curl_easy_perform(curl);
-
-        curl_easy_cleanup(curl);
-    }
-
-    return result;
-}
 
 unsigned long long GetSecondsSinceEpoch()
 {
     return static_cast<unsigned long long>(std::time(nullptr)); // returns Unix time as a LLU.
 }
 
-bool GetMACAddress(std::string& address)
-{
-    ifstream mACFile(MAC_ADDRESS_FILE);
-
-    if (mACFile.is_open())
-    {
-        getline(mACFile, address);
-        mACFile.close();
-        return true;
-    }
-    else
-    {
-        mACFile.close();
-        return false;
-    }
-}
 
