@@ -20,8 +20,8 @@ public:
     Humidity();
     bool GetSensorData(sensorData_t* sensorData);
 private:
-    RTIMU *imu;
-    RTHumidity *humidity;
+    std::unique_ptr<RTIMU> imu;
+    std::unique_ptr<RTHumidity> humidity;
     std::unique_ptr<RTIMUSettings> settings;
 };
 

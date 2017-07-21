@@ -607,37 +607,38 @@
 	<IMUDrivers/RTPressureMS5611.h>
 	<IMUDrivers/RTPressureMS5637.h>
 
-1500634951 source:/home/pi/Desktop/HouseSensors/LOLA/source/humiditySensors.cpp
+1500637256 source:/home/pi/Desktop/HouseSensors/LOLA/source/humiditySensors.cpp
 	"humiditySensors.h"
 	"Humidity.h"
+	"Curl.h"
 
-1500634950 /home/pi/Desktop/HouseSensors/LOLA/source/humiditySensors.h
+1500638389 /home/pi/Desktop/HouseSensors/LOLA/source/humiditySensors.h
 	<stdio.h>
 	<fstream>
 	<string>
 	<iostream>
 	<thread>
 	<chrono>
-	<curl/curl.h>
 	<RTIMULib.h>
 	<memory>
 
-1500636630 source:/home/pi/Desktop/HouseSensors/LOLA/source/Humidity.cpp
+1500638576 source:/home/pi/Desktop/HouseSensors/LOLA/source/Humidity.cpp
 	"Humidity.h"
 
-1500637110 /home/pi/Desktop/HouseSensors/LOLA/source/Humidity.h
+1500638307 /home/pi/Desktop/HouseSensors/LOLA/source/Humidity.h
 	<RTIMULib.h>
 	<memory>
 	<string>
 	<iostream>
 	<exception>
 
-1500637090 source:/home/pi/Desktop/HouseSensors/LOLA/source/Curl.cpp
+1500637297 source:/home/pi/Desktop/HouseSensors/LOLA/source/Curl.cpp
 	"Curl.h"
 	<iostream>
 	<fstream>
+	<exception>
 
-1500637220 /home/pi/Desktop/HouseSensors/LOLA/source/Curl.h
+1500638361 /home/pi/Desktop/HouseSensors/LOLA/source/Curl.h
 	<curl/curl.h>
 	<string>
 	"Humidity.h"

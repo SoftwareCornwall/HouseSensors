@@ -6,8 +6,8 @@ Humidity::Humidity()
 {
     settings = unique_ptr<RTIMUSettings>(new RTIMUSettings("RTIMULib"));
 
-    imu = RTIMU::createIMU(settings.get());
-    humidity = RTHumidity::createHumidity(settings.get());
+    imu = unique_ptr<RTIMU>(RTIMU::createIMU(settings.get()));
+    humidity = unique_ptr<RTHumidity>(RTHumidity::createHumidity(settings.get()));
 
     if((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL))
     {

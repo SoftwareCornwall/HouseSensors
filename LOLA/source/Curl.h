@@ -16,8 +16,6 @@ private:
     std::string mACAddress;
     char curlErrorBuffer[CURL_ERROR_SIZE];
     CURLcode PostDataToServer(std::string postFields, std::string serverURL);
-
 };
-
 
 #endif
