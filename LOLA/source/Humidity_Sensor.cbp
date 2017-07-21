@@ -37,6 +37,8 @@
 			<Add library="curl" />
 			<Add library="RTIMULib" />
 		</Linker>
+		<Unit filename="Humidity.cpp" />
+		<Unit filename="Humidity.h" />
 		<Unit filename="humiditySensors.cpp" />
 		<Unit filename="humiditySensors.h" />
 		<Extensions>

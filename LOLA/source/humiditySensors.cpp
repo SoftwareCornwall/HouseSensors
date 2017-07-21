@@ -1,20 +1,11 @@
 #include "humiditySensors.h"
-
-using namespace std;
-
-struct sensorData_t
-{
-    unsigned long long timestamp;
-    float temperature;
-    float humidity;
-};
+#include "Humidity.h"
 
 std::string mACAddress;
 bool isSetup;
-RTIMU *imu;
-RTHumidity *humidity;
-
 char curlErrorBuffer[CURL_ERROR_SIZE];
+Humidity humidity;
+sensorData_t sensorData;
 
 int main()
 {
@@ -49,18 +40,17 @@ int main()
 
 
     std::string postFields;
-    sensorData_t sensorData;
 
     for(;;) // Main Loop
     {
 
-        cout << "\nNEW POST\n  Getting sensor data... ";
+        cout << "\nNEW POST\nGetting sensor data... " << endl;
 
-        if (GetSensorData(sensorData)) // Gives sensordata info from IMU, if successfull...
+        if (humidity.GetSensorData(&sensorData)) // Gives sensordata info from IMU, if successfull...
         {
             cout << "Success" << endl;
 
-            SubmitDataToServer(sensorData);
+            SubmitDataToServer();
         }
         else
         {
@@ -81,11 +71,11 @@ int main()
     exit(0);
 }
 
-CURLcode SubmitDataToServer(sensorData_t sensorData)
+CURLcode SubmitDataToServer()
 {
     std::string postFields;
     postFields = "timestamp=" +
-                  std::to_string(sensorData.timestamp) +
+                  std::to_string(GetSecondsSinceEpoch()) +
                   "&mac=" +
                   mACAddress +
                   "&humidityValue=" +
@@ -95,7 +85,7 @@ CURLcode SubmitDataToServer(sensorData_t sensorData)
 
     cout << "Posting data to server (" << SERVER_URL << ")... " << endl;
     cout <<   "  MAC Address: " << mACAddress << endl;
-    cout <<   "    Timestamp: " << sensorData.timestamp << endl;
+    cout <<   "    Timestamp: " << GetSecondsSinceEpoch() << endl;
     cout <<   "     Humidity: " << sensorData.humidity << endl;
     cout <<   "  Temperature: " << sensorData.temperature << endl;
     cout <<   "       Status: ";
@@ -131,32 +121,6 @@ bool Setup()
             return false;
         }
 
-        // RTIMU Setup
-
-        RTIMUSettings *settings = new RTIMUSettings("RTIMULib");
-
-        imu = RTIMU::createIMU(settings);
-        humidity = RTHumidity::createHumidity(settings);
-
-        if((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL))
-        {
-            cerr << "Error when setting up.\n  imu is null or imutype is null." << endl;
-            return false;
-        }
-
-        if (!(imu->IMUInit()))
-        {
-            cerr << "IMU Initialisation failed." << endl;
-            return false;
-        }
-
-        cout << "IMU Initialisation succeeded." << endl;
-
-        if (humidity != NULL)
-        {
-            humidity->humidityInit();
-        }
-
         isSetup = true;
 
 
@@ -181,29 +145,6 @@ bool Cleanup()
     cout << "Complete." << endl;
 
     return true;
-}
-
-bool GetSensorData(sensorData_t sensorData)
-{
-    if (!isSetup) throw "Setup not completed.";
-
-    if (imu->IMURead()) // Read data from IMU, if it succeeds...
-    {
-        RTIMU_DATA imuData = imu->getIMUData(); // ... get the read data.
-
-        if (humidity != NULL)
-        {
-            humidity->humidityRead(imuData);
-
-            sensorData.humidity = static_cast<float>(imuData.humidity); // gets the humidity as afloat (cast from RTFloat).
-            sensorData.temperature = static_cast<float>(imuData.temperature); // gets tempererature as a float (cast from RTFloat).
-            sensorData.timestamp = GetSecondsSinceEpoch();
-
-            return true;
-        }
-    }
-
-    return false;
 }
 
 CURLcode PostDataToServer(std::string postFields, std::string serverURL)
