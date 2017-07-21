@@ -1,10 +1,26 @@
+#!/usr/bin/python
+
 from sense_hat import SenseHat
 from time import sleep
 from datetime import datetime
+import MySQLdb
 import os
+import sys
 
 
+db = MySQLdb.connect(host = "localhost", 
+        user = "root", 
+        passwd="")
 
+try:
+    db.select_db('sensor')
+except: 
+    print("could not select database")
+    sys.exit(1)
+cur = db.cursor()
+
+
+sys.exit(0)
 sense = SenseHat()
 
 HummidLocation = "/var/www/html/HumidityData.csv"
@@ -57,4 +73,4 @@ while True:
     
     sleep(3) #Time in seconds between each reading
     
- 
+db.close()
