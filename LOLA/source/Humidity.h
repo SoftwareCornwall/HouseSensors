@@ -7,7 +7,6 @@
 #include <iostream>
 #include <exception>
 
-
 struct sensorData_t
 {
     float temperature;

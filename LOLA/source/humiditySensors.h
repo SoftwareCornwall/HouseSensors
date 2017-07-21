@@ -10,8 +10,6 @@
 #include <RTIMULib.h>
 #include <memory>
 
-using namespace std;
-
 struct sensorData_t;
 
 int main();

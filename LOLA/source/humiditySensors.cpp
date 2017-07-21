@@ -2,6 +2,8 @@
 #include "Humidity.h"
 #include "Curl.h"
 
+using namespace std;
+
 bool isSetup;
 Humidity humidity;
 Curl curl;
@@ -37,13 +39,10 @@ int main()
         exit(-1);
     }
 
-
-
     std::string postFields;
 
     for(;;) // Main Loop
     {
-
         cout << "\nNEW POST\nGetting sensor data... " << endl;
 
         if (humidity.GetSensorData(&sensorData)) // Gives sensordata info from IMU, if successfull...
@@ -59,19 +58,13 @@ int main()
 
         cout << "END POST\nWaiting..." << endl;
 
-
-
-        std::this_thread::sleep_for(std::chrono::seconds(3)); // Wait 5 minutes.
+        std::this_thread::sleep_for(std::chrono::minutes(1)); // Wait 5 minutes.
     }
-
-
 
     Cleanup();
 
     exit(0);
 }
-
-
 
 bool Setup()
 {
@@ -88,7 +81,6 @@ bool Cleanup()
 
     return true;
 }
-
 
 unsigned long long GetSecondsSinceEpoch()
 {
