@@ -2,6 +2,8 @@
 #include "Humidity.h"
 #include "Curl.h"
 
+#define SENSOR_READ_INTERVAL 300
+
 using namespace std;
 
 bool isSetup;
@@ -43,6 +45,8 @@ int main()
 
     for(;;) // Main Loop
     {
+        while (GetSecondsSinceEpoch() % SENSOR_READ_INTERVAL  != 0); // Hangs until unix time is divisible by SENSOR_READ_INTERVAL
+
         cout << "\nNEW POST\nGetting sensor data... " << endl;
 
         if (humidity.GetSensorData(&sensorData)) // Gives sensordata info from IMU, if successfull...
@@ -58,7 +62,7 @@ int main()
 
         cout << "END POST\nWaiting..." << endl;
 
-        std::this_thread::sleep_for(std::chrono::minutes(1)); // Wait 5 minutes.
+        std::this_thread::sleep_for(std::chrono::seconds(1)); // Sleeps 1 seconds, prevents multiple posts during single seconds.
     }
 
     Cleanup();
@@ -86,5 +90,3 @@ unsigned long long GetSecondsSinceEpoch()
 {
     return static_cast<unsigned long long>(std::time(nullptr)); // returns Unix time as a LLU.
 }
-
-
