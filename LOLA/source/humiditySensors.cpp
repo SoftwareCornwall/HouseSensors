@@ -14,12 +14,6 @@ Humidity humidity;
 Curl curl;
 sensorData_t sensorData;
 
-void handleSIGINT(int param)
-{
-    cout << "\nInterrupt detected. Now exiting..." << endl;
-    doLoop = false;
-}
-
 int main()
 {
     cout << R"(
@@ -43,7 +37,6 @@ int main()
     if(Setup())
     {
         cout << "Setup successful." << endl;
-
         cout << "Sensor started at " << GetSecondsSinceEpoch() << " Unix Time, waiting for " << GetSecondsUntilNextPost() << " seconds until first POST." << endl;
     }
     else
@@ -54,7 +47,7 @@ int main()
         exit(-1);
     }
 
-    std::string postFields;
+    string postFields;
 
     for(;;) // Main Loop
     {
@@ -77,7 +70,7 @@ int main()
 
         cout << "END POST\nWaiting..." << endl;
 
-        std::this_thread::sleep_for(std::chrono::seconds(1)); // Sleeps 1 seconds, prevents multiple posts during single seconds.
+        this_thread::sleep_for(chrono::seconds(1)); // Sleeps 1 seconds, prevents multiple posts during single seconds.
     }
 
     Cleanup();
@@ -85,9 +78,23 @@ int main()
     exit(0);
 }
 
-unsigned int GetSecondsUntilNextPost()
+
+
+void handleSIGINT(int param)
 {
-    return SENSOR_READ_INTERVAL - (GetSecondsSinceEpoch() % SENSOR_READ_INTERVAL);
+    (void)param;
+
+    cout << "\nInterrupt detected. Now exiting..." << endl;
+    doLoop = false;
+}
+
+void Cleanup()
+{
+    cout << "Cleaning up..." << endl;
+
+    curl_global_cleanup();
+
+    cout << "Complete." << endl;
 }
 
 bool Setup()
@@ -96,15 +103,9 @@ bool Setup()
     return true;
 }
 
-bool Cleanup()
+unsigned int GetSecondsUntilNextPost()
 {
-    cout << "Cleaning up. ";
-
-    curl_global_cleanup();
-
-    cout << "Complete." << endl;
-
-    return true;
+    return SENSOR_READ_INTERVAL - (GetSecondsSinceEpoch() % SENSOR_READ_INTERVAL);
 }
 
 unsigned long long GetSecondsSinceEpoch()

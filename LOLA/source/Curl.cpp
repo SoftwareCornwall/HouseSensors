@@ -20,22 +20,21 @@ Curl::Curl()
 
 CURLcode Curl::SubmitDataToServer(unsigned long long secondsSinceEpoch, const sensorData_t &sensorData)
 {
-    std::string postFields;
-    postFields = "timestamp=" +
-                  std::to_string(secondsSinceEpoch) +
-                  "&mac=" +
-                  mACAddress +
-                  "&humidityValue=" +
-                  std::to_string(sensorData.humidity) +
-                  "&temperatureValue=" +
-                  std::to_string(sensorData.temperature);
+    string postFields = "timestamp=" +
+                         std::to_string(secondsSinceEpoch) +
+                         "&mac=" +
+                         mACAddress +
+                         "&humidityValue=" +
+                         std::to_string(sensorData.humidity) +
+                         "&temperatureValue=" +
+                         std::to_string(sensorData.temperature);
 
     cout << "Posting data to server (" << SERVER_URL << ")... " << endl;
     cout <<   "  MAC Address: " << mACAddress << endl;
     cout <<   "    Timestamp: " << secondsSinceEpoch << endl;
     cout <<   "     Humidity: " << sensorData.humidity << endl;
     cout <<   "  Temperature: " << sensorData.temperature << endl;
-    cout <<   "       Status: ";
+    cout <<   "       Status: " << flush;
 
     CURLcode result = PostDataToServer(postFields,
                                        SERVER_URL HUMIDITY_TEMPERATURE_DIR);
@@ -54,7 +53,7 @@ CURLcode Curl::SubmitDataToServer(unsigned long long secondsSinceEpoch, const se
     return result;
 }
 
-CURLcode Curl::PostDataToServer(std::string postFields, std::string serverURL)
+CURLcode Curl::PostDataToServer(string postFields, string serverURL)
 {
     CURL *curl;
     CURLcode result = CURLE_FAILED_INIT;
@@ -75,7 +74,7 @@ CURLcode Curl::PostDataToServer(std::string postFields, std::string serverURL)
     return result;
 }
 
-bool Curl::GetMACAddress(std::string& address)
+bool Curl::GetMACAddress(string& address)
 {
     ifstream mACFile(MAC_ADDRESS_FILE);
 
