@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import os
+import os 
 import time
 import RPi.GPIO as GPIO
 import datetime
@@ -20,9 +20,11 @@ timesFactorForSec = 13800
 HouseNumber = 21
 Senser = "Rate Of Liquid Flow"
 
+#Location of file storage, with name which changing depending on date
 WaterDataLocation = "/home/pi/Desktop/HouseSensors/toxicCheese/House" + str(HouseNumber) + "/"+ str(HouseNumber) +"WaterData_" + (now.strftime("%Y_%m_%d")) + ".csv"
 WaterDataDirectory = "/home/pi/Desktop/HouseSensors/toxicCheese/House" + str(HouseNumber)
- 
+
+#Creats a new file if one doesn't exsist
 if not os.path.exists(WaterDataDirectory):
     os.makedirs(WaterDataDirectory)
 
@@ -69,20 +71,23 @@ def main():
     
     while True:
         #time.sleep(1)
-        TimeDiff = time.time() - start
-        if (TimeDiff < 1.01) and (TimeDiff > 0.99):
+        TimeDiff = time.time() - start 
+        if (TimeDiff < 1.01) and (TimeDiff > 0.99): #Needs to be range as time can never be exactly one
             now = datetime.datetime.now()
+            #timestanp
             sWaterMessage = str(now.strftime("%H:%M:%S")) + "," + str(round(icounter/timesFactorForMin, 4)) + "\n"
-            #print (sWaterMessage)
+            #save to file
             Waterfile = open(WaterDataLocation,"a")
             Waterfile.write(sWaterMessage)
             Waterfile.close()
             return (sWaterMessage)
 
 
+#loops to gather more readings
 StartUp()
 while True:
     icounter = 0
     start = 0
     print (main())
+    #how long in seconds between each loop
     time.sleep(1)
