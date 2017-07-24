@@ -3,6 +3,14 @@ import os
 import time
 import RPi.GPIO as GPIO
 import datetime
+import requests
+from sys import exit
+
+
+
+url = "http://10.160.50.195/humidity.php"
+WaterFileLoc = "/home/pi/Desktop/WaterFlow.csv"
+
 
 now = datetime.datetime.now()
 GPIO.setwarnings(False)
@@ -10,7 +18,6 @@ GPIO.setwarnings(False)
 # the chip's pin numbering scheme
 GPIO.setmode(GPIO.BCM)
 
-print ("Hello")
 
 #relation ship between raw number and liters
 timesFactorForMin = 230
@@ -20,7 +27,7 @@ timesFactorForSec = 13800
 HouseNumber = 21
 Senser = "Rate Of Liquid Flow"
 
-#Location of file storage, with name which changing depending on date
+#Location of file storage, with name which is changing depending on date
 WaterDataLocation = "/home/pi/Desktop/HouseSensors/toxicCheese/House" + str(HouseNumber) + "/"+ str(HouseNumber) +"WaterData_" + (now.strftime("%Y_%m_%d")) + ".csv"
 WaterDataDirectory = "/home/pi/Desktop/HouseSensors/toxicCheese/House" + str(HouseNumber)
 
@@ -71,7 +78,9 @@ def main():
     
     while True:
         #time.sleep(1)
-        TimeDiff = time.time() - start 
+        TimeDiff = time.time() - start
+        if TimeDiff > 10:
+            return 0
         if (TimeDiff < 1.01) and (TimeDiff > 0.99): #Needs to be range as time can never be exactly one
             now = datetime.datetime.now()
             #timestanp
@@ -85,9 +94,36 @@ def main():
 
 #loops to gather more readings
 StartUp()
+
+
 while True:
     icounter = 0
     start = 0
-    print (main())
-    #how long in seconds between each loop
-    time.sleep(1)
+    data = {'waterflow': main(), 
+            'date': str(now.strftime("%Y_%m_%d")), 
+            'timestamp': str(now.strftime("%H:%M:%S"))
+            }
+    print (data)
+    try:
+        print("posting data")
+        r = requests.post(url, data)
+        print (r)
+
+    except requests.exceptions.ConnectTimeout:
+        print("error connecting to server, writing to file")
+        if(os.path.isfile(WaterDataLocation) == False):
+            with open(WaterDataLocation, "w") as f:
+                WaterDataLocation.write(str(data))
+            WaterDataLocation.close()
+        else:
+            with open(WaterDataLocation, "a") as f:
+                f.write(str(data))
+
+    except requests.exceptions.InvalidURL:
+        print("invadlid url", url)
+        print("exitting")
+        sys.exit(1)
+    except requests.exceptions.HTTPError:
+        print("HTTP error, exitting")
+        sys.exit(1)
+    time.sleep(10)
