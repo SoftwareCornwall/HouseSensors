@@ -39,8 +39,9 @@
 		</Linker>
 		<Unit filename="Curl.cpp" />
 		<Unit filename="Curl.h" />
-		<Unit filename="Humidity.cpp" />
-		<Unit filename="Humidity.h" />
+		<Unit filename="Sensor.cpp" />
+		<Unit filename="Sensor.h" />
+		<Unit filename="StyleEscapeSequences.h" />
 		<Unit filename="humiditySensors.cpp" />
 		<Unit filename="humiditySensors.h" />
 		<Extensions>

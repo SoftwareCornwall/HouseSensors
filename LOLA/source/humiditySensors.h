@@ -1,22 +1,23 @@
 #ifndef HUMIDITYSENSORS_DEFINED
 #define HUMIDITYSENSORS_DEFINED
 
-#include <stdio.h>
-#include <fstream>
-#include <string>
-#include <iostream>
-#include <thread>
 #include <chrono>
-#include <RTIMULib.h>
+#include <fstream>
+#include <iostream>
 #include <memory>
+#include <stdio.h>
+#include <string>
+#include <thread>
+
+#include <RTIMULib.h>
 
 struct sensorData_t;
 
 int main();
 void handleSIGINT(int param);
-void Cleanup();
-bool Setup();
-unsigned int GetSecondsUntilNextPost();
-unsigned long long GetSecondsSinceEpoch();
+void cleanup();
+bool setup();
+unsigned int getSecondsUntilNextPost();
+unsigned long long getSecondsSinceEpoch();
 
 #endif
