@@ -363,38 +363,59 @@ if(isset($_POST['printReport']))
                         </div>
                         <div class="panel-body">
                             <div class="list-group">
-                                <a href="#" class="list-group-item">
-                                    <span class="badge">just now</span>
-                                    <i class="fa fa-fw fa-calendar"></i> Calendar updated
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <span class="badge">4 minutes ago</span>
-                                    <i class="fa fa-fw fa-comment"></i> Commented on a post
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <span class="badge">23 minutes ago</span>
-                                    <i class="fa fa-fw fa-truck"></i> Order 392 shipped
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <span class="badge">46 minutes ago</span>
-                                    <i class="fa fa-fw fa-money"></i> Invoice 653 has been paid
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <span class="badge">1 hour ago</span>
-                                    <i class="fa fa-fw fa-user"></i> A new user has been added
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <span class="badge">2 hours ago</span>
-                                    <i class="fa fa-fw fa-check"></i> Completed task: "pick up dry cleaning"
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <span class="badge">yesterday</span>
-                                    <i class="fa fa-fw fa-globe"></i> Saved the world
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <span class="badge">two days ago</span>
-                                    <i class="fa fa-fw fa-check"></i> Completed task: "fix error on sales page"
-                                </a>
+                                <?php
+                                if($_GET['houseId'])
+                                {
+                                    $houseID = $_GET['houseId'];
+
+                                    $houseSensors = $pdo->prepare("SELECT * FROM sensor_location WHERE house_id=:house");
+                                    $houseSensors->bindValue(':house', $houseID);
+
+                                    if ($houseSensors->execute())
+                                    {
+                                        while ($roomRow = $houseSensors->fetch())
+                                        {
+                                            $getSensorMAC = $pdo->prepare("SELECT * FROM sensor_location WHERE room=:room");
+                                            $getSensorMAC->bindParam(':room', $roomRow['room']);
+
+                                            if ($getSensorMAC->execute())
+                                            {
+                                                while ($macRow = $getSensorMAC->fetch())
+                                                {
+                                                    $macAddress = $macRow['mac_address'];
+
+                                                    $getSensorinfo = $pdo->prepare("SELECT * FROM water WHERE mac_address=:mac ORDER BY id LIMIT 12");
+                                                    $getSensorinfo->bindParam(':mac', $macAddress);
+
+                                                    //echo $macAddress;
+
+                                                    $waterArray = array();
+
+                                                    if($getSensorinfo->execute())
+                                                    {
+                                                        while($averageRow = $getSensorinfo->fetch())
+                                                        {
+                                                            //echo $averageRow['humidity_value'];
+                                                            array_push($waterArray, $averageRow['water_value']);
+                                                        }
+                                                    }
+                                                    //print_r ($humidityArray);
+                                                    $waterAverage = array_sum($waterArray) / count($waterArray);
+                                                }
+                                            }
+                                            echo '<a href="#" class="list-group-item">
+                                                        <span class="badge">' . $waterAverage . '</span>
+                                                        <i class="fa fa-fw fa-calendar"></i> ' . $roomRow['room'] . '
+                                                  </a>';
+                                            //echo "<h1 style='color: deeppink'><marquee scrollamount='20'>The humidity when last recorded was: " . $row['humidity_timestamp'] . "</marquee></h1>";
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    echo "Please select a house to view the sensor averages";
+                                }
+                                ?>
                             </div>
                             <div class="text-right">
                                 <div class="checkbox">
