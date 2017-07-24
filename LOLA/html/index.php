@@ -6,9 +6,20 @@ $humidityData = $pdo->prepare("SELECT * FROM humidity ORDER BY id DESC LIMIT 288
 
 $temperatureData = $pdo->prepare("SELECT * FROM temperature ORDER BY id DESC LIMIT 288");
 
+$houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location ORDER BY id");
+
+$selectedHouse = $_GET['houseId'];
+
+
+$houseSensors = $pdo->prepare("SELECT DISTINCT mac_address FROM sensor_location WHERE house_id=:house");
+$houseSensors->bindValue(':house', $selectedHouse);
+$houseSensors->execute();
+
+$sensorCount = $houseSensors->rowCount();
 
 
 
+echo "                                             lkjhgfcvbnmkloiuytfcvbnm,liuytfdcvbnm,liuyt      " . $sensorCount;
 
 if ($humidityData->execute())
 {
@@ -173,6 +184,28 @@ header("Refresh: $sec");
             <div class="container-fluid">
 
                 <div class="row">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Please Select a Household
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="dropdownMenu1">
+
+                            <?php
+                            if ($houseSelection->execute())
+                            {
+                                while ($row = $houseSelection->fetch())
+                                {
+                                    echo '<li><a href="index.php?houseId=' . $row["house_id"] . '"> House ' . $row["house_id"] . '</a></li>';
+                                    //echo "<h1 style='color: deeppink'><marquee scrollamount='20'>The humidity when last recorded was: " . $row['humidity_timestamp'] . "</marquee></h1>";
+                                }
+                            }
+
+                            ?>
+                            <!-- when clicked reload the page with graphs or text?? ask the team :) showing the average
+                             humidity, temperature and water -->
+                        </ul>
+                    </div>
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -258,7 +291,8 @@ header("Refresh: $sec");
     </script>
     "
 ?>
-
+// work out how many different mac addresses there are, this will give the number to divide by, compare the mac addresses againt the house though.
+    // or maybe look up the house's mac addresses, then sort the data by mac address, arrays are probably your friend.
     <?php
     echo "
         <script>
