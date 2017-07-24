@@ -15,6 +15,8 @@ $humidityData = FetchData::FetchHumidityData($sensors);
 
 $temperatureData = FetchData::FetchTemperatureData($sensors);
 
+$waterData = FetchData::FetchWaterData($sensors);
+
 $houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location ORDER BY id");
 
 
@@ -35,13 +37,19 @@ foreach($temperatureData as $item)
     $temperatureFiltered[$item['temperature_timestamp']][] = $item['temperature_value'];
 }
 
+$waterFiltered = [];
+foreach($waterData as $item)
+{
+    $waterFiltered[$item['water_timestamp']][] = $item['water_value'];
+}
+
 //print_r($temperatureFiltered);
 
 
 //echo ' rufhdeiodkmslfijdkmlsofijdskmadijdkslaoidfjkmslodwijfdksldwofiujdkslowdfiujckdliufhjlwoieureikwlefjh' . $sensors;
 
 
-$sec = 300;
+$sec = 60;
 
 header("Refresh: $sec");
 
@@ -246,6 +254,18 @@ header("Refresh: $sec");
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Water Usage</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div id="waterChart" style="height: 250px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- /.row -->
             </div>
             <!-- /.container-fluid -->
@@ -326,6 +346,39 @@ header("Refresh: $sec");
         $newTime = date("Y-m-d H:i:s", substr($time, 0, 10));
 
         $averageValue = round($valuesSum / $valuesCount);
+        echo"{ time: '". $newTime ."', value: " . $averageValue . " },";
+    }
+    echo "
+      ],
+      // The name of the data record attribute that contains x-values.
+      xkey: 'time',
+      // A list of names of data record attributes that contain y-values.
+      ykeys: ['value'],
+      // Labels for the ykeys -- will be displayed when you hover over the
+      // chart.
+      labels: ['Value']
+    });
+    </script>
+    "
+    ?>
+    <?php
+    echo "
+        <script>
+            new Morris.Line({
+      // ID of the element in which to draw the chart.
+      element: 'waterChart',
+      // Chart data records -- each entry in this array corresponds to a point on
+      // the chart.
+      data: [
+           ";
+    foreach($waterFiltered as $time => $values)
+    {
+        $valuesCount = count($values);
+        $valuesSum = array_sum($values);
+
+        $newTime = date("Y-m-d H:i:s", substr($time, 0, 10));
+
+        $averageValue = $valuesSum / $valuesCount;
         echo"{ time: '". $newTime ."', value: " . $averageValue . " },";
     }
     echo "

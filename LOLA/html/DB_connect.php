@@ -31,5 +31,12 @@ class DB_Connect
         $result = $stmt->execute();
         $stmt->close();
     }
+    public function SaveWater($water, $timestamp, $macAddress)
+    {
+        $stmt = $this->conn->prepare("INSERT INTO water (water_value, water_timestamp, mac_address) values (?, ?, ?)");
+        $stmt->bind_param("sss", $water, $timestamp, $macAddress);
+        $result = $stmt->execute();
+        $stmt->close();
+    }
 }
 ?>

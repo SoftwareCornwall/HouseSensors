@@ -10,9 +10,10 @@ if(isset($_POST['printReport']))
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename=data.csv');
     $output = fopen("php://output", "w");
-    fputcsv($output, array('ID', 'Humidity Value', 'Humidity Timestamp', 'MAC Address'));
+    fputcsv($output, array('ID', 'Humidity Timestamp', 'Humidity Value', 'Sensor Location'));
 
-    $printReport = $pdo->prepare("SELECT * FROM humidity");
+    $printReport = $pdo->prepare("SELECT humidity.id, humidity.humidity_timestamp, humidity.humidity_value, sensor_location.room FROM humidity INNER JOIN sensor_location ON humidity.mac_address = sensor_location.mac_address");
+
 
     if($printReport->execute())
     {
@@ -179,7 +180,15 @@ if(isset($_POST['printReport']))
                             <div class="panel-body">
                                 <div class="dropdown">
                                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        Please Select a Household
+                                        <?php
+                                        if(isset($_GET[houseId]))
+                                        {
+                                        echo "House " . $_GET['houseId'];
+                                        }
+                                        else
+                                        {
+                                        echo "Please Select a Household";
+                                        }?>
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="dropdownMenu1">

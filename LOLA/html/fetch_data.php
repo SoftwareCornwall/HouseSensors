@@ -66,4 +66,18 @@ class FetchData
 
         return $temperatureDataArray;
     }
+
+    static function FetchWaterData($sensorMacAddresses)
+    {
+        global $pdo;
+
+
+        $waterData = $pdo->prepare("SELECT * FROM water WHERE mac_address IN ('" . implode("','",$sensorMacAddresses) . "') ORDER BY id DESC LIMIT 288");
+        $waterData->bindValue('s', $sensorMacAddresses);
+        $waterData->execute();
+
+        $waterDataArray = $waterData->fetchAll(PDO::FETCH_ASSOC);
+
+        return $waterDataArray;
+    }
 }

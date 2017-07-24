@@ -18,29 +18,29 @@ USE `sensor_data`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `sensor_location`
+-- Table structure for table `water`
 --
 
-DROP TABLE IF EXISTS `sensor_location`;
+DROP TABLE IF EXISTS `water`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sensor_location` (
+CREATE TABLE `water` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `mac_address` varchar(45) DEFAULT NULL,
-  `room` varchar(45) DEFAULT NULL,
-  `house_id` varchar(45) DEFAULT NULL,
+  `water_value` varchar(45) DEFAULT NULL,
+  `water_timestamp` varchar(100) DEFAULT NULL,
+  `mac_address` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `sensor_location`
+-- Dumping data for table `water`
 --
 
-LOCK TABLES `sensor_location` WRITE;
-/*!40000 ALTER TABLE `sensor_location` DISABLE KEYS */;
-INSERT INTO `sensor_location` VALUES (1,'b8:27:eb:c6:75:f5','Living Area','1'),(2,'b8:27:eb:0b:04:1a','Water Pump','1'),(3,'b8:27:eb:89:9c:2d','Master Bedroom','1');
-/*!40000 ALTER TABLE `sensor_location` ENABLE KEYS */;
+LOCK TABLES `water` WRITE;
+/*!40000 ALTER TABLE `water` DISABLE KEYS */;
+INSERT INTO `water` VALUES (1,'25','1500897600','b8:27:eb:0b:04:1a'),(2,'27','1500897900','b8:27:eb:0b:04:1a');
+/*!40000 ALTER TABLE `water` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
