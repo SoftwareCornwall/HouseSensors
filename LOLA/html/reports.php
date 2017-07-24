@@ -263,7 +263,7 @@ if(isset($_POST['printReport']))
                                 }
                                 else
                                 {
-                                    echo "Please select a hosue to view the sensor averages";
+                                    echo "Please select a house to view the sensor averages";
                                 }
                                 ?>
                             </div>
@@ -334,7 +334,7 @@ if(isset($_POST['printReport']))
                                 }
                                 else
                                 {
-                                    echo "Please select a hosue to view the sensor averages";
+                                    echo "Please select a house to view the sensor averages";
                                 }
                                 ?>
                             </div>
