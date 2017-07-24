@@ -1,37 +1,44 @@
 <?php
 include 'config.php';
+require_once 'fetch_data.php';
 
 
-$humidityData = $pdo->prepare("SELECT * FROM humidity ORDER BY id DESC LIMIT 288");
-
-$temperatureData = $pdo->prepare("SELECT * FROM temperature ORDER BY id DESC LIMIT 288");
-
-$houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location ORDER BY id");
+//$humidityData = $pdo->prepare("SELECT * FROM humidity ORDER BY id DESC LIMIT 288");
 
 $selectedHouse = $_GET['houseId'];
 
+$sensorCount = FetchData::FetchHouseSensorCount($selectedHouse);
 
-$houseSensors = $pdo->prepare("SELECT DISTINCT mac_address FROM sensor_location WHERE house_id=:house");
-$houseSensors->bindValue(':house', $selectedHouse);
-$houseSensors->execute();
+$sensors = FetchData::FetchHouseSensors($selectedHouse);
 
-$sensorCount = $houseSensors->rowCount();
+$humidityData = FetchData::FetchHumidityData($sensors);
+
+$temperatureData = FetchData::FetchTemperatureData($sensors);
+
+$houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location ORDER BY id");
 
 
 
-echo "                                             lkjhgfcvbnmkloiuytfcvbnm,liuytfdcvbnm,liuyt      " . $sensorCount;
 
-if ($humidityData->execute())
+//print_r($humidityData);
+
+
+$humidityFiltered = [];
+foreach($humidityData as $item)
 {
-    while ($row = $humidityData->fetch())
-    {
-        $humidityValue = $row['humiditycol'];
-
-
-        //echo "<h1 style='color: deeppink'><marquee scrollamount='20'>The humidity when last recorded was: " . $row['humidity_timestamp'] . "</marquee></h1>";
-    }
+    $humidityFiltered[$item['humidity_timestamp']][] = $item['humidity_value'];
 }
 
+$temperatureFiltered = [];
+foreach($temperatureData as $item)
+{
+    $temperatureFiltered[$item['temperature_timestamp']][] = $item['temperature_value'];
+}
+
+//print_r($temperatureFiltered);
+
+
+//echo ' rufhdeiodkmslfijdkmlsofijdskmadijdkslaoidfjkmslodwijfdksldwofiujdkslowdfiujckdliufhjlwoieureikwlefjh' . $sensors;
 
 
 $sec = 300;
@@ -186,12 +193,21 @@ header("Refresh: $sec");
                 <div class="row">
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Please Select a Household
+                            <?php
+                            if(isset($_GET[houseId]))
+                            {
+                                echo "House " . $_GET['houseId'];
+                            }
+                            else
+                            {
+                                echo "Please Select a Household";
+                            }?>
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="dropdownMenu1">
 
                             <?php
+
                             if ($houseSelection->execute())
                             {
                                 while ($row = $houseSelection->fetch())
@@ -266,19 +282,18 @@ header("Refresh: $sec");
       // the chart.
       data: [
            ";
-            if ($humidityData->execute())
-            {
-                while ($row = $humidityData->fetch())
-                {
-                    $humidityValue = round($row['humidity_value']);
-                    $humidityTime = $row['humidity_timestamp'];
 
-                    $newTime = date("Y-m-d H:i:s", substr($humidityTime, 0, 10));
+        foreach($humidityFiltered as $time => $values)
+        {
+            $valuesCount = count($values);
+            $valuesSum = array_sum($values);
 
-                    echo"{ time: '". $newTime ."', value: " . $humidityValue . " },";
-                }
-            }
-            echo "
+            $newTime = date("Y-m-d H:i:s", substr($time, 0, 10));
+
+            $averageValue = round($valuesSum / $valuesCount);
+            echo"{ time: '". $newTime ."', value: " . $averageValue . " },";
+        }
+                echo "
       ],
       // The name of the data record attribute that contains x-values.
       xkey: 'time',
@@ -303,17 +318,15 @@ header("Refresh: $sec");
       // the chart.
       data: [
            ";
-    if ($temperatureData->execute())
+    foreach($temperatureFiltered as $time => $values)
     {
-        while ($row = $temperatureData->fetch())
-        {
-            $temperatureValue = round($row['temperature_value']);
-            $temperatureTime = $row['temperature_timestamp'];
+        $valuesCount = count($values);
+        $valuesSum = array_sum($values);
 
-            $newTime = date("Y-m-d H:i:s", substr($temperatureTime, 0, 10));
+        $newTime = date("Y-m-d H:i:s", substr($time, 0, 10));
 
-            echo"{ time: '". $newTime ."', value: " . $temperatureValue . " },";
-        }
+        $averageValue = round($valuesSum / $valuesCount);
+        echo"{ time: '". $newTime ."', value: " . $averageValue . " },";
     }
     echo "
       ],
