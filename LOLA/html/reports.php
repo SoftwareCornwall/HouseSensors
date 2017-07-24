@@ -2,13 +2,11 @@
 
 include "config.php";
 
-$houseSelection = $pdo->prepare("SELECT * FROM sensor_location ORDER BY id");
+$houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location ORDER BY id");
 
 if(isset($_POST['printReport']))
 {
-    include "DB_connect.php";
-
-    //echo "this worked, i think, this text is to test it";
+    
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename=data.csv');
     $output = fopen("php://output", "w");
@@ -18,12 +16,13 @@ if(isset($_POST['printReport']))
 
     if($printReport->execute())
     {
-        while($row = $printReport->fetch())
+        while($row = $printReport->fetch(PDO::FETCH_ASSOC))
         {
             fputcsv($output, $row);
         }
     }
     fclose($output);
+    exit;
 }
 
 ?>
@@ -264,7 +263,7 @@ if(isset($_POST['printReport']))
                                 }
                                 else
                                 {
-                                    echo "Please select a hosue to view the sensor averages";
+                                    echo "Please select a house to view the sensor averages";
                                 }
                                 ?>
                             </div>
@@ -335,7 +334,7 @@ if(isset($_POST['printReport']))
                                 }
                                 else
                                 {
-                                    echo "Please select a hosue to view the sensor averages";
+                                    echo "Please select a house to view the sensor averages";
                                 }
                                 ?>
                             </div>

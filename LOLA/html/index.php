@@ -1,26 +1,44 @@
 <?php
 include 'config.php';
+require_once 'fetch_data.php';
 
 
-$humidityData = $pdo->prepare("SELECT * FROM humidity ORDER BY id DESC LIMIT 288");
+//$humidityData = $pdo->prepare("SELECT * FROM humidity ORDER BY id DESC LIMIT 288");
 
-$temperatureData = $pdo->prepare("SELECT * FROM temperature ORDER BY id DESC LIMIT 288");
+$selectedHouse = $_GET['houseId'];
+
+$sensorCount = FetchData::FetchHouseSensorCount($selectedHouse);
+
+$sensors = FetchData::FetchHouseSensors($selectedHouse);
+
+$humidityData = FetchData::FetchHumidityData($sensors);
+
+$temperatureData = FetchData::FetchTemperatureData($sensors);
+
+$houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location ORDER BY id");
 
 
 
 
+//print_r($humidityData);
 
-if ($humidityData->execute())
+
+$humidityFiltered = [];
+foreach($humidityData as $item)
 {
-    while ($row = $humidityData->fetch())
-    {
-        $humidityValue = $row['humiditycol'];
-
-
-        //echo "<h1 style='color: deeppink'><marquee scrollamount='20'>The humidity when last recorded was: " . $row['humidity_timestamp'] . "</marquee></h1>";
-    }
+    $humidityFiltered[$item['humidity_timestamp']][] = $item['humidity_value'];
 }
 
+$temperatureFiltered = [];
+foreach($temperatureData as $item)
+{
+    $temperatureFiltered[$item['temperature_timestamp']][] = $item['temperature_value'];
+}
+
+//print_r($temperatureFiltered);
+
+
+//echo ' rufhdeiodkmslfijdkmlsofijdskmadijdkslaoidfjkmslodwijfdksldwofiujdkslowdfiujckdliufhjlwoieureikwlefjh' . $sensors;
 
 
 $sec = 300;
@@ -173,6 +191,37 @@ header("Refresh: $sec");
             <div class="container-fluid">
 
                 <div class="row">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <?php
+                            if(isset($_GET[houseId]))
+                            {
+                                echo "House " . $_GET['houseId'];
+                            }
+                            else
+                            {
+                                echo "Please Select a Household";
+                            }?>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="dropdownMenu1">
+
+                            <?php
+
+                            if ($houseSelection->execute())
+                            {
+                                while ($row = $houseSelection->fetch())
+                                {
+                                    echo '<li><a href="index.php?houseId=' . $row["house_id"] . '"> House ' . $row["house_id"] . '</a></li>';
+                                    //echo "<h1 style='color: deeppink'><marquee scrollamount='20'>The humidity when last recorded was: " . $row['humidity_timestamp'] . "</marquee></h1>";
+                                }
+                            }
+
+                            ?>
+                            <!-- when clicked reload the page with graphs or text?? ask the team :) showing the average
+                             humidity, temperature and water -->
+                        </ul>
+                    </div>
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -233,19 +282,18 @@ header("Refresh: $sec");
       // the chart.
       data: [
            ";
-            if ($humidityData->execute())
-            {
-                while ($row = $humidityData->fetch())
-                {
-                    $humidityValue = round($row['humidity_value']);
-                    $humidityTime = $row['humidity_timestamp'];
 
-                    $newTime = date("Y-m-d H:i:s", substr($humidityTime, 0, 10));
+        foreach($humidityFiltered as $time => $values)
+        {
+            $valuesCount = count($values);
+            $valuesSum = array_sum($values);
 
-                    echo"{ time: '". $newTime ."', value: " . $humidityValue . " },";
-                }
-            }
-            echo "
+            $newTime = date("Y-m-d H:i:s", substr($time, 0, 10));
+
+            $averageValue = round($valuesSum / $valuesCount);
+            echo"{ time: '". $newTime ."', value: " . $averageValue . " },";
+        }
+                echo "
       ],
       // The name of the data record attribute that contains x-values.
       xkey: 'time',
@@ -258,7 +306,8 @@ header("Refresh: $sec");
     </script>
     "
 ?>
-
+// work out how many different mac addresses there are, this will give the number to divide by, compare the mac addresses againt the house though.
+    // or maybe look up the house's mac addresses, then sort the data by mac address, arrays are probably your friend.
     <?php
     echo "
         <script>
@@ -269,17 +318,15 @@ header("Refresh: $sec");
       // the chart.
       data: [
            ";
-    if ($temperatureData->execute())
+    foreach($temperatureFiltered as $time => $values)
     {
-        while ($row = $temperatureData->fetch())
-        {
-            $temperatureValue = round($row['temperature_value']);
-            $temperatureTime = $row['temperature_timestamp'];
+        $valuesCount = count($values);
+        $valuesSum = array_sum($values);
 
-            $newTime = date("Y-m-d H:i:s", substr($temperatureTime, 0, 10));
+        $newTime = date("Y-m-d H:i:s", substr($time, 0, 10));
 
-            echo"{ time: '". $newTime ."', value: " . $temperatureValue . " },";
-        }
+        $averageValue = round($valuesSum / $valuesCount);
+        echo"{ time: '". $newTime ."', value: " . $averageValue . " },";
     }
     echo "
       ],
