@@ -90,4 +90,3 @@ bool Curl::GetMACAddress(string& address)
         return false;
     }
 }
-

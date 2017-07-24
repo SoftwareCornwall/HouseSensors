@@ -16,6 +16,7 @@ sensorData_t sensorData;
 
 int main()
 {
+
     cout << R"(
  _   _                      _____
 | | | |                    /  ___|
@@ -47,8 +48,6 @@ int main()
         exit(-1);
     }
 
-    string postFields;
-
     for(;;) // Main Loop
     {
         while(doLoop && (GetSecondsSinceEpoch() % SENSOR_READ_INTERVAL  != 0)); // Hangs until unix time is divisible by SENSOR_READ_INTERVAL | DoLoop eval means program will immediately stop on Ctrl+C.
@@ -77,8 +76,6 @@ int main()
 
     exit(0);
 }
-
-
 
 void handleSIGINT(int param)
 {

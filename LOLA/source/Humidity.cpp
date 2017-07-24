@@ -5,7 +5,6 @@ using namespace std;
 Humidity::Humidity()
 {
     settings = unique_ptr<RTIMUSettings>(new RTIMUSettings("RTIMULib"));
-
     imu = unique_ptr<RTIMU>(RTIMU::createIMU(settings.get()));
     humidity = unique_ptr<RTHumidity>(RTHumidity::createHumidity(settings.get()));
 
