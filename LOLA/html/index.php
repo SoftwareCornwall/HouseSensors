@@ -378,7 +378,7 @@ header("Refresh: $sec");
 
         $newTime = date("Y-m-d H:i:s", substr($time, 0, 10));
 
-        $averageValue = round($valuesSum / $valuesCount);
+        $averageValue = $valuesSum / $valuesCount;
         echo"{ time: '". $newTime ."', value: " . $averageValue . " },";
     }
     echo "
