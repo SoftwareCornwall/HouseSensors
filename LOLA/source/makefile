@@ -10,6 +10,6 @@ stop_sensor:
 	ps -e | grep Humidity_Sensor | awk '{ print $$1; }' | xargs kill -9
 
 Restart_Sensor: stop_sensor Humidity_Sensor 
-	./Humidity_Sensor&
-	Disown
+#	./Humidity_Sensor&
+#	Disown
 
