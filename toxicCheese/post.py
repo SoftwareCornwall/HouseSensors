@@ -27,12 +27,15 @@ while (1):
         print("posting data")
         if(os.path.isfile(humidityFileLoc) == True):
             print ("posting filedata")
-            fileData = {}
             with open(humidityFileLoc, "r") as f:
                 reader = csv.reader(f)
+                fileData = {}
                 for row in reader:
                     key = row[0]
                     fileData[key] = row[1:]
+                    tr = requests.post(url, fileData)
+            os.remove(humidityFileLoc)
+            print ("removed: ", humidityFileLoc)
         r = requests.post(url, data)
         print r
 
