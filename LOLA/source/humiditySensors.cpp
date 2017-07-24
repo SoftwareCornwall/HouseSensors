@@ -1,22 +1,23 @@
-#include "humiditySensors.h"
-#include "Humidity.h"
-#include "Curl.h"
-
 #include <signal.h>
 
-#define SENSOR_READ_INTERVAL 300
+#include "humiditySensors.h"
+#include "Sensor.h"
+#include "Curl.h"
+
+#include "StyleEscapeSequences.h"
+
+#define SENSOR_READ_INTERVAL 10
 
 using namespace std;
 
-bool doLoop;
+bool isLooping;
 bool isSetup;
-Humidity humidity;
+Sensor sensor;
 Curl curl;
-sensorData_t sensorData;
+SensorData sensorData;
 
 int main()
 {
-
     cout << R"(
  _   _                      _____
 | | | |                    /  ___|
@@ -35,57 +36,63 @@ int main()
 
     signal(SIGINT, handleSIGINT); // Sets up Ctrl+C handler to exit main loop, not entire program.
 
-    if(Setup())
+    if (setup())
     {
-        cout << "Setup successful." << endl;
-        cout << "Sensor started at " << GetSecondsSinceEpoch() << " Unix Time, waiting for " << GetSecondsUntilNextPost() << " seconds until first POST." << endl;
+        cout << GREEN_FONT << "Setup successful." << DEFAULT_FONT << endl;
+        cout << "Sensor started at " << getSecondsSinceEpoch() << " Unix Time, waiting for " << getSecondsUntilNextPost() << " seconds until first POST." << endl;
     }
     else
     {
         cerr << "Setup failed." << endl;
 
-        Cleanup();
+        cleanup();
         exit(-1);
     }
 
-    for(;;) // Main Loop
+    while (true) // Main Loop
     {
-        while(doLoop && (GetSecondsSinceEpoch() % SENSOR_READ_INTERVAL  != 0)); // Hangs until unix time is divisible by SENSOR_READ_INTERVAL | DoLoop eval means program will immediately stop on Ctrl+C.
+        while (isLooping && (getSecondsSinceEpoch() % SENSOR_READ_INTERVAL  != 0)) // Hangs until unix time is divisible by SENSOR_READ_INTERVAL | DoLoop eval means program will immediately stop on Ctrl+C.
+            ;
 
-        if (!doLoop) break;
 
-        cout << "\nNEW POST\nGetting sensor data... " << endl;
+        if (!isLooping) break;
 
-        if (humidity.GetSensorData(&sensorData)) // Gives sensordata info from IMU, if successfull...
+        cout << "\nNEW POST OPERATION\033[0m \nGetting sensor data..." << endl;
+
+        if (sensor.getData(&sensorData)) // Gives sensordata info from IMU, if successfull...
         {
-            cout << "Success" << endl;
+            cout << GREEN_FONT << "Success" << DEFAULT_FONT << endl;
 
-            curl.SubmitDataToServer(GetSecondsSinceEpoch(), sensorData);
+            curl.submitSensorDataToServer(getSecondsSinceEpoch(), sensorData);
         }
         else
         {
-            cout << "Failure, skipping post" << endl;
+            cout << RED_FONT << "Failure, skipping post" << DEFAULT_FONT << endl;
         }
 
-        cout << "END POST\nWaiting..." << endl;
+        cout << "END POST OPERATION\nWaiting " << SENSOR_READ_INTERVAL << " seconds..." << endl;
 
         this_thread::sleep_for(chrono::seconds(1)); // Sleeps 1 seconds, prevents multiple posts during single seconds.
     }
 
-    Cleanup();
+    cleanup();
 
     exit(0);
 }
 
+
+
 void handleSIGINT(int param)
 {
-    (void)param;
+    (void)param; //Supresses the "unused variable" error. param is needed for the SIGINT handling to work.
 
     cout << "\nInterrupt detected. Now exiting..." << endl;
-    doLoop = false;
+    isLooping = false;
 }
 
-void Cleanup()
+
+
+void cleanup()
 {
     cout << "Cleaning up..." << endl;
 
@@ -94,18 +101,24 @@ void Cleanup()
     cout << "Complete." << endl;
 }
 
-bool Setup()
+
+
+bool setup()
 {
-    doLoop = true;
+    isLooping = true;
     return true;
 }
 
-unsigned int GetSecondsUntilNextPost()
+
+
+unsigned int getSecondsUntilNextPost()
 {
-    return SENSOR_READ_INTERVAL - (GetSecondsSinceEpoch() % SENSOR_READ_INTERVAL);
+    return SENSOR_READ_INTERVAL - (getSecondsSinceEpoch() % SENSOR_READ_INTERVAL);
 }
 
-unsigned long long GetSecondsSinceEpoch()
+
+
+unsigned long long getSecondsSinceEpoch()
 {
-    return static_cast<unsigned long long>(std::time(nullptr)); // returns Unix time as a LLU.
+    return static_cast<unsigned long long>(std::time(nullptr)); // returns Unix time as an LLU.
 }
