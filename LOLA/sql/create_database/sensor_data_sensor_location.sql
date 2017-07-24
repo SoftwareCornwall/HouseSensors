@@ -28,9 +28,9 @@ CREATE TABLE `sensor_location` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `mac_address` varchar(45) DEFAULT NULL,
   `room` varchar(45) DEFAULT NULL,
-  `house_number` varchar(45) DEFAULT NULL,
+  `house_id` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,6 +39,7 @@ CREATE TABLE `sensor_location` (
 
 LOCK TABLES `sensor_location` WRITE;
 /*!40000 ALTER TABLE `sensor_location` DISABLE KEYS */;
+INSERT INTO `sensor_location` VALUES (1,'b8:27:eb:c6:75:f5','Living Area','1'),(2,'b8:27:eb:0b:04:1a','Master Bedroom','1');
 /*!40000 ALTER TABLE `sensor_location` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-20 16:45:11
+-- Dump completed on 2017-07-21 16:46:10
