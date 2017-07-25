@@ -5,6 +5,9 @@ from sense_hat import SenseHat
 from datetime import datetime
 from time import sleep
 from uuid import getnode
+import socket
+import csv
+
 
 def getMac():
     address = getnode()
@@ -13,53 +16,51 @@ def getMac():
 
 print (getMac())
 url = "http://10.160.50.195/humidity.php"
-humidityFileLoc = "/var/www/html/humidity.csv"
-tempFile = "/var/www/html/temp.csv"
+humidityFileLoc = "/home/pi/Desktop/Data/humidity.txt"
 sense = SenseHat()
-while (1):
+
+
+def is_connected():
+    try:
+        # connect to the host -- tells us if the host is actually
+        # reachable
+        socket.create_connection(('10.160.50.195', 80))
+        return True
+    except OSError:
+        pass
+    return False
+
+while True:
     data = {'humidity': sense.get_humidity(), 
-            'temperature': sense.get_temperature(),
             'date': str(datetime.now().strftime("%Y-%m-%d")), 
             'timestamp': str(datetime.now().strftime("%H:%M:%S")),
             'mac': str(getMac())
             }
-    try:
+    print (is_connected())
+    if is_connected() == True:
         print("posting data")
         if(os.path.isfile(humidityFileLoc) == True):
             print ("posting filedata")
+            fileData = {}
             with open(humidityFileLoc, "r") as f:
                 reader = csv.reader(f)
-                fileData = {}
                 for row in reader:
                     key = row[0]
                     fileData[key] = row[1:]
-                    tr = requests.post(url, fileData)
-            os.remove(humidityFileLoc)
-            print ("removed: ", humidityFileLoc)
+        print (data)
         r = requests.post(url, data)
         print (r)
 
-    except requests.exceptions.ConnectTimeout:
+    else:
         print("error connecting to server, writing to file")
         if(os.path.isfile(humidityFileLoc) == False):
-            with open(humidityFileLoc, "w") as f:
-                writer = csv.writer(f)
-                for key, value in data:
-                    writer.writerow([key, value])
-        else:
-            with open(humidityFileLoc, "a") as f:
-                writer = csv.writer(f)
-                for key, value in data:
-                    writer.writerow([key, value])
-    except requests.exceptions.InvalidURL:
-        print("invadlid url", url)
-        print("exitting")
-        sys.exit(1)
-    except requests.exceptions.HTTPError:
-        print("HTTP error, exitting")
-        sys.exit(1)
-    except KeyboardInterrupt:
-        print("exitting")
-        sys.exit(1)
-    sleep(10)
+            HumidFile = open(humidityFileLoc, 'w')
+            HumidFile.close()
+    
+        HumidFile = open(humidityFileLoc, "a")
+        HumidFile.write(str(data))
+        HumidFile.write('\n')
+        HumidFile.close()
+
+    sleep(2)
     
