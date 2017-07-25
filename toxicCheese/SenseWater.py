@@ -5,16 +5,11 @@ import RPi.GPIO as GPIO
 import datetime
 import requests
 from sys import exit
-from uuid import getnode
 
-def getMac():
-    address = getnode()
-    h = iter(hex(address)[2:].zfill(12))
-    return ":".join(i + next(h) for i in h)
 
 #globals
 
-url = "http://10.160.50.195/water.php"
+url = "http://10.160.50.195/humidity.php"
 WaterFileLoc = "/home/pi/Desktop/WaterFlow.csv"
 #relation ship between raw number and liters
 timesFactorForMin = 230
@@ -66,36 +61,10 @@ def getWaterFlow():
     
     while True:
         TimeDiff = time.time() - start
-        #if TimeDiff > 10:
-            #return 0
+        if TimeDiff > 10:
+            return 0
         if (TimeDiff < 1.01) and (TimeDiff > 0.99): #Needs to be range as time can never be exactly one
             now = datetime.datetime.now()
-<<<<<<< HEAD
-            #timestanp
-            
-            sWaterMessage = {'waterflow': str(round(icounter/timesFactorForMin, 4)), 
-                            'date': str(now.strftime("%Y_%m_%d")), 
-                            'timestamp': str(now.strftime("%H:%M:%S")),
-                            'mac': str(getMac())
-                            }
-            
-            print (sWaterMessage)
-            #save to file
-            Waterfile = open(WaterDataLocation,"a")
-            Waterfile.write(str(sWaterMessage))
-            Waterfile.close()
-            return (sWaterMessage)
-
-
-#loops to gather more readings
-StartUp()
-
-
-while True:
-    icounter = 0
-    start = 0
-    data = main()
-=======
             #timestamp
             water =  round(icounter/timesFactorForMin, 4)
             #save to file
@@ -108,20 +77,17 @@ while True:
             'date': str(now.strftime("%Y_%m_%d")), 
             'timestamp': str(now.strftime("%H:%M:%S"))
             }
->>>>>>> 7d3c4a0d9d1b677169d1d08b90d7dee1fd927faf
     print (data)
     try:
         print("posting data")
         r = requests.post(url, data)
         print (r)
 
-
     except requests.exceptions.ConnectTimeout:
         print("error connecting to server, writing to file")
         if(os.path.isfile(WaterDataLocation) == False):
             with open(WaterDataLocation, "w") as f:
                 WaterDataLocation.write(str(data))
-            WaterDataLocation.close()
         else:
             with open(WaterDataLocation, "a") as f:
                 f.write(str(data))
@@ -133,10 +99,5 @@ while True:
     except requests.exceptions.HTTPError:
         print("HTTP error, exitting")
         sys.exit(1)
-<<<<<<< HEAD
-    time.sleep(58.55)
-    #takes about 1.45s to run code
-=======
     time.sleep(10)
     
->>>>>>> 7d3c4a0d9d1b677169d1d08b90d7dee1fd927faf
