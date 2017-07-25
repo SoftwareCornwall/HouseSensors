@@ -1,10 +1,18 @@
+#! /usr/bin/env python
 import requests
 import os
+<<<<<<< HEAD
+import sys
+from sense_hat import SenseHat
+from datetime import datetime
+from time import sleep
+=======
 from sys import exit
 from sense_hat import SenseHat
 from datetime import datetime
 from time import sleep
 from uuid import getnode
+>>>>>>> 570837d17f048d7f66d489c26a9ba6d39618727e
 
 def getMac():
     address = getnode()
@@ -16,6 +24,7 @@ url = "http://10.160.50.195/humidity.php"
 humidityFileLoc = "/var/www/html/humidity.csv"
 tempFile = "/var/www/html/temp.csv"
 sense = SenseHat()
+
 while (1):
     data = {'humidity': sense.get_humidity(), 
             'temperature': sense.get_temperature(),
@@ -37,7 +46,7 @@ while (1):
             os.remove(humidityFileLoc)
             print ("removed: ", humidityFileLoc)
         r = requests.post(url, data)
-        print r
+        print (r)
 
     except requests.exceptions.ConnectTimeout:
         print("error connecting to server, writing to file")
@@ -58,8 +67,13 @@ while (1):
     except requests.exceptions.HTTPError:
         print("HTTP error, exitting")
         sys.exit(1)
+<<<<<<< HEAD
+    sleep(10)
+
+=======
     except KeyboardInterrupt:
         print("exitting")
         sys.exit(1)
     sleep(10)
     
+>>>>>>> 570837d17f048d7f66d489c26a9ba6d39618727e
