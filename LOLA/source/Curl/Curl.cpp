@@ -1,21 +1,18 @@
+#include "Curl.h"
+
+#include "../StyleEscapeSequences.h"
+
 #include <iostream>
 #include <fstream>
 #include <exception>
 #include <chrono>
 
-#include "Curl.h"
-
-#define SERVER_URL       "http://raspberrypi-b.local"
-#define WATER_DIR        "/water_usage_sensor.php"
 #define MAC_ADDRESS_FILE "/sys/class/net/wlan0/address"
 
 using namespace std;
 
 Curl::Curl()
 {
-    sensorReadInterval_ = 60;
-    curlErrorBuffer_[0] = 0;
-
     if (!getMACAddress(mACAddress_)) // If the program cannot get the MAC Address.
     {
         cerr << "Failed to obtain MAC address from " << MAC_ADDRESS_FILE << ".";
@@ -25,35 +22,26 @@ Curl::Curl()
 
 
 
-CURLcode Curl::submitSensorDataToServer(float waterFlow)
+CURLcode Curl::submitSensorDataToServer(const string& postData, const string& destination)
 {
-    unsigned long long secondsSinceEpoch = getSecondsSinceEpoch();
-
-    string postFields = "timestamp=" +
-                         std::to_string(secondsSinceEpoch) +
+    string postFields = postData +
+                         "&timestamp=" +
+                         std::to_string(getSecondsSinceEpoch()) +
                          "&mac=" +
-                         mACAddress_ +
-                         "&waterValue=" +
-                         std::to_string(waterFlow);
+                         mACAddress_;
 
-    cout << "Posting data to server (" << SERVER_URL << ")... " << endl;
-    cout <<   "  MAC Address: " << mACAddress_ << endl;
-    cout <<   "    Timestamp: " << secondsSinceEpoch << endl;
-    cout <<   "   Water Flow: " << waterFlow << endl;
-    cout <<   "       Status: " << flush;
-
-    CURLcode result = postDataToServer(postFields, SERVER_URL WATER_DIR);
+    CURLcode result = postDataToServer(postFields, destination);
 
     if (result == CURLE_OK)
     {
-        cout << "Success" << endl;
+        cout << GREEN_FONT << "Success" << DEFAULT_FONT << endl;
     }
     else
     {
-        cout << "Failure" << endl;
+        cout << RED_FONT << "Failure" << DEFAULT_FONT << endl;
     }
 
-    cout << "               Error Code: " << result << "\n               " << curlErrorBuffer_ << endl;
+    cout << "               Error Code: " << result << endl;
 
     return result;
 }
@@ -62,7 +50,10 @@ CURLcode Curl::submitSensorDataToServer(float waterFlow)
 
 CURLcode Curl::postDataToServer(string const& postFields, string const& serverURL)
 {
-    CURL *curl;
+    if (postFields.length() == 0)
+        return CURLE_FAILED_INIT;
+
+    CURL* curl;
     CURLcode result = CURLE_FAILED_INIT;
     curl_global_init(CURL_GLOBAL_ALL);
 
@@ -72,7 +63,6 @@ CURLcode Curl::postDataToServer(string const& postFields, string const& serverUR
     {
         curl_easy_setopt(curl, CURLOPT_URL, serverURL.c_str()); // Sets the destination.
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postFields.c_str()); // Sets the data to be sent.
-        curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, curlErrorBuffer_); // Sets curlErrorBuffer to the curl's error message.
         result = curl_easy_perform(curl);
 
         curl_easy_cleanup(curl);
@@ -98,13 +88,6 @@ bool Curl::getMACAddress(string& mACAddress)
         mACFile.close();
         return false;
     }
-}
-
-
-
-unsigned int Curl::getSecondsUntilNextPost()
-{
-    return sensorReadInterval_ - (getSecondsSinceEpoch() % sensorReadInterval_);
 }
 
 

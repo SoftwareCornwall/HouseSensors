@@ -1,8 +1,6 @@
 #ifndef HUMIDITY_DEFINED
 #define HUMIDITY_DEFINED
 
-#include <exception>
-#include <iostream>
 #include <memory>
 #include <string>
 
@@ -18,11 +16,15 @@ class Sensor
 {
 public:
     Sensor();
+    bool setup();
     bool getData(SensorData* sensorData);
+    std::string sensorDataToString(const SensorData& sensorData);
 private:
-    const std::unique_ptr<RTIMUSettings> settings_ = std::unique_ptr<RTIMUSettings>(new RTIMUSettings("RTIMULib"));
+    std::unique_ptr<RTIMUSettings> settings_;
     std::unique_ptr<RTIMU> imu_;
     std::unique_ptr<RTHumidity> humidity_;
+    bool isSetUp_;
+    unsigned long long getSecondsSinceEpoch();
 };
 
 #endif
