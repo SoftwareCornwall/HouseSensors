@@ -34,7 +34,7 @@ while (1):
                     key = row[0]
                     fileData[key] = row[1:]
         r = requests.post(url, data)
-        print r
+        print (r)
 
     except requests.exceptions.ConnectTimeout:
         print("error connecting to server, writing to file")

@@ -5,10 +5,15 @@ import RPi.GPIO as GPIO
 import datetime
 import requests
 from sys import exit
+from uuid import getnode
+
+def getMac():
+    address = getnode()
+    h = iter(hex(address)[2:].zfill(12))
+    return ":".join(i + next(h) for i in h)
 
 
-
-url = "http://10.160.50.195/humidity.php"
+url = "http://10.160.50.195/water.php"
 WaterFileLoc = "/home/pi/Desktop/WaterFlow.csv"
 
 
@@ -79,15 +84,22 @@ def main():
     while True:
         #time.sleep(1)
         TimeDiff = time.time() - start
-        if TimeDiff > 10:
-            return 0
+        #if TimeDiff > 10:
+            #return 0
         if (TimeDiff < 1.01) and (TimeDiff > 0.99): #Needs to be range as time can never be exactly one
             now = datetime.datetime.now()
             #timestanp
-            sWaterMessage = str(now.strftime("%H:%M:%S")) + "," + str(round(icounter/timesFactorForMin, 4)) + "\n"
+            
+            sWaterMessage = {'waterflow': str(round(icounter/timesFactorForMin, 4)), 
+                            'date': str(now.strftime("%Y_%m_%d")), 
+                            'timestamp': str(now.strftime("%H:%M:%S")),
+                            'mac': str(getMac())
+                            }
+            
+            print (sWaterMessage)
             #save to file
             Waterfile = open(WaterDataLocation,"a")
-            Waterfile.write(sWaterMessage)
+            Waterfile.write(str(sWaterMessage))
             Waterfile.close()
             return (sWaterMessage)
 
@@ -99,15 +111,13 @@ StartUp()
 while True:
     icounter = 0
     start = 0
-    data = {'waterflow': main(), 
-            'date': str(now.strftime("%Y_%m_%d")), 
-            'timestamp': str(now.strftime("%H:%M:%S"))
-            }
+    data = main()
     print (data)
     try:
         print("posting data")
         r = requests.post(url, data)
         print (r)
+
 
     except requests.exceptions.ConnectTimeout:
         print("error connecting to server, writing to file")
@@ -126,4 +136,5 @@ while True:
     except requests.exceptions.HTTPError:
         print("HTTP error, exitting")
         sys.exit(1)
-    time.sleep(10)
+    time.sleep(58.55)
+    #takes about 1.45s to run code
