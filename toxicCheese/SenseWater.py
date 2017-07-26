@@ -4,7 +4,6 @@ import time
 import RPi.GPIO as GPIO
 from datetime import datetime
 import requests
-from sys import exit
 from uuid import getnode
 import csv
 
@@ -12,13 +11,13 @@ import csv
 #globals
 
 url = "http://10.160.50.195/water.php"
-WaterFileLoc = "/home/pi/Desktop/WaterFlow.csv"
+#WaterFileLoc = "/home/pi/Desktop/WaterFlow.csv"
 #relation ship between raw number and liters
 timesFactorForMin = 230
 timesFactorForSec = 13800
 #Location of file storage, with name which is changing depending on date
 HouseNumber = 21
-WaterDataLocation = "/home/pi/Desktop/House" + str(HouseNumber) + "/"+ str(HouseNumber) +"WaterData_" + str(datetime.now().strftime("%Y-%m-%d")) + ".csv"
+WaterDataLocation = "/home/pi/Desktop/House" + str(HouseNumber) + "/"+ str(HouseNumber) +"WaterData.csv" # + str(datetime.now().strftime("%Y-%m-%d")) + ".csv"
 WaterDataDirectory = "/home/pi/Desktop/House" + str(HouseNumber)
 
 icounter = 0
@@ -65,15 +64,14 @@ def buttonEventHandler (pin):
 def getWaterFlow():
     global icounter
     global start
-    
     while True:
         TimeDiff = time.time() - start
         if (TimeDiff < 1.01) and (TimeDiff > 0.99): #Needs to be range as time can never be exactly one
             #now = datetime.datetime.now()
             #timestamp
             water =  round(icounter/timesFactorForMin, 4)
-            print (water)
-            #save to file
+            #print (water)
+             #save to file
             return (water)
 init()
 while True:
@@ -87,8 +85,20 @@ while True:
     print (data)
     try:
         print("posting data")
+        print (os.path.isfile(WaterDataLocation))
+        if(os.path.isfile(WaterDataLocation) == True):
+            with open(WaterDataLocation, "r") as f:
+                reader = csv.reader(f)
+                fileData = {}
+                for row in reader:
+                    key = row[0]
+                    fileData[key] = row[1:]
+                    tr = requests.post(url, fileData)
+                    print (fileData)
+            os.remove(WaterDataLocation)
         r = requests.post(url, data)
         print (r)
+
 
 
 
@@ -106,17 +116,17 @@ while True:
     except requests.exceptions.InvalidURL as e:
         print("invadlid url {}".format(e))
         print("exitting")
-        sys.exit(1)
+        break
     except requests.exceptions.HTTPError as e:
         print("HTTP error, exitting {} ".format(e))
-        sys.exit(1)
+        break
     except requests.exceptions.ConnectTimeout as e:
         print("HTTP error, exitting {} ".format(e))
-        sys.exit(1)    
+        break    
     except:
-        e = sys.exc_info()[0]
+        #e = sys.exc_info()[0]
         print ("unknown error")
         
-        sys.exit(1)
-    time.sleep(10)
-    
+        break
+    time.sleep(3) #58.99
+    #Takes 1.01 seconds
