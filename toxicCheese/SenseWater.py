@@ -8,7 +8,7 @@ from sys import exit
 
 
 #globals
-
+now = datetime.datetime.now()
 url = "http://10.160.50.195/humidity.php"
 WaterFileLoc = "/home/pi/Desktop/WaterFlow.csv"
 #relation ship between raw number and liters
@@ -18,7 +18,7 @@ timesFactorForSec = 13800
 HouseNumber = 21
 WaterDataLocation = "/home/pi/Desktop/House" + str(HouseNumber) + "/"+ str(HouseNumber) +"WaterData_" + (now.strftime("%Y_%m_%d")) + ".csv"
 WaterDataDirectory = "/home/pi/Desktop/House" + str(HouseNumber)
-now = datetime.datetime.now()
+
 icounter = 0
 start = 0
 
