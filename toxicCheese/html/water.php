@@ -21,6 +21,7 @@ $stmt->bindParam(':time', $timestamp, PDO::PARAM_STR);
 $stmt->bindParam(':mac', $macaddress, PDO::PARAM_STR);
 $result = $stmt->execute();
 echo "OK :";
-print_r ($_POST);
+
+// We could check here to see if water consumption is high enough to send an SMS alert
 
 ?>
