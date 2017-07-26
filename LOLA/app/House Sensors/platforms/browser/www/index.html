@@ -91,7 +91,17 @@
                             <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Relative Humidity (%)</h3>
                         </div>
                         <div class="panel-body">
-
+                             <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+                             <script type="text/javascript">
+                             $(document).ready(function() {
+                             $.getJSON("http://10.160.50.154/json.php",function(result){
+                             $.each(result, function(i, field){
+                             $("#output").append("Humidity: "+ field.humidity_value<br/>");
+                             });
+                             });
+                             });
+                             </script>
+                             <div id="output"></div>
                         </div>
                     </div>
                 </div>
