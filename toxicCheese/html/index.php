@@ -10,15 +10,15 @@ $pdo = new PDO("mysql:dbname=$dbname;host=$host" , $user , $password);
 // Read latest humidity reading from database and print on screen
 // Currently disabled for purpose of demo on Tuesday
 
-//$humidityData = $pdo->prepare("SELECT * FROM humidity ORDER BY id DESC LIMIT 1");
-//if ($humidityData->execute())
-//{
-//    while ($row = $humidityData->fetch())
-//    {
-//        $humidityValue = $row['humidity'];
-//        echo "<p>Last recorded humidity value on " . $row['date'] . $row['timestamp'] . " is " . $row['humidity'] . "% </p>";
-//    }
-//}
+$humidityData = $pdo->prepare("SELECT * FROM humidity ORDER BY id DESC LIMIT 1");
+if ($humidityData->execute())
+{
+    while ($row = $humidityData->fetch())
+    {
+        $humidityValue = $row['humidity'];
+        echo "<p>Last recorded humidity value on " . $row['date'] . $row['timestamp'] . " is " . $row['humidity'] . "% </p>";
+    }
+}
 
 // Calculate average humidity reading from all data in humidity table and print on screen
 
