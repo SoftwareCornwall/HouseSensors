@@ -36,14 +36,18 @@
 		<Linker>
 			<Add library="curl" />
 			<Add library="RTIMULib" />
+			<Add library="wiringPi" />
 		</Linker>
-		<Unit filename="Curl.cpp" />
-		<Unit filename="Curl.h" />
-		<Unit filename="Sensor.cpp" />
-		<Unit filename="Sensor.h" />
+		<Unit filename="Curl/Curl.cpp" />
+		<Unit filename="Curl/Curl.h" />
+		<Unit filename="IMUController/IMUController.cpp" />
+		<Unit filename="IMUController/IMUController.h" />
+		<Unit filename="Sensor/Sensor.cpp" />
+		<Unit filename="Sensor/Sensor.h" />
 		<Unit filename="StyleEscapeSequences.h" />
-		<Unit filename="humiditySensors.cpp" />
-		<Unit filename="humiditySensors.h" />
+		<Unit filename="WaterController/WaterController.cpp" />
+		<Unit filename="WaterController/WaterController.h" />
+		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
