@@ -13,6 +13,8 @@
 		AB6F599A1F288621008CCC59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB6F59991F288621008CCC59 /* Assets.xcassets */; };
 		AB6F599D1F288621008CCC59 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB6F599B1F288621008CCC59 /* LaunchScreen.storyboard */; };
 		AB6F59A81F288621008CCC59 /* House_SensorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6F59A71F288621008CCC59 /* House_SensorsTests.swift */; };
+		AB6F59B31F28C88E008CCC59 /* HumidityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6F59B21F28C88E008CCC59 /* HumidityStore.swift */; };
+		AB6F59B51F28CC00008CCC59 /* HumidityGet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6F59B41F28CC00008CCC59 /* HumidityGet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,8 @@
 		AB6F59A31F288621008CCC59 /* House SensorsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "House SensorsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB6F59A71F288621008CCC59 /* House_SensorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = House_SensorsTests.swift; sourceTree = "<group>"; };
 		AB6F59A91F288621008CCC59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AB6F59B21F28C88E008CCC59 /* HumidityStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumidityStore.swift; sourceTree = "<group>"; };
+		AB6F59B41F28CC00008CCC59 /* HumidityGet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumidityGet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +87,8 @@
 				AB6F59991F288621008CCC59 /* Assets.xcassets */,
 				AB6F599B1F288621008CCC59 /* LaunchScreen.storyboard */,
 				AB6F599E1F288621008CCC59 /* Info.plist */,
+				AB6F59B21F28C88E008CCC59 /* HumidityStore.swift */,
+				AB6F59B41F28CC00008CCC59 /* HumidityGet.swift */,
 			);
 			path = "House Sensors";
 			sourceTree = "<group>";
@@ -200,7 +206,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB6F59951F288621008CCC59 /* ViewController.swift in Sources */,
+				AB6F59B51F28CC00008CCC59 /* HumidityGet.swift in Sources */,
 				AB6F59931F288621008CCC59 /* AppDelegate.swift in Sources */,
+				AB6F59B31F28C88E008CCC59 /* HumidityStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

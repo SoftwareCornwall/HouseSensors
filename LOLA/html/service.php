@@ -10,7 +10,7 @@ if (mysqli_connect_errno())
 }
 
 // This SQL statement selects ALL from the table 'humidity'
-$sql = "SELECT * FROM humidity";
+$sql = "SELECT * FROM humidity ORDER BY ID DESC LIMIT 2";
 
 // Check if there are results
 if ($result = mysqli_query($con, $sql))
@@ -19,19 +19,23 @@ if ($result = mysqli_query($con, $sql))
     // to hold the data
     $resultArray = array();
     $tempArray = array();
+    $humidityArray = array();
 
-    // Loop through each row in the result set
     while($row = $result->fetch_object())
     {
-        // Add each row into our results array
-        $tempArray = $row;
-        array_push($resultArray, $tempArray);
+        array_push($humidityArray, $row['humidity_value']);
     }
 
+    $humidityAverage = array_sum($humidityArray) / count($humidityArray);
+
     // Finally, encode the array to JSON and output the results
-    echo json_encode($resultArray);
+    echo json_encode($humidityAverage);
 }
 
 // Close connections
 mysqli_close($con);
 ?>
+
+
+
+
