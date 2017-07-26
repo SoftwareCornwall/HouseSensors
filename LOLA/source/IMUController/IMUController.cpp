@@ -19,6 +19,14 @@ IMUController::IMUController()
 
 
 
+IMUController::~IMUController()
+{
+
+}
+
+
+
+
 bool IMUController::setup()
 {
     if (sensor_.setup())

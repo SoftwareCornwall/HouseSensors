@@ -8,6 +8,7 @@ class IMUController
 {
 public:
     IMUController();
+    ~IMUController();
     bool setup();
     void run(const bool& executionCondition);
 private:
