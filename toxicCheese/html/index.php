@@ -1,4 +1,8 @@
+<html>
+<head><title>Demo</title></head>
+<body>
 <?php
+require_once "database.php";
 
 $host = "127.0.0.1";
 $dbname = "sensor";
@@ -10,95 +14,61 @@ $pdo = new PDO("mysql:dbname=$dbname;host=$host" , $user , $password);
 // Read latest humidity reading from database and print on screen
 // Currently disabled for purpose of demo on Tuesday
 
-$humidityData = $pdo->prepare("SELECT * FROM humidity ORDER BY id DESC LIMIT 1");
-if ($humidityData->execute())
-{
-    while ($row = $humidityData->fetch())
-    {
-        $humidityValue = $row['humidity'];
-        echo "<p>Last recorded humidity value on " . $row['date'] . $row['timestamp'] . " is " . $row['humidity'] . "% </p>";
-    }
+$DB = new database();
+$row = $DB->latest_humidity();
+
+$humidityValue = $row['humidity'];
+echo "<p>Last recorded humidity value on " . $row['date'] . $row['timestamp'] . " is " . $row['humidity'] . "% </p>";
+
+// Calculate average humidity reading from all data for last hour in humidity table and print on screen
+
+try {
+	$humidity = $DB->average_humidity_last_hour();
+	echo "<h3>Average humidity for last 60 minutes</h3>";
+	echo "<p>Both sensors combined  : ";
+	echo $humidity;
+	echo "% </p>";
+} catch (Exception $e) {
+	echo "ERROR calculating humidity average";
 }
 
-// Calculate average humidity reading from all data in humidity table and print on screen
-
-$averageHumidity = $pdo->prepare("SELECT * FROM humidity WHERE timestamp>NOW()-INTERVAL 1 HOUR");
-$total = 0;
-$counter = 0;
-
-if ($averageHumidity->execute())
-{
-    while ($row = $averageHumidity->fetch())
-    {
-        $total = $total + $row['humidity'];
-	$counter++;
-    }
-
-echo "<h3>Average humidity for last 60 minutes</h3>";
-echo "<p>Both sensors combined  : ";
-echo round($total / $counter);
-echo "% </p>";
-
-}
 
 // Calculate average humidity for living space sensor
 
-$averageHumidity = $pdo->prepare("SELECT * FROM humidity WHERE timestamp>NOW()-INTERVAL 1 HOUR AND macaddress='b8:27:eb:2e:48:3c' ");
-$total = 0;
-$counter = 0;
-
-if ($averageHumidity->execute())
-{
-    while ($row = $averageHumidity->fetch())
-    {
-        $total = $total + $row['humidity'];
-	$counter++;
-    }
-
-echo "<p>Living space sensor : ";
-echo round($total / $counter);
-echo "% </p>";
-
+try {
+	$humidity = $DB->average_humidity_last_hour_for_living_space();
+	echo "<p>Living space sensor : ";
+	echo $humidity;
+	echo "% </p>";
+} catch (Exception $e) {
+	echo "ERROR calculating humidity average";
 }
 
 // Calculate average humidity for kitchen sensor
 
-$averageHumidity = $pdo->prepare("SELECT * FROM humidity WHERE timestamp>NOW()-INTERVAL 1 HOUR AND macaddress='b8:27:eb:27:77:c9' ");
-$total = 0;
-$counter = 0;
-
-if ($averageHumidity->execute())
-{
-    while ($row = $averageHumidity->fetch())
-    {
-        $total = $total + $row['humidity'];
-	$counter++;
-    }
-
-echo "<p>Kitchen sensor  : ";
-echo round($total / $counter);
-echo "% </p>";
-
+try {
+	$humidity = $DB->average_humidity_last_hour_for_kitchen();
+	echo "<p>Kitchen space sensor : ";
+	echo $humidity;
+	echo "% </p>";
+} catch (Exception $e) {
+	echo "ERROR calculating humidity average";
 }
 
 // Calculate total litres of water usage for water sensor for the last hour
 
-$totalWater = $pdo->prepare("SELECT * FROM water WHERE timestamp>NOW()-INTERVAL 1 HOUR");
-$total = 0;
 
-if ($totalWater->execute())
-{
-    while ($row = $totalWater->fetch())
-    {
-        $total = $total + $row['waterflow'];
-    }
-
-echo "<h3>Total water usage for the last hour is  : ";
-echo ($total);
-echo " litres.</h3>";
-
+try {
+	$totalWater = $DB->total_water_sensor_usage_last_hour();
+	echo "<p>Total water usage for the last hour is : ";
+	echo $totalWater;
+	echo " litres </p>";
+} catch (Exception $e) {
+	echo "ERROR calculating total water usage";
 }
 
 
 
 ?>
+</body>
+</html>
