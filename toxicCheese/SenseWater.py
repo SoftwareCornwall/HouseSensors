@@ -132,5 +132,5 @@ while True:
         print ("unknown error")
         
         break
-    time.sleep(58.99) #58.99
+    #time.sleep(58.99) #58.99
     #Takes 1.01 seconds

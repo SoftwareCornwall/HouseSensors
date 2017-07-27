@@ -6,6 +6,6 @@
 		echo $waterUsage;
 	}
 	catch {
-		echo "error calculting total water usage";
+			echo "error calculting total water usage";
 	}
 ?>
