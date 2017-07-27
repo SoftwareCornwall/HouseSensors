@@ -6,7 +6,6 @@ from datetime import datetime
 import requests
 from uuid import getnode
 import csv
-import signal
 
 
 #globals
@@ -18,23 +17,17 @@ timesFactorForMin = 230
 timesFactorForSec = 13800
 #Location of file storage, with name which is changing depending on date
 HouseNumber = 21
-WaterDataLocation = "/home/pi/Desktop/House" + str(HouseNumber) + "/"+ str(HouseNumber) +"WaterData.txt" # + str(datetime.now().strftime("%Y-%m-%d")) + ".csv"
+WaterDataLocation = "/home/pi/Desktop/House" + str(HouseNumber) + "/"+ str(HouseNumber) +"WaterData.csv" # + str(datetime.now().strftime("%Y-%m-%d")) + ".csv"
 WaterDataDirectory = "/home/pi/Desktop/House" + str(HouseNumber)
 
 icounter = 0
 start = 0
 
-class TimeoutException(Exception):   # Custom exception class
-    pass
-
-def timeout_handler(signum, frame):   # Custom signal handler
-    raise TimeoutException
 
 def getMac():
-    with open("/sys/class/net/wlan0/address", "r") as f:
-        re = f.read()
-        
-    return re
+    address = getnode()
+    h = iter(hex(address)[2:].zfill(12))
+    return ":".join(i + next(h) for i in h)
 
 def init():
 
@@ -57,11 +50,9 @@ def init():
     # event on pin 23 and deal with it by calling 
     # the buttonEventHandler function
     GPIO.add_event_detect(23,GPIO.FALLING)
-    GPIO.add_event_callback(23,buttonEventHandler)
+    GPIO.add_event_callback(23,buttonEventHandler) 
+    smac = str(getMac())
     
-    # Change the behavior of SIGALRM
-    signal.signal(signal.SIGALRM, timeout_handler)
-
 # handle the button event
 def buttonEventHandler (pin):
     global icounter
@@ -84,50 +75,47 @@ def getWaterFlow():
             #print (water)
              #save to file
             return (water)
+        
+smac = str(getMac())
 init()
 while True:
     icounter = 0
     start = 0
-    print ("fetching data")
     data = {'waterflow': getWaterFlow(), 
             'date': str(datetime.now().strftime("%Y-%m-%d")), 
             'timestamp': str(datetime.now().strftime("%H:%M:%S")),
-            'mac' : str(getMac())
+            'mac' : smac
             }
-    print ("done")
-    # Start the timer. Once 5 seconds are over, a SIGALRM signal is sent.
-    signal.alarm(5)    
-    # This try/except loop ensures that 
-    #   you'll catch TimeoutException when it's sent.
+    print (data)
     try:
         print("posting data")
+        print (os.path.isfile(WaterDataLocation))
         if(os.path.isfile(WaterDataLocation) == True):
-            print ("posting filedata")
-            fileData = {}
             with open(WaterDataLocation, "r") as f:
                 reader = csv.reader(f)
+                fileData = {}
                 for row in reader:
                     key = row[0]
                     fileData[key] = row[1:]
-        print (data)
+                    tr = requests.post(url, fileData)
+                    print (fileData)
+            os.remove(WaterDataLocation)
         r = requests.post(url, data)
         print (r)
 
 
-    except TimeoutException:
-        print ("To long to post data")
-        continue # continue the for loop if function A takes more than 5 second
+
 
     except requests.exceptions.ConnectionError as e: 
-        print("error connecting to server, writing to file")
+        print("error connecting to server {}, writing to file".format(e))
         if(os.path.isfile(WaterDataLocation) == False):
-            HumidFile = open(WaterDataLocation, 'w')
-            HumidFile.close()
-    
-        HumidFile = open(WaterDataLocation, "a")
-        HumidFile.write(str(data))
-        HumidFile.write('\n')
-        HumidFile.close()
+            with open(WaterDataLocation, "w") as f:
+                writer = csv.DictWriter(f, data.keys())
+                writer.writerow(data)
+        else:
+            with open(WaterDataLocation, "a") as f:
+                writer = csv.DictWriter(f, data.keys()) 
+                writer.writerow(data)
 
     except requests.exceptions.InvalidURL as e:
         print("invadlid url {}".format(e))
@@ -142,10 +130,7 @@ while True:
     except:
         #e = sys.exc_info()[0]
         print ("unknown error")
-       
+        
         break
-    else:
-        signal.alarm(0)
-    # Reset the alarm    
-    time.sleep(3) #58.99
+    time.sleep(58.99) #58.99
     #Takes 1.01 seconds
