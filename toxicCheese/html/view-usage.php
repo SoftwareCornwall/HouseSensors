@@ -1,11 +1,19 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<meta http-equiv=”refresh” content=”1" />
+</head>
+<body>
 <?php
+
+require_once "database.php"; // database usage class
+
+$DB = new database();
+$row = $DB->latest_humidity();
 
 $message = $_GET['house'];
 
 if ($message == '89hab723hd') {
-	
-	echo "Hello Will.<br>";
-        echo "Your water consumption for the last month is ";
  
 	// Calculate total litres of water usage for water sensor for the last hour
 
@@ -29,22 +37,25 @@ if ($message == '89hab723hd') {
 
 	}
 
-	if ($totalwater >= 1001) {
+	if ($total >= 1001) {
 		$usageStyle = "high_usage";
 	}
 
-	if ($totalwater <1001 && $totalwater > 500) {
-		$usageStyle = "decent_usage";
+	if ($total <1001 && $total > 500) {
+		$usageStyle = "average_usage";
 	}
 
-	if ($totalwater <500) {
+	if ($total <500) {
 		$usageStyle = "low_usage";
 	}
 
 
-	echo $total . " litres.";
+	
+	echo "Hello Will <br>";
+        echo "Your water consumption for the last month is <span class='" .$usageStyle . "'>";
+
+	echo $total . " litres.<span>";
 	echo "<br>";
-	echo $usageStyle;
 
 
 
@@ -57,3 +68,5 @@ else
 }
 
 ?>
+</body>
+</html>

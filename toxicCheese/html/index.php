@@ -1,24 +1,15 @@
 <html>
-<head><title>Demo</title></head>
+<head>
+<title>Demo</title>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
 <body>
 <?php
-require_once "database.php";
 
-$host = "127.0.0.1";
-$dbname = "sensor";
-$user = "root";
-$password = "";
+require_once "database.php"; // database usage class
 
-$pdo = new PDO("mysql:dbname=$dbname;host=$host" , $user , $password);
-
-// Read latest humidity reading from database and print on screen
-// Currently disabled for purpose of demo on Tuesday
-
-$DB = new database();
-$row = $DB->latest_humidity();
-
-$humidityValue = $row['humidity'];
-echo "<p>Last recorded humidity value on " . $row['date'] . $row['timestamp'] . " is " . $row['humidity'] . "% </p>";
+$DB = new database(); // set up database object
+$row = $DB->latest_humidity(); // request latest humidity
 
 // Calculate average humidity reading from all data for last hour in humidity table and print on screen
 

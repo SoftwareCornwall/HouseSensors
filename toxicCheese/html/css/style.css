@@ -1,0 +1,14 @@
+.low_usage {
+	background : green;
+	color : white;
+}
+
+.average_usage {
+	background : black;
+	color : white;
+}
+
+.high_usage {
+	background : red;
+	color : white;
+}
