@@ -6,8 +6,16 @@ $sec = "4";
 <head>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
 <meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+		
 <?php
 
 require_once "database.php"; // database usage class
@@ -94,5 +102,80 @@ else
 }
 
 ?>
+
+<script type="text/javascript">
+
+Highcharts.chart('container', {
+        chart: {
+            zoomType: 'x'
+        },
+
+        title: {
+            text: 'Humidity against time'
+        },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                    'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+        },
+        xAxis: {
+            type: 'datetime'
+        },
+        yAxis: {
+            title: {
+                text: 'Humidity / %'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+
+        plotOptions: {
+            area: {
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 0,
+
+
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[2]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[3]).setOpacity(0).get('rgba')]
+                    ]
+                },
+                marker: {
+                    radius: 2
+                },
+                lineWidth: 1,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+                threshold: null
+            },
+
+
+    
+        },
+
+
+        series: [{
+            type: 'area',
+            name: 'Humidity',
+            data: [
+[Date.UTC(2013,5,2,14,30,23),0.7695],
+[Date.UTC(2013,5,3),0.7648],
+[Date.UTC(2013,5,4),0.7645],
+[Date.UTC(2013,5,5),0.7638]]
+        }]
+        
+    });
+
+
+
+		</script>
 </body>
 </html>
