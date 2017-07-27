@@ -202,7 +202,7 @@ header("Refresh: $sec");
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <?php
-                            if(isset($_GET[houseId]))
+                            if(isset($_GET['houseId']))
                             {
                                 echo "House " . $_GET['houseId'];
                             }
@@ -221,7 +221,6 @@ header("Refresh: $sec");
                                 while ($row = $houseSelection->fetch())
                                 {
                                     echo '<li><a href="index.php?houseId=' . $row["house_id"] . '"> House ' . $row["house_id"] . '</a></li>';
-                                    //echo "<h1 style='color: deeppink'><marquee scrollamount='20'>The humidity when last recorded was: " . $row['humidity_timestamp'] . "</marquee></h1>";
                                 }
                             }
 

@@ -109,4 +109,58 @@ class FetchData
         return $humidityDataArray;
     }
 
+    static function FetchTemperatureDataAndroid($sensorMacAddresses)
+    {
+        global $pdo;
+
+
+        $temperatureTimestamp = $pdo->prepare("SELECT * FROM temperature WHERE mac_address IN ('" . implode("','",$sensorMacAddresses) . "') ORDER BY id DESC LIMIT 1");
+        $temperatureTimestamp->execute();
+
+        $latestTimestamp = "";
+
+        if($temperatureTimestamp->execute())
+        {
+            while($row= $temperatureTimestamp->fetch())
+            {
+                $latestTimestamp = $row['temperature_timestamp'];
+            }
+        }
+
+        $temperatureData = $pdo->prepare("SELECT * FROM temperature WHERE temperature_timestamp = :timestamp");
+        $temperatureData->bindValue(':timestamp', $latestTimestamp);
+        $temperatureData->execute();
+
+        $temperatureDataArray = $temperatureData->fetchAll(PDO::FETCH_ASSOC);
+
+        return $temperatureDataArray;
+    }
+
+    static function FetchWaterDataAndroid($sensorMacAddresses)
+    {
+        global $pdo;
+
+
+        //$waterTimestamp = $pdo->prepare("SELECT * FROM temperature WHERE mac_address IN ('" . implode("','",$sensorMacAddresses) . "') ORDER BY id DESC LIMIT 1");
+        //$waterTimestamp->execute();
+
+        $latestTimestamp = "";
+
+        //if($temperatureTimestamp->execute())
+        //{
+            //while($row= $temperatureTimestamp->fetch())
+           // {
+             //   $latestTimestamp = $row['temperature_timestamp'];
+            //}
+       // }
+
+        $waterData = $pdo->prepare("SELECT * FROM water LIMIT 43200");
+        $waterData->bindValue(':timestamp', $latestTimestamp);
+        $waterData->execute();
+
+       // $waterDataArray = $waterData->fetchAll(PDO::FETCH_ASSOC);
+
+        return $waterData;
+    }
+
 }
