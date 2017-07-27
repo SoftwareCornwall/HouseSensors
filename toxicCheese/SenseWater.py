@@ -81,7 +81,7 @@ init()
 while True:
     icounter = 0
     start = 0
-    data = {'waterflow': getWaterFlow(), 
+    data = {'waterflow':  getWaterFlow(), 
             'date': str(datetime.now().strftime("%Y-%m-%d")), 
             'timestamp': str(datetime.now().strftime("%H:%M:%S")),
             'mac' : smac
