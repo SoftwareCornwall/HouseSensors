@@ -23,6 +23,7 @@ WaterDataDirectory = "/home/pi/Desktop/House" + str(HouseNumber)
 icounter = 0
 start = 0
 
+
 def getMac():
     address = getnode()
     h = iter(hex(address)[2:].zfill(12))
@@ -50,7 +51,8 @@ def init():
     # the buttonEventHandler function
     GPIO.add_event_detect(23,GPIO.FALLING)
     GPIO.add_event_callback(23,buttonEventHandler) 
-
+    smac = str(getMac())
+    
 # handle the button event
 def buttonEventHandler (pin):
     global icounter
@@ -73,6 +75,8 @@ def getWaterFlow():
             #print (water)
              #save to file
             return (water)
+        
+smac = str(getMac())
 init()
 while True:
     icounter = 0
@@ -80,7 +84,7 @@ while True:
     data = {'waterflow': getWaterFlow(), 
             'date': str(datetime.now().strftime("%Y-%m-%d")), 
             'timestamp': str(datetime.now().strftime("%H:%M:%S")),
-            'mac' : str(getMac())
+            'mac' : smac
             }
     print (data)
     try:
@@ -128,5 +132,5 @@ while True:
         print ("unknown error")
         
         break
-    time.sleep(3) #58.99
+    time.sleep(58.99) #58.99
     #Takes 1.01 seconds
