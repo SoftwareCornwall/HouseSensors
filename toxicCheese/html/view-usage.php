@@ -1,7 +1,11 @@
+<?php
+$page = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$sec = "4";
+?>
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
-<meta http-equiv=”refresh” content=”1" />
+<meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'">
 </head>
 <body>
 <?php
