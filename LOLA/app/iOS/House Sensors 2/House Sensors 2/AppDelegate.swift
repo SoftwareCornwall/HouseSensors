@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  House Sensors
+//  House Sensors 2
 //
-//  Created by Oli Cash on 26/07/2017.
+//  Created by Oli Cash on 27/07/2017.
 //  Copyright © 2017 LOLA. All rights reserved.
 //
 

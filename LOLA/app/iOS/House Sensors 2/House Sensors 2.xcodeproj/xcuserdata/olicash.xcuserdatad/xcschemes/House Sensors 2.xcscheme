@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AB6F598E1F288621008CCC59"
-               BuildableName = "House Sensors.app"
-               BlueprintName = "House Sensors"
-               ReferencedContainer = "container:House Sensors.xcodeproj">
+               BlueprintIdentifier = "AB13F5C41F29F2DE003AC7C5"
+               BuildableName = "House Sensors 2.app"
+               BlueprintName = "House Sensors 2"
+               ReferencedContainer = "container:House Sensors 2.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,20 +32,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AB6F59A21F288621008CCC59"
-               BuildableName = "House SensorsTests.xctest"
-               BlueprintName = "House SensorsTests"
-               ReferencedContainer = "container:House Sensors.xcodeproj">
+               BlueprintIdentifier = "AB13F5D81F29F2DE003AC7C5"
+               BuildableName = "House Sensors 2Tests.xctest"
+               BlueprintName = "House Sensors 2Tests"
+               ReferencedContainer = "container:House Sensors 2.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AB6F598E1F288621008CCC59"
-            BuildableName = "House Sensors.app"
-            BlueprintName = "House Sensors"
-            ReferencedContainer = "container:House Sensors.xcodeproj">
+            BlueprintIdentifier = "AB13F5C41F29F2DE003AC7C5"
+            BuildableName = "House Sensors 2.app"
+            BlueprintName = "House Sensors 2"
+            ReferencedContainer = "container:House Sensors 2.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -65,10 +65,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AB6F598E1F288621008CCC59"
-            BuildableName = "House Sensors.app"
-            BlueprintName = "House Sensors"
-            ReferencedContainer = "container:House Sensors.xcodeproj">
+            BlueprintIdentifier = "AB13F5C41F29F2DE003AC7C5"
+            BuildableName = "House Sensors 2.app"
+            BlueprintName = "House Sensors 2"
+            ReferencedContainer = "container:House Sensors 2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -84,10 +84,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AB6F598E1F288621008CCC59"
-            BuildableName = "House Sensors.app"
-            BlueprintName = "House Sensors"
-            ReferencedContainer = "container:House Sensors.xcodeproj">
+            BlueprintIdentifier = "AB13F5C41F29F2DE003AC7C5"
+            BuildableName = "House Sensors 2.app"
+            BlueprintName = "House Sensors 2"
+            ReferencedContainer = "container:House Sensors 2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

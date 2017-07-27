@@ -1,15 +1,15 @@
 //
-//  House_SensorsTests.swift
-//  House SensorsTests
+//  House_Sensors_2Tests.swift
+//  House Sensors 2Tests
 //
-//  Created by Oli Cash on 26/07/2017.
+//  Created by Oli Cash on 27/07/2017.
 //  Copyright © 2017 LOLA. All rights reserved.
 //
 
 import XCTest
-@testable import House_Sensors
+@testable import House_Sensors_2
 
-class House_SensorsTests: XCTestCase {
+class House_Sensors_2Tests: XCTestCase {
     
     override func setUp() {
         super.setUp()

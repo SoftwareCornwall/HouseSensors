@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:House Sensors.xcodeproj">
+      location = "self:House Sensors 2.xcodeproj">
    </FileRef>
 </Workspace>

@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>House Sensors.xcscheme</key>
+		<key>House Sensors 2.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,12 +12,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>AB6F598E1F288621008CCC59</key>
+		<key>AB13F5C41F29F2DE003AC7C5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AB6F59A21F288621008CCC59</key>
+		<key>AB13F5D81F29F2DE003AC7C5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
