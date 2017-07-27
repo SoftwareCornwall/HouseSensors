@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     }
     
     func loadHumidityData(){
-        var url: NSURL = NSURL(string: "http://10.160.50.154/android_get_humidity_average.php")!
+        var url: NSURL = NSURL(string: "http://178.62.42.117/android_get_humidity_average.php")!
         let request:NSMutableURLRequest = NSMutableURLRequest(url:url as URL)
         var bodyData = "houseId=1"
         request.httpMethod = "POST"
@@ -48,7 +48,7 @@ class ViewController: UIViewController {
     }
     
     func loadTemperatureData(){
-        var url: NSURL = NSURL(string: "http://10.160.50.154/android_get_temperature_average.php")!
+        var url: NSURL = NSURL(string: "http://178.62.42.117/android_get_temperature_average.php")!
         let request:NSMutableURLRequest = NSMutableURLRequest(url:url as URL)
         var bodyData = "houseId=1"
         request.httpMethod = "POST"
@@ -69,7 +69,7 @@ class ViewController: UIViewController {
     }
     
     func loadWaterData(){
-        var url: NSURL = NSURL(string: "http://10.160.50.154/android_get_water_usage.php")!
+        var url: NSURL = NSURL(string: "http://178.62.42.117/android_get_water_usage.php")!
         let request:NSMutableURLRequest = NSMutableURLRequest(url:url as URL)
         var bodyData = "houseId=1"
         request.httpMethod = "POST"
@@ -86,6 +86,13 @@ class ViewController: UIViewController {
             let dataLine = self.dataValues.object(forKey: "user") as! NSDictionary
             let water = dataLine.value(forKey: "waterUsage") as! Int64
             self.water.text = "\(water)"
+            self.water.textColor = UIColor.orange
+            if water < 3000 {
+                self.water.textColor = UIColor.green
+            }
+            if water > 6000 {
+                self.water.textColor = UIColor.red
+            }
         }
     }
     
