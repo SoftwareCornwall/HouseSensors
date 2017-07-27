@@ -1,122 +1,107 @@
-#include "IMUController/IMUController.h"
-#include "WaterController/WaterController.h"
-#include "Curl/Curl.h"
-#include "StyleEscapeSequences.h"
+#include "Curl/Curl.hpp"
+#include "Utility/Utility.hpp"
+#include "IMUController/IMUController.hpp"
+#include "WaterController/WaterController.hpp"
 
-#include <signal.h>
 #include <iostream>
-#include <memory>
-#include <stdio.h>
-#include <string>
-#include <chrono>
-#include <RTIMULib.h>
+#include <signal.h>
 
+#define SERVER_URL             "http://178.62.42.117/"
+#define IMU_DATA_DESTINATION   "humidity_temperature_sensor.php"
+#define WATER_DATA_DESTINATION "water_usage_sensor.php"
 
 using namespace std;
+using namespace Utility;
 
-bool doAllowExecution = true;
+bool keepLooping = true;
 
-enum SensorType
+void handleSIGINT(int param)
 {
-    IMU,
-    Water
-};
+    (void)param;
+    keepLooping = false;
+}
 
-SensorType GetSensorType()
+
+
+void useIMUSensor(IMUController& controller, Curl& curl, const string& mACAddress)
 {
-    cout << "Enter Sensor Type: (\"imu\", \"water\")." << endl;
-
-    string userInput;
-
-    while (true)
+    curl.initialise();
+    printStyled("Controller Initialisation...", StringStyle::BOLD);
+    bool success = controller.initialise();
+    if (success)
     {
-        cout << "> " << flush;
-        cin >> userInput;
+        IMUReading reading;
 
-        if (userInput == "imu")
+        while (true)
         {
-            cout << "Chosen sensor type: '" << userInput << "'" << endl;
-            return SensorType::IMU;
-        }
-        else if (userInput == "water")
-        {
-            cout << "Chosen sensor type: '" << userInput << "'" << endl;
-            return SensorType::Water;
-        }
-        else
-        {
-            cout << "Unrecognised string. Either enter \"imu\" or \"water\"." << endl;
+            while (keepLooping && getUnixTime() % 300 != 0)
+                ;
+
+            if (!keepLooping)
+                break;
+
+
+            reading = controller.read();
+            cout << "Reading Details: \n    Humidity:" << reading.humidity << "\n    Temperature: " << reading.temperature << endl;
+
+            curl.postStringTo("mac=" + mACAddress + "&timestamp=" + to_string(getUnixTime()) + "&" + serialiseIMUReading(reading), SERVER_URL IMU_DATA_DESTINATION);
+
+            Sleep(1);
         }
     }
 }
 
 
 
-void handleSIGINT(int param)
+void useWaterSensor(WaterController& controller, Curl& curl, const string& mACAddress)
 {
-    (void)param; //Supresses the "unused variable" error. param is needed for the SIGINT handling to work.
+    curl.initialise();
+    printStyled("Controller Initialisation...", StringStyle::BOLD);
+    bool success = controller.initialise();
+    if (success)
+    {
+        float reading;
 
-    doAllowExecution = false;
+        while (true)
+        {
+            while (keepLooping && getUnixTime() % 60 != 0)
+                ;
 
-    cout << "\nInterrupt detected. Now exiting..." << endl;
-}
+            if (!keepLooping)
+                break;
 
 
+            reading = controller.read();
+            cout << "Reading Details: \n    Water Flow:" << reading << endl;
 
-void cleanup()
-{
-    cout << "Cleaning up..." << endl;
+            curl.postStringTo("mac=" + mACAddress + "&timestamp=" + to_string(getUnixTime()) + "&waterValue" + to_string(reading), SERVER_URL WATER_DATA_DESTINATION);
 
-    curl_global_cleanup();
-
-    cout << "Complete." << endl;
+            Sleep(1);
+        }
+    }
 }
 
 
 
 int main()
 {
-    cout << R"(
- _   _                      _____
-| | | |                    /  ___|
-| |_| | ___  _   _ ___  ___\ `--.  ___ _ __  ___  ___  _ __
-|  _  |/ _ \| | | / __|/ _ \`--. \/ _ \ '_ \/ __|/ _ \| '__|
-| | | | (_) | |_| \__ \  __/\__/ /  __/ | | \__ \ (_) | |
-\_| |_/\___/ \__,_|___/\___\____/ \___|_| |_|___/\___/|_|
-    ___     _____ _       _____
-   / / |   |  _  | |     / _ \ \
-  | || |   | | | | |    / /_\ \ |
-  | || |   | | | | |    |  _  | |
-  | || |___\ \_/ / |____| | | | |
-  | |\_____/\___/\_____/\_| |_/ |
-   \_\                       /_/
-)" << endl;
+    signal(SIGINT, handleSIGINT);
 
-    signal(SIGINT, handleSIGINT); // Sets up Ctrl+C handler to exit main loop, not entire program.
+    SensorType sensorType = getSensorTypeFromUser(true);
 
-    SensorType sensorType = GetSensorType();
+    string mACAddress = getMACAddress();
+    Curl curl;
 
-    IMUController iMUController;
-    WaterController waterController;
-
-    switch (sensorType)
+    if (sensorType == SensorType::IMU)
     {
-        case SensorType::IMU:
-            if (iMUController.setup())
-            {
-                iMUController.run(doAllowExecution);
-            }
-            break;
-        case SensorType::Water:
-            if (waterController.setup())
-            {
-                waterController.run(doAllowExecution);
-            }
-            break;
-        default:
-            throw exception();
+        IMUController controller;
+        useIMUSensor(controller, curl, mACAddress);
+    }
+    else if (sensorType == SensorType::WATER)
+    {
+        WaterController controller;
+        useWaterSensor(controller, curl, mACAddress);
     }
 
-    cleanup();
-    exit(0);
+    return 0;
 }
