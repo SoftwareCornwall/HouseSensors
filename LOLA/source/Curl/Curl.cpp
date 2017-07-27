@@ -22,6 +22,13 @@ Curl::Curl()
 
 
 
+Curl::~Curl()
+{
+    curl_global_cleanup();
+}
+
+
+
 CURLcode Curl::submitSensorDataToServer(const string& postData, const string& destination)
 {
     string postFields = postData +

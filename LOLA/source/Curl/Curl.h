@@ -10,6 +10,7 @@ class Curl
 {
 public:
     Curl();
+    ~Curl();
     bool getMACAddress(std::string& mACAddress);
     CURLcode submitSensorDataToServer(const std::string& postData, const std::string& destination);
     CURLcode postDataToServer(std::string const& postFields, std::string const& serverURL);
