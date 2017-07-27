@@ -33,6 +33,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 	private static final String KEY_NAME = "name";
 	private static final String KEY_EMAIL = "email";
 	private static final String KEY_UID = "uid";
+	private static final String USER_HOUSE = "house";
 	private static final String KEY_CREATED_AT = "created_at";
 
 	public SQLiteHandler(Context context) {
@@ -45,7 +46,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 		String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_USER + "("
 				+ KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
 				+ KEY_EMAIL + " TEXT UNIQUE," + KEY_UID + " TEXT,"
-				+ KEY_CREATED_AT + " TEXT" + ")";
+				+ KEY_CREATED_AT + " TEXT, " + USER_HOUSE + " TEXT" + ")";
 		db.execSQL(CREATE_LOGIN_TABLE);
 
 		Log.d(TAG, "Database tables created");
@@ -64,7 +65,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 	/**
 	 * Storing user details in database
 	 * */
-	public void addUser(String name, String email, String uid, String created_at) {
+	public void addUser(String name, String email, String uid, String created_at, String house) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -72,6 +73,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 		values.put(KEY_EMAIL, email); // Email
 		values.put(KEY_UID, uid); // Email
 		values.put(KEY_CREATED_AT, created_at); // Created At
+		values.put(USER_HOUSE, house);
 
 		// Inserting Row
 		long id = db.insert(TABLE_USER, null, values);
@@ -117,4 +119,9 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 		Log.d(TAG, "Deleted all user info from sqlite");
 	}
 
+	public Cursor getLoggedInUser(SQLiteDatabase sqLiteDatabase)
+	{
+		Cursor cursor = sqLiteDatabase.query(TABLE_USER, null, null, null, null, null, null, "1");
+		return cursor;
+	}
 }

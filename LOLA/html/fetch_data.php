@@ -40,18 +40,18 @@ class FetchData
     }
 
     static function FetchHumidityData($sensorMacAddresses)
-    {
-        global $pdo;
+{
+    global $pdo;
 
 
-        $humidityData = $pdo->prepare("SELECT * FROM humidity WHERE mac_address IN ('" . implode("','",$sensorMacAddresses) . "') ORDER BY id DESC LIMIT 288");
-        $humidityData->bindValue('s', $sensorMacAddresses);
-        $humidityData->execute();
+    $humidityData = $pdo->prepare("SELECT * FROM humidity WHERE mac_address IN ('" . implode("','",$sensorMacAddresses) . "') ORDER BY id DESC LIMIT 288");
+    $humidityData->bindValue('s', $sensorMacAddresses);
+    $humidityData->execute();
 
-        $humidityDataArray = $humidityData->fetchAll(PDO::FETCH_ASSOC);
+    $humidityDataArray = $humidityData->fetchAll(PDO::FETCH_ASSOC);
 
-        return $humidityDataArray;
-    }
+    return $humidityDataArray;
+}
 
     static function FetchTemperatureData($sensorMacAddresses)
     {
@@ -80,4 +80,33 @@ class FetchData
 
         return $waterDataArray;
     }
+
+
+    static function FetchHumidityDataAndroid($sensorMacAddresses)
+    {
+        global $pdo;
+
+
+        $humidityTimestamp = $pdo->prepare("SELECT * FROM humidity WHERE mac_address IN ('" . implode("','",$sensorMacAddresses) . "') ORDER BY id DESC LIMIT 1");
+        $humidityTimestamp->execute();
+
+        $latestTimestamp = "";
+
+        if($humidityTimestamp->execute())
+        {
+            while($row= $humidityTimestamp->fetch())
+            {
+                $latestTimestamp = $row['humidity_timestamp'];
+            }
+        }
+
+        $humidityData = $pdo->prepare("SELECT * FROM humidity WHERE humidity_timestamp = :timestamp");
+        $humidityData->bindValue(':timestamp', $latestTimestamp);
+        $humidityData->execute();
+
+        $humidityDataArray = $humidityData->fetchAll(PDO::FETCH_ASSOC);
+
+        return $humidityDataArray;
+    }
+
 }
