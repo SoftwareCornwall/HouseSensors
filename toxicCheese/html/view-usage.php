@@ -14,6 +14,7 @@ require_once "database.php"; // database usage class
 
 $DB = new database();
 $average_humidity_last_month = $DB->average_humidity_last_month();
+$average_temperature_last_month = $DB->average_temperature_last_month();
 
 $message = $_GET['house'];
 
@@ -82,6 +83,8 @@ if ($message == '89hab723hd') {
 
 	echo $average_humidity_last_month . "%</span>.";
 	echo "<br>";
+
+	echo "Your average temperature for the last month was " .$average_temperature_last_month . "&deg;C";
 
 
 

@@ -128,7 +128,27 @@ class database
 		
 		}
 		throw new Exception("Unable to calculate humidity");
-
 	}
+
+
+	public function average_temperature_last_month() {
+		$averageTemperature = $this->pdo->prepare("SELECT * FROM temperature WHERE timestamp>NOW()-INTERVAL 1 MONTH");
+		$total = 0;
+		$counter = 0;
+		
+		if ($averageTemperature->execute())
+		{
+		    while ($row = $averageTemperature->fetch())
+		    {
+		        $total = $total + $row['temperature'];
+			$counter++;
+		    }
+		
+			return round($total / $counter);
+		
+		}
+		throw new Exception("Unable to calculate temperature");
+	}
+	
 	
 };
