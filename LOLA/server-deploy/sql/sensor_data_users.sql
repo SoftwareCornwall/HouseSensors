@@ -18,29 +18,33 @@ USE `sensor_data`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `sensor_location`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `sensor_location`;
+DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sensor_location` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `mac_address` varchar(45) DEFAULT NULL,
-  `room` varchar(45) DEFAULT NULL,
-  `house_id` varchar(45) DEFAULT NULL,
+CREATE TABLE `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `unique_id` varchar(45) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `encrypted_password` varchar(80) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `house` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `sensor_location`
+-- Dumping data for table `users`
 --
 
-LOCK TABLES `sensor_location` WRITE;
-/*!40000 ALTER TABLE `sensor_location` DISABLE KEYS */;
-INSERT INTO `sensor_location` VALUES (1,'b8:27:eb:c6:75:f5','Living Area','1'),(2,'b8:27:eb:0b:04:1a','Water Pump','1'),(3,'b8:27:eb:89:9c:2d','Master Bedroom','1');
-/*!40000 ALTER TABLE `sensor_location` ENABLE KEYS */;
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'1','Will','will@example.com','password','0000-00-00 00:00:00','0000-00-00 00:00:00','1');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-24 17:03:06
+-- Dump completed on 2017-07-26 16:35:19

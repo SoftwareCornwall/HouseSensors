@@ -17,7 +17,7 @@ $temperatureData = FetchData::FetchTemperatureData($sensors);
 
 $waterData = FetchData::FetchWaterData($sensors);
 
-$houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location ORDER BY id");
+$houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location");
 
 
 
@@ -202,7 +202,7 @@ header("Refresh: $sec");
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <?php
-                            if(isset($_GET[houseId]))
+                            if(isset($_GET['houseId']))
                             {
                                 echo "House " . $_GET['houseId'];
                             }
@@ -213,7 +213,7 @@ header("Refresh: $sec");
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="dropdownMenu1">
-
+                            
                             <?php
 
                             if ($houseSelection->execute())
@@ -221,7 +221,6 @@ header("Refresh: $sec");
                                 while ($row = $houseSelection->fetch())
                                 {
                                     echo '<li><a href="index.php?houseId=' . $row["house_id"] . '"> House ' . $row["house_id"] . '</a></li>';
-                                    //echo "<h1 style='color: deeppink'><marquee scrollamount='20'>The humidity when last recorded was: " . $row['humidity_timestamp'] . "</marquee></h1>";
                                 }
                             }
 
@@ -258,7 +257,7 @@ header("Refresh: $sec");
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Water Usage L/min</h3>
+                                <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Water Usage</h3>
                             </div>
                             <div class="panel-body">
                                 <div id="waterChart" style="height: 250px;"></div>
