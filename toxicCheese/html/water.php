@@ -25,15 +25,20 @@ echo "OK :";
 // We could check here to see if water consumption is high enough to send an SMS alert
 
 require_once "database.php"; // database usage class
+require_once "water-spike-check.php";
 
 $DB = new database(); // set up database object
-$row = $DB->total_water_sensor_usage_last_hour(); // request water usage from last hour
+
+function sendSMS($message) 
+	{
+		echo $message;
+	}
 
 try {
-	$totalWater = $DB->total_water_sensor_usage_last_hour();
-	if ($totalWater > 500) {
-		echo "SMS sent";
-	}
+	$waterReadings = $DB->last_two_water_sensor_readings();
+	print_r($waterReadings);
+	waterSpikeCheck($waterReadings,'sendSMS'); 	
+
 } catch (Exception $e) {
 	echo "ERROR calculating total water usage";
 }
