@@ -1,13 +1,13 @@
 <?php
-define("DB_HOST", "127.0.0.1");
-define("DB_USER", "root");
-define("DB_PASSWORD", "");
+define("DB_HOST", "localhost");
+define("DB_USER", "arron");
+define("DB_PASSWORD", "helloworld");
 define("DB_DATABASE", "sensor_data");
 
-$host = "127.0.0.1";
+$host = "localhost";
 $dbname = "sensor_data";
-$user = "root";
-$password = "";
+$user = "arron";
+$password = "helloworld";
 
 $pdo = new PDO("mysql:dbname=$dbname;host=$host" , $user , $password);
 ?>
