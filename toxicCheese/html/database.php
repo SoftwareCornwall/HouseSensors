@@ -96,6 +96,21 @@ class database
 		throw new Exception("Unable to calculate water usage");
 	}
 
+	public function last_two_water_sensor_readings() {
+		$waterFlow = $this->pdo->prepare("SELECT waterflow FROM water ORDER BY timestamp DESC LIMIT 2");
+		$readings = [];
+		
+		if ($waterFlow->execute())
+		{
+		    while ($row = $waterFlow->fetch())
+		    {
+		        $readings[] = $row['waterflow'];
+		    }
+			return ($readings);
+		}
+		throw new Exception("Unable to read water usage");
+	}
+
 	public function average_humidity_last_month() {
 		$averageHumidity = $this->pdo->prepare("SELECT * FROM humidity WHERE timestamp>NOW()-INTERVAL 1 MONTH");
 		$total = 0;
