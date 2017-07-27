@@ -2,7 +2,7 @@
 
 include "config.php";
 
-$houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location ORDER BY id");
+$houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location");
 
 if(isset($_POST['printReport']))
 {

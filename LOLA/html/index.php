@@ -17,7 +17,7 @@ $temperatureData = FetchData::FetchTemperatureData($sensors);
 
 $waterData = FetchData::FetchWaterData($sensors);
 
-$houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location ORDER BY id");
+$houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location");
 
 
 
@@ -213,7 +213,7 @@ header("Refresh: $sec");
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="dropdownMenu1">
-
+                            
                             <?php
 
                             if ($houseSelection->execute())
@@ -257,7 +257,7 @@ header("Refresh: $sec");
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Water Usage L/min</h3>
+                                <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Water Usage</h3>
                             </div>
                             <div class="panel-body">
                                 <div id="waterChart" style="height: 250px;"></div>
