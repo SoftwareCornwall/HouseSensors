@@ -1,104 +1,60 @@
-#include "WaterController.h"
-
-#include "../StyleEscapeSequences.h"
+#include "WaterController.hpp"
+#include "../Utility/Utility.hpp"
 
 #include <wiringPi.h>
-#include <iostream>
-#include <chrono>
-#include <thread>
 
-#define SERVER_URL                "http://raspberrypi-b.local"
-#define WATER_FILE               "/water_usage_sensor.php"
-#define SENSOR_READ_INTERVAL     10
-
-using namespace std;
-
-
-unsigned int interruptCounter;
+int interruptCounter;
 
 WaterController::WaterController()
 {
-
+    isInitialised_ = false;
 }
 
 
 
-bool WaterController::setup()
+WaterController::~WaterController()
 {
-    wiringPiSetupSys();
-    interruptCounter = 0;
-
-    pinMode(25, INPUT);
-    wiringPiISR(25, INT_EDGE_BOTH, handlePin25Changed);
-
-    std::cout << "WaterSensor instance created." << std::endl;
-
-    return true;
+    Utility::printStyled("~WaterController() called. Destructing...", Utility::StringStyle::BOLD);
 }
 
-
-
-void WaterController::run(const bool& executionCondition)
+bool WaterController::initialise()
 {
-    float waterFlow;
-    CURLcode result;
-
-    while (true)
+    if (!isInitialised_)
     {
-        while (executionCondition && (getSecondsSinceEpoch() % SENSOR_READ_INTERVAL  != 0)) // Hangs until unix time is divisible by SENSOR_READ_INTERVAL
-            ;
+        interruptCounter = 0;
 
-        if (!executionCondition) break;
+        wiringPiSetupSys();
+        pinMode(25, INPUT);
+        wiringPiISR(25, INT_EDGE_BOTH, incrementInterruptCounter);
+        timeAtLastRead_ = Utility::getUnixTime();
 
-        cout << "\nNEW POST OPERATION\033[0m \nGetting sensor data..." << endl;
-        waterFlow = getRecordedWaterFlow(SENSOR_READ_INTERVAL);
-
-
-        cout << "Posting data to server (" << SERVER_URL WATER_FILE << ")... " << endl;
-        cout << "    Timestamp: " << getSecondsSinceEpoch() << endl;
-        cout << "   Water Flow: " << waterFlow << endl;
-        cout << "       Status: " << flush;
-
-        result = curl_.submitSensorDataToServer("waterValue=" + std::to_string(waterFlow), SERVER_URL WATER_FILE);
-
-        if (result == CURLE_OK)
-        {
-            cout << GREEN_FONT << "POST OPERATION SUCCEEDED" << DEFAULT_FONT << endl;
-        }
-        else
-        {
-            cout << RED_FONT << "POST OPERATION FAILED" << DEFAULT_FONT << endl;
-        }
-
-        cout << "END POST OPERATION\nWaiting " << SENSOR_READ_INTERVAL << " seconds..." << endl;
-
-        this_thread::sleep_for(chrono::seconds(1)); // Sleeps 1 seconds, prevents multiple posts during single seconds.
+        isInitialised_ = true;
     }
+
+    return isInitialised_;
 }
 
 
 
-float WaterController::getRecordedWaterFlow(float timeScale)
+float WaterController::read()
 {
-    unsigned int counter = interruptCounter;
+    float readValue = quietRead();
+    timeAtLastRead_ = Utility::getUnixTime();
     interruptCounter = 0;
 
-    float waterFlow = (counter / 2200.0f / timeScale);
-
-    std::cout << BOLD_FONT << "Flow Data: " << DEFAULT_FONT << counter << " interrupts - " << (counter / timeScale) << "Hz - " << waterFlow << " litres/minute\n" << std::endl;
-
-    return waterFlow;
+    return readValue;
 }
 
 
-void handlePin25Changed()
+
+float WaterController::quietRead()
+{
+    return interruptCounter / 2200.0f / (Utility::getUnixTime() - timeAtLastRead_);
+}
+
+
+
+void incrementInterruptCounter()
 {
     interruptCounter++;
-}
-
-
-
-unsigned long long WaterController::getSecondsSinceEpoch()
-{
-    return static_cast<unsigned long long>(std::time(nullptr)); // returns Unix time as an LLU.
 }
