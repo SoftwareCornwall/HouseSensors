@@ -13,4 +13,6 @@
     <string name="welcome">Welcome</string>
     <string name="btn_logout">LOGOUT</string>
     <string name="name">Fullname</string>
+    <string name="channel_name">Default</string>
+    <string name="channel_description">Default</string>
 </resources>
