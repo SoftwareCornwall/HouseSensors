@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var temperature: UILabel!
     @IBOutlet weak var water: UILabel!
     
+    @IBOutlet weak var update: UIButton!
     
     var dataValues: NSDictionary!
     
@@ -26,12 +27,11 @@ class ViewController: UIViewController {
     }
     
     func loadHumidityData(){
-
         var url: NSURL = NSURL(string: "http://10.160.50.154/android_get_humidity_average.php")!
         let request:NSMutableURLRequest = NSMutableURLRequest(url:url as URL)
         var bodyData = "houseId=1"
         request.httpMethod = "POST"
-        
+
         request.httpBody = bodyData.data(using: String.Encoding.utf8);
         NSURLConnection.sendAsynchronousRequest(request as URLRequest, queue: OperationQueue.main)
         {
@@ -48,7 +48,6 @@ class ViewController: UIViewController {
     }
     
     func loadTemperatureData(){
-        
         var url: NSURL = NSURL(string: "http://10.160.50.154/android_get_temperature_average.php")!
         let request:NSMutableURLRequest = NSMutableURLRequest(url:url as URL)
         var bodyData = "houseId=1"
@@ -70,7 +69,6 @@ class ViewController: UIViewController {
     }
     
     func loadWaterData(){
-        
         var url: NSURL = NSURL(string: "http://10.160.50.154/android_get_water_usage.php")!
         let request:NSMutableURLRequest = NSMutableURLRequest(url:url as URL)
         var bodyData = "houseId=1"
@@ -89,6 +87,12 @@ class ViewController: UIViewController {
             let water = dataLine.value(forKey: "waterUsage") as! Int64
             self.water.text = "\(water)"
         }
+    }
+    
+    @IBAction func update(_ sender: Any) {
+        loadHumidityData()
+        loadTemperatureData()
+        loadWaterData()
     }
 }
 
