@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="848dd52e-996d-40cb-aa0e-f5e6a0bb0e4a" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="service.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/service.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="351">
+              <caret line="31" column="37" lean-forward="false" selection-start-line="31" selection-start-column="37" selection-end-line="31" selection-end-column="37" />
+              <folding>
+                <marker date="1501080765000" expanded="true" signature="274:296" ph="SELECT * FRO... humidity" />
+                <marker date="1501080765000" expanded="true" signature="274:321" ph="SELECT * FRO... humidity" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="reports.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/reports.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="444">
+              <caret line="266" column="31" lean-forward="false" selection-start-line="266" selection-start-column="31" selection-end-line="266" selection-end-column="31" />
+              <folding>
+                <marker date="1500980920000" expanded="true" signature="63:120" ph="SELECT DISTI... sensor_location" />
+                <marker date="1500980920000" expanded="true" signature="455:644" ph="SELECT humid... humidity" />
+                <marker date="1500980920000" expanded="true" signature="10493:10544" ph="SELECT * FRO... sensor_location" />
+                <marker date="1500980920000" expanded="true" signature="10934:10980" ph="SELECT * FRO... sensor_location" />
+                <marker date="1500980920000" expanded="true" signature="11516:11582" ph="SELECT * FRO... humidity" />
+                <marker date="1500980920000" expanded="true" signature="12846:13134" ph="..." />
+                <marker date="1500980920000" expanded="true" signature="14747:14798" ph="SELECT * FRO... sensor_location" />
+                <marker date="1500980920000" expanded="true" signature="15188:15234" ph="SELECT * FRO... sensor_location" />
+                <marker date="1500980920000" expanded="true" signature="15770:15839" ph="SELECT * FRO... temperature" />
+                <marker date="1500980920000" expanded="true" signature="17121:17412" ph="..." />
+                <marker date="1500980920000" expanded="true" signature="19017:19068" ph="SELECT * FRO... sensor_location" />
+                <marker date="1500980920000" expanded="true" signature="19458:19504" ph="SELECT * FRO... sensor_location" />
+                <marker date="1500980920000" expanded="true" signature="20040:20103" ph="SELECT * FRO... water" />
+                <marker date="1500980920000" expanded="true" signature="21349:21627" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/db.php" />
+        <option value="$PROJECT_DIR$/json.php" />
+        <option value="$PROJECT_DIR$/service.php" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-98" />
+    <option name="y" value="183" />
+    <option name="width" value="2582" />
+    <option name="height" value="1024" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="html" type="b2602c69:ProjectViewProjectNode" />
+              <item name="html" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="settings.github" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="848dd52e-996d-40cb-aa0e-f5e6a0bb0e4a" name="Default" comment="" />
+      <created>1500976073063</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1500976073063</updated>
+      <workItem from="1500976074316" duration="608000" />
+      <workItem from="1500992283620" duration="656000" />
+      <workItem from="1500994509602" duration="3171000" />
+      <workItem from="1501072334194" duration="1989000" />
+      <workItem from="1501078280393" duration="2813000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="9237000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="22" width="1680" height="1024" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20119047" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32983193" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="55" lean-forward="false" selection-start-line="5" selection-start-column="47" selection-end-line="5" selection-end-column="55" />
+          <folding>
+            <marker date="1501073048000" expanded="true" signature="13992:14234" ph="..." />
+            <marker date="1501073048000" expanded="true" signature="14022:14223" ph="{&quot;element&quot;: 'waterChart'...}" />
+            <marker date="1501073048000" expanded="true" signature="14114:14209" ph="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="63" lean-forward="true" selection-start-line="30" selection-start-column="63" selection-end-line="30" selection-end-column="63" />
+          <folding>
+            <marker date="1501080765000" expanded="true" signature="274:296" ph="SELECT * FRO... humidity" />
+            <marker date="1501080765000" expanded="true" signature="274:321" ph="SELECT * FRO... humidity" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DB_connect.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1500980919000" expanded="true" signature="450:537" ph="INSERT INTO humidity... " />
+            <marker date="1500980919000" expanded="true" signature="797:893" ph="INSERT INTO temperature... " />
+            <marker date="1500980919000" expanded="true" signature="1143:1221" ph="INSERT INTO water... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/humidity_temperature_sensor.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="33" lean-forward="false" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1501073048000" expanded="true" signature="13992:14234" ph="..." />
+            <marker date="1501073048000" expanded="true" signature="14022:14223" ph="{&quot;element&quot;: 'waterChart'...}" />
+            <marker date="1501073048000" expanded="true" signature="14114:14209" ph="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/humidity_temperature_sensor.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="33" lean-forward="false" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/json.php" />
+    <entry file="file://$PROJECT_DIR$/db.php" />
+    <entry file="file://$PROJECT_DIR$/DB_connect.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1500980919000" expanded="true" signature="450:537" ph="INSERT INTO humidity... " />
+            <marker date="1500980919000" expanded="true" signature="797:893" ph="INSERT INTO temperature... " />
+            <marker date="1500980919000" expanded="true" signature="1143:1221" ph="INSERT INTO water... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1501073048000" expanded="true" signature="13992:14234" ph="..." />
+            <marker date="1501073048000" expanded="true" signature="14022:14223" ph="{&quot;element&quot;: 'waterChart'...}" />
+            <marker date="1501073048000" expanded="true" signature="14114:14209" ph="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_humidity.php" />
+    <entry file="file://$PROJECT_DIR$/DB_connect.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1500980919000" expanded="true" signature="450:537" ph="INSERT INTO humidity... " />
+            <marker date="1500980919000" expanded="true" signature="797:893" ph="INSERT INTO temperature... " />
+            <marker date="1500980919000" expanded="true" signature="1143:1221" ph="INSERT INTO water... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db.php" />
+    <entry file="file://$PROJECT_DIR$/json.php" />
+    <entry file="file://$PROJECT_DIR$/config.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/water_usage_sensor.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fetch_data.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1500980920000" expanded="true" signature="331:401" ph="SELECT DISTI... sensor_location" />
+            <marker date="1500980920000" expanded="true" signature="708:778" ph="SELECT DISTI... sensor_location" />
+            <marker date="1500980920000" expanded="true" signature="1568:1688" ph="SELECT * FRO... temperature" />
+            <marker date="1500980920000" expanded="true" signature="2038:2152" ph="SELECT * FRO... water" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/humidity_temperature_sensor.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="33" lean-forward="false" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1011">
+          <caret line="5" column="55" lean-forward="false" selection-start-line="5" selection-start-column="47" selection-end-line="5" selection-end-column="55" />
+          <folding>
+            <marker date="1501073048000" expanded="true" signature="13992:14234" ph="..." />
+            <marker date="1501073048000" expanded="true" signature="14022:14223" ph="{&quot;element&quot;: 'waterChart'...}" />
+            <marker date="1501073048000" expanded="true" signature="14114:14209" ph="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reports.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="266" column="31" lean-forward="false" selection-start-line="266" selection-start-column="31" selection-end-line="266" selection-end-column="31" />
+          <folding>
+            <marker date="1500980920000" expanded="true" signature="63:120" ph="SELECT DISTI... sensor_location" />
+            <marker date="1500980920000" expanded="true" signature="455:644" ph="SELECT humid... humidity" />
+            <marker date="1500980920000" expanded="true" signature="10493:10544" ph="SELECT * FRO... sensor_location" />
+            <marker date="1500980920000" expanded="true" signature="10934:10980" ph="SELECT * FRO... sensor_location" />
+            <marker date="1500980920000" expanded="true" signature="11516:11582" ph="SELECT * FRO... humidity" />
+            <marker date="1500980920000" expanded="true" signature="12846:13134" ph="..." />
+            <marker date="1500980920000" expanded="true" signature="14747:14798" ph="SELECT * FRO... sensor_location" />
+            <marker date="1500980920000" expanded="true" signature="15188:15234" ph="SELECT * FRO... sensor_location" />
+            <marker date="1500980920000" expanded="true" signature="15770:15839" ph="SELECT * FRO... temperature" />
+            <marker date="1500980920000" expanded="true" signature="17121:17412" ph="..." />
+            <marker date="1500980920000" expanded="true" signature="19017:19068" ph="SELECT * FRO... sensor_location" />
+            <marker date="1500980920000" expanded="true" signature="19458:19504" ph="SELECT * FRO... sensor_location" />
+            <marker date="1500980920000" expanded="true" signature="20040:20103" ph="SELECT * FRO... water" />
+            <marker date="1500980920000" expanded="true" signature="21349:21627" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="31" column="37" lean-forward="false" selection-start-line="31" selection-start-column="37" selection-end-line="31" selection-end-column="37" />
+          <folding>
+            <marker date="1501080765000" expanded="true" signature="274:296" ph="SELECT * FRO... humidity" />
+            <marker date="1501080765000" expanded="true" signature="274:321" ph="SELECT * FRO... humidity" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
