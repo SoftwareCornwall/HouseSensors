@@ -96,5 +96,24 @@ class database
 		throw new Exception("Unable to calculate water usage");
 	}
 
+	public function average_humidity_last_month() {
+		$averageHumidity = $this->pdo->prepare("SELECT * FROM humidity WHERE timestamp>NOW()-INTERVAL 1 MONTH");
+		$total = 0;
+		$counter = 0;
+		
+		if ($averageHumidity->execute())
+		{
+		    while ($row = $averageHumidity->fetch())
+		    {
+		        $total = $total + $row['humidity'];
+			$counter++;
+		    }
+		
+			return round($total / $counter);
+		
+		}
+		throw new Exception("Unable to calculate humidity");
+
+	}
 	
 };

@@ -9,7 +9,7 @@
 require_once "database.php"; // database usage class
 
 $DB = new database();
-$row = $DB->latest_humidity();
+$average_humidity_last_month = $DB->average_humidity_last_month();
 
 $message = $_GET['house'];
 
@@ -26,35 +26,57 @@ if ($message == '89hab723hd') {
 	$pdo = new PDO("mysql:dbname=$dbname;host=$host" , $user , $password);
 
 	$totalWater = $pdo->prepare("SELECT * FROM water WHERE timestamp>NOW()-INTERVAL 1 MONTH");
-	$total =0;
-
+	$waterTotal =0;
+	
 	if ($totalWater->execute())
 	{
 	   while ($row = $totalWater->fetch())
 	   {
-	       $total = $total + $row['waterflow'];
+	       $waterTotal = $waterTotal + $row['waterflow'];
 	   }
 
 	}
 
-	if ($total >= 1001) {
-		$usageStyle = "high_usage";
+
+	if ($waterTotal >= 1001) {
+		$waterUsageStyle = "high_usage";
 	}
 
-	if ($total <1001 && $total > 500) {
-		$usageStyle = "average_usage";
+	if ($waterTotal <1001 && $waterTotal > 500) {
+		$waterUsageStyle = "average_usage";
 	}
 
-	if ($total <500) {
-		$usageStyle = "low_usage";
+	if ($waterTotal <500) {
+		$waterUsageStyle = "low_usage";
 	}
 
-
+	//Humidity over last month for all sensors in the house
 	
-	echo "Hello Will <br>";
-        echo "Your water consumption for the last month is <span class='" .$usageStyle . "'>";
+	if ($average_humidity_last_month > 60) {
 
-	echo $total . " litres.<span>";
+		$HumidityUsageStyle = "high_usage";
+		
+
+	}
+
+	if ($average_humidity_last_month <= 60 && $average_humidity_last_month > 55) {
+		$HumidityUsageStyle = "average_usage";
+	}
+
+	if ($average_humidity_last_month <= 55) {
+		$HumidityUsageStyle = "low_usage";
+	}
+
+	echo "Hello Will <br>";
+        echo "Your water consumption for the last month is <span class='" .$waterUsageStyle . "'>";
+
+	echo $waterTotal . " litres</span>.";
+	echo "<br>";
+	
+
+        echo "Your average humidity for the last month  is <span class='" .$HumidityUsageStyle . "'>";
+
+	echo $average_humidity_last_month . "%</span>.";
 	echo "<br>";
 
 
