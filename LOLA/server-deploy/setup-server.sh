@@ -12,3 +12,9 @@ mysql -u root < sql/sensor_data_users.sql
 mysql -u root < sql/sensor_data_water.sql
 
 mysql -u root < sql/create_users.sql
+
+echo Copying website files...
+
+rm -R /var/www/html
+cp -R ../html /var/www/html
+
