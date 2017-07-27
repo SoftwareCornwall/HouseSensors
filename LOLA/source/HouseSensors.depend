@@ -1,0 +1,47 @@
+# depslib dependency file v1.0
+1501160794 source:/home/pi/Desktop/NewHouseSensors/Curl/Curl.cpp
+	"Curl.hpp"
+	"../Utility/Utility.hpp"
+	<curl/curl.h>
+	<memory>
+	<iostream>
+
+1501157650 /home/pi/Desktop/NewHouseSensors/Curl/Curl.hpp
+	<string>
+
+1501164651 source:/home/pi/Desktop/NewHouseSensors/main.cpp
+	"Curl/Curl.hpp"
+	"Utility/Utility.hpp"
+	"IMUController/IMUController.hpp"
+	"WaterController/WaterController.hpp"
+	<iostream>
+	<signal.h>
+
+1501164666 source:/home/pi/Desktop/NewHouseSensors/Utility/Utility.cpp
+	"Utility.hpp"
+	<fstream>
+	<chrono>
+	<thread>
+	<iostream>
+
+1501164396 /home/pi/Desktop/NewHouseSensors/Utility/Utility.hpp
+	"../IMUController/IMUController.hpp"
+	<string>
+
+1501161536 source:/home/pi/Desktop/NewHouseSensors/IMUController/IMUController.cpp
+	"IMUController.hpp"
+	"../Utility/Utility.hpp"
+	<iostream>
+
+1501161525 /home/pi/Desktop/NewHouseSensors/IMUController/IMUController.hpp
+	<string>
+	<memory>
+	<RTIMULib.h>
+
+1501165937 source:/home/pi/Desktop/NewHouseSensors/WaterController/WaterController.cpp
+	"WaterController.hpp"
+	"../Utility/Utility.hpp"
+	<wiringPi.h>
+
+1501165933 /home/pi/Desktop/NewHouseSensors/WaterController/WaterController.hpp
+

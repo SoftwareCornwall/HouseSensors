@@ -1,105 +1,57 @@
-#include "Curl.h"
+#include "Curl.hpp"
+#include "../Utility/Utility.hpp"
 
-#include "../StyleEscapeSequences.h"
-
+#include <curl/curl.h>
+#include <memory>
 #include <iostream>
-#include <fstream>
-#include <exception>
-#include <chrono>
-
-#define MAC_ADDRESS_FILE "/sys/class/net/wlan0/address"
 
 using namespace std;
 
 Curl::Curl()
 {
-    if (!getMACAddress(mACAddress_)) // If the program cannot get the MAC Address.
-    {
-        cerr << "Failed to obtain MAC address from " << MAC_ADDRESS_FILE << ".";
-        throw exception();
-    }
+    doDisplayMessages = true;
+    isInitialised_ = false;
 }
-
-
 
 Curl::~Curl()
 {
+    Utility::printStyled("~Curl() called. Destructing...", Utility::StringStyle::BOLD);
     curl_global_cleanup();
+    Utility::printStyled("Cleaned up Curl.", Utility::StringStyle::BOLD);
 }
 
-
-
-CURLcode Curl::submitSensorDataToServer(const string& postData, const string& destination)
+bool Curl::initialise()
 {
-    string postFields = postData +
-                         "&timestamp=" +
-                         std::to_string(getSecondsSinceEpoch()) +
-                         "&mac=" +
-                         mACAddress_;
-
-    CURLcode result = postDataToServer(postFields, destination);
-
-    if (result == CURLE_OK)
+    if (!isInitialised_)
     {
-        cout << GREEN_FONT << "Success" << DEFAULT_FONT << endl;
-    }
-    else
-    {
-        cout << RED_FONT << "Failure" << DEFAULT_FONT << endl;
+        CURLcode success = curl_global_init(CURL_GLOBAL_ALL);
+        isInitialised_ = (success == CURLE_OK); //Set isInitialised_ to whether the init was successful.
     }
 
-    cout << "               Error Code: " << result << endl;
-
-    return result;
+    return isInitialised_;
 }
 
-
-
-CURLcode Curl::postDataToServer(string const& postFields, string const& serverURL)
+bool Curl::postStringTo(const string& data, const string& destination)
 {
-    if (postFields.length() == 0)
-        return CURLE_FAILED_INIT;
+    if (doDisplayMessages)
+        cout << "Curl | POSTING DATA:\n     | Data: " << data << "\n     | Destination: " << destination << endl;
 
-    CURL* curl;
+    if (!isInitialised_ || data.length() == 0 || destination.length() == 0) return false;
+
+    CURL* curl = curl_easy_init();
     CURLcode result = CURLE_FAILED_INIT;
-    curl_global_init(CURL_GLOBAL_ALL);
-
-    curl = curl_easy_init();
 
     if (curl)
     {
-        curl_easy_setopt(curl, CURLOPT_URL, serverURL.c_str()); // Sets the destination.
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postFields.c_str()); // Sets the data to be sent.
+        curl_easy_setopt(curl, CURLOPT_URL, destination.c_str()); // Sets the destination.
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str()); // Sets the data to be sent.
         result = curl_easy_perform(curl);
 
         curl_easy_cleanup(curl);
     }
 
-    return result;
-}
+    if (doDisplayMessages)
+        cout << "     | Result: " << result << '\n' << endl;
 
-
-
-bool Curl::getMACAddress(string& mACAddress)
-{
-    ifstream mACFile(MAC_ADDRESS_FILE);
-
-    if (mACFile.is_open())
-    {
-        getline(mACFile, mACAddress);
-        mACFile.close();
-        return true;
-    }
-    else
-    {
-        mACFile.close();
-        return false;
-    }
-}
-
-
-
-unsigned long long Curl::getSecondsSinceEpoch()
-{
-    return static_cast<unsigned long long>(std::time(nullptr)); // returns Unix time as an LLU.
+    return (result == CURLE_OK);
 }

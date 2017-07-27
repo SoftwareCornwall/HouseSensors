@@ -1,101 +1,76 @@
-#include "IMUController.h"
-
-#include "../StyleEscapeSequences.h"
+#include "IMUController.hpp"
+#include "../Utility/Utility.hpp"
 
 #include <iostream>
-#include <chrono>
-#include <thread>
-
-#define SERVER_URL                "http://raspberrypi-b.local"
-#define HUMIDITY_TEMPERATURE_FILE "/humidity_temperature_sensor.php"
-#define SENSOR_READ_INTERVAL      10
 
 using namespace std;
 
 IMUController::IMUController()
 {
-
+    isInitialised_ = false;
 }
 
 
 
 IMUController::~IMUController()
 {
-
+    Utility::printStyled("~IMUController() called. Destructing...", Utility::StringStyle::BOLD);
 }
 
 
 
-
-bool IMUController::setup()
+bool IMUController::initialise()
 {
-    if (sensor_.setup())
-    {
-        cout << GREEN_FONT << "Setup successful." << DEFAULT_FONT << endl;
-        cout << "Sensor started at " << getSecondsSinceEpoch() << " Unix Time, waiting for "
-              << (SENSOR_READ_INTERVAL - (getSecondsSinceEpoch() % SENSOR_READ_INTERVAL)) // seconds until next post.
-              << " seconds until first POST." << endl;
+    settings_ = unique_ptr<RTIMUSettings>(new RTIMUSettings("RTIMULib"));
+    imu_ = unique_ptr<RTIMU>(RTIMU::createIMU(settings_.get()));
+    humidity_ = unique_ptr<RTHumidity>(RTHumidity::createHumidity(settings_.get()));
 
-        return true;
+    if ((imu_ == NULL) || (imu_->IMUType() == RTIMU_TYPE_NULL))
+    {
+        cerr << "IMUController | " << Utility::styleString("Error when setting up.              | \nEither there is no IMU attached or it is not supported.", Utility::StringStyle::RED) << '\n' << endl;
+        return false;
     }
     else
     {
-        cout << RED_FONT << "Setup failed." << DEFAULT_FONT << endl;
-        return false;
-    }
-}
-
-
-
-void IMUController::run(const bool& executionCondition)
-{
-    CURLcode result;
-
-    while (true)
-    {
-        while (executionCondition && (getSecondsSinceEpoch() % SENSOR_READ_INTERVAL  != 0)) // Hangs until unix time is divisible by SENSOR_READ_INTERVAL
-            ;
-
-        if (!executionCondition) break;
-
-        cout << "\nNEW POST OPERATION\033[0m \nGetting sensor data..." << endl;
-
-        if (sensor_.getData(&sensorData_)) // Gives sensordata info from IMU, if successfull...
+        if (!(imu_->IMUInit()))
         {
-            cout << GREEN_FONT << "Success" << DEFAULT_FONT << endl;
-
-            cout << "Posting data to server (" << SERVER_URL HUMIDITY_TEMPERATURE_FILE << ")... " << endl;
-            cout << "    Timestamp: " << getSecondsSinceEpoch() << endl;
-            cout << "     Humidity: " << sensorData_.humidity << endl;
-            cout << "  Temperature: " << sensorData_.temperature << endl;
-            cout << "       Status: " << flush;
-
-            result = curl_.submitSensorDataToServer(sensor_.sensorDataToString(sensorData_), SERVER_URL HUMIDITY_TEMPERATURE_FILE);
-
-            if (result == CURLE_OK)
-            {
-                cout << GREEN_FONT << "POST OPERATION SUCCEEDED" << DEFAULT_FONT << endl;
-            }
-            else
-            {
-                cout << RED_FONT << "POST OPERATION FAILED" << DEFAULT_FONT << endl;
-            }
-
+            cerr << "IMUController | " << Utility::styleString("IMU Initialisation failed.", Utility::StringStyle::RED) << '\n' << endl;
+            return false;
         }
         else
         {
-            cout << RED_FONT << "Failure, skipping post" << DEFAULT_FONT << endl;
+            cout << "IMUController | " << Utility::styleString("IMU Initialisation succeeded.", Utility::StringStyle::GREEN) << '\n' << endl;
+
+            if (humidity_ != NULL)
+            {
+                humidity_->humidityInit();
+            }
+
+            isInitialised_ = true;
+            return true;
         }
-
-        cout << "END POST OPERATION\nWaiting " << SENSOR_READ_INTERVAL << " seconds..." << endl;
-
-        this_thread::sleep_for(chrono::seconds(1)); // Sleeps 1 seconds, prevents multiple posts during single seconds.
     }
 }
 
 
 
-unsigned long long IMUController::getSecondsSinceEpoch()
+IMUReading IMUController::read()
 {
-    return static_cast<unsigned long long>(std::time(nullptr)); // returns Unix time as an LLU.
+    IMUReading reading = IMUReading{ -1, -1 };
+
+    if (isInitialised_)
+    {
+        imu_->IMURead();
+
+        if (imu_ && humidity_ != NULL)
+        {
+            RTIMU_DATA imuData = imu_->getIMUData();
+            humidity_->humidityRead(imuData);
+
+            reading.humidity = static_cast<float>(imuData.humidity); // gets the humidity as afloat (cast from RTFloat).
+            reading.temperature = static_cast<float>(imuData.temperature); // gets tempererature as a float (cast from RTFloat).
+        }
+    }
+
+    return reading;
 }
