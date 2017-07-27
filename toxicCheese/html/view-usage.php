@@ -39,6 +39,13 @@ if ($message == '89hab723hd') {
 
 	$totalWater = $pdo->prepare("SELECT * FROM water WHERE timestamp>NOW()-INTERVAL 1 MONTH");
 	$waterTotal =0;
+
+
+	while ($row = mysql_fetch_array($result)) {
+   		extract $row;
+   		$datetime *= 1000; // convert from Unix timestamp to JavaScript time
+   		$data[] = "[$datetime, $value]";
+	}
 	
 	if ($totalWater->execute())
 	{
@@ -165,12 +172,7 @@ Highcharts.chart('container', {
         series: [{
             type: 'area',
             name: 'Humidity',
-            data: [
-[Date.UTC(2013,5,2,14,30,23),0.7695],
-[Date.UTC(2013,5,3),0.7648],
-[Date.UTC(2013,5,4),0.7645],
-[Date.UTC(2013,5,5),0.7638]]
-        }]
+            data: [<?php echo join($data, ',') ?>]
         
     });
 
