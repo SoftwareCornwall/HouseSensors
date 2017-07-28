@@ -16,7 +16,9 @@ Curl::Curl()
 Curl::~Curl()
 {
     Utility::printStyled("Destructing Curl Object.", Utility::StringStyle::BOLD);
-    curl_global_cleanup();
+
+    if (isInitialised_)
+        curl_global_cleanup();
 }
 
 bool Curl::initialise()

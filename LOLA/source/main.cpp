@@ -1,19 +1,20 @@
-#include "Curl/Curl.hpp"
+#include "main.hpp"
 #include "Utility/Utility.hpp"
-#include "IMUController/IMUController.hpp"
-#include "WaterController/WaterController.hpp"
 
 #include <iostream>
 #include <signal.h>
+#include <vector>
 
 #define SERVER_URL             "http://178.62.42.117/"
 #define IMU_DATA_DESTINATION   "humidity_temperature_sensor.php"
 #define WATER_DATA_DESTINATION "water_usage_sensor.php"
+#define UNSENT_DATA_LENGTH     128
 
 using namespace std;
 using namespace Utility;
 
 bool keepLooping = true;
+string unsentData[UNSENT_DATA_LENGTH];
 
 void handleSIGINT(int param)
 {
@@ -28,13 +29,15 @@ void useIMUSensor(IMUController& controller, Curl& curl, const string& mACAddres
     curl.initialise();
     printStyled("Controller Initialisation...", StringStyle::BOLD);
 
-    bool success = controller.initialise();
-    if (success)
-    {
+    bool wasInitialisationSuccessful = controller.initialise();
 
+    int unsentDataIndex = 0;
+
+    if (wasInitialisationSuccessful)
+    {
         while (true)
         {
-            while (keepLooping && getUnixTime() % 300 != 0)
+            while (keepLooping && (getUnixTime() % 300 != 0))
                 ;
 
             if (!keepLooping)
@@ -42,9 +45,29 @@ void useIMUSensor(IMUController& controller, Curl& curl, const string& mACAddres
 
 
             IMUReading reading = controller.read();
-            cout << "Reading Details: \n    Humidity:" << reading.humidity << "\n    Temperature: " << reading.temperature << endl;
+            cout << "UNSENTDATA[" << unsentDataIndex << "]:\n    Humidity:" << reading.humidity << "\n    Temperature: " << reading.temperature << endl;
 
-            curl.postStringTo("mac=" + mACAddress + "&timestamp=" + to_string(getUnixTime()) + "&" + serialiseIMUReading(reading), SERVER_URL IMU_DATA_DESTINATION);
+            unsentData[unsentDataIndex] = "mac=" + mACAddress + "&timestamp=" + to_string(getUnixTime()) + "&" + serialiseIMUReading(reading);
+
+            for (size_t i = 0; i < UNSENT_DATA_LENGTH; i++)
+            {
+                if (unsentData[i].length() != 0)
+                {
+                    bool wasPostSucessful = curl.postStringTo(unsentData[i], SERVER_URL IMU_DATA_DESTINATION);
+
+                    if (wasPostSucessful)
+                    {
+                        cout << styleString("Success", StringStyle::GREEN) << endl;
+                        unsentData[i] = "";
+                    }
+                    else
+                    {
+                        cout << styleString("Failure", StringStyle::RED) << endl;
+                    }
+                }
+            }
+
+            unsentDataIndex = (unsentDataIndex + 1) % UNSENT_DATA_LENGTH;
 
             Sleep(1);
         }
@@ -58,13 +81,14 @@ void useWaterSensor(WaterController& controller, Curl& curl, const string& mACAd
     curl.initialise();
     printStyled("Controller Initialisation...", StringStyle::BOLD);
 
+    int unsentDataIndex = 0;
+
     bool success = controller.initialise();
     if (success)
     {
-
         while (true)
         {
-            while (keepLooping && getUnixTime() % 60 != 0)
+            while (keepLooping && (getUnixTime() % 60 != 0))
                 ;
 
             if (!keepLooping)
@@ -72,9 +96,29 @@ void useWaterSensor(WaterController& controller, Curl& curl, const string& mACAd
 
 
             float reading = controller.read();
-            cout << "Reading Details: \n    Water Flow:" << reading << endl;
+            cout << "Reading Details:\n     Water Flow: " << reading << endl;
 
-            curl.postStringTo("mac=" + mACAddress + "&timestamp=" + to_string(getUnixTime()) + "&waterValue=" + to_string(reading), SERVER_URL WATER_DATA_DESTINATION);
+            unsentData[unsentDataIndex] = ("mac=" + mACAddress + "&timestamp=" + to_string(getUnixTime()) + "&waterValue=" + to_string(reading), SERVER_URL WATER_DATA_DESTINATION);
+
+            for (size_t i = 0; i < UNSENT_DATA_LENGTH; i++)
+            {
+                if (unsentData[i].length() != 0)
+                {
+                    bool wasPostSucessful = curl.postStringTo(unsentData[i], SERVER_URL IMU_DATA_DESTINATION);
+
+                    if (wasPostSucessful)
+                    {
+                        cout << styleString("Success", StringStyle::GREEN) << endl;
+                        unsentData[i] = "";
+                    }
+                    else
+                    {
+                        cout << styleString("Failure", StringStyle::RED) << endl;
+                    }
+                }
+            }
+
+            unsentDataIndex = (unsentDataIndex + 1) % UNSENT_DATA_LENGTH;
 
             Sleep(1);
         }
@@ -92,6 +136,7 @@ int main()
 
     string mACAddress = getMACAddress();
     Curl curl;
+    curl.doDisplayMessages = false;
 
     if (sensorType == SensorType::IMU)
     {
