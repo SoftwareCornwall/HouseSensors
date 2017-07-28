@@ -41,11 +41,11 @@ if ($message == '89hab723hd') {
 	$waterTotal =0;
 
 
-	while ($row = mysql_fetch_array($result)) {
+	/*while ($row = mysql_fetch_array($result)) {
    		extract $row;
    		$datetime *= 1000; // convert from Unix timestamp to JavaScript time
    		$data[] = "[$datetime, $value]";
-	}
+	}*/
 	
 	if ($totalWater->execute())
 	{
@@ -87,17 +87,18 @@ if ($message == '89hab723hd') {
 	}
 
 	echo "Hello Will <br>";
-        echo "Your water consumption for the last month is <span class='" .$waterUsageStyle . "'>";
+        echo "Your water consumption for the last month was <span class='" .$waterUsageStyle . "'>";
 
 	echo $waterTotal . " litres</span>.";
 	echo "<br>";
 	
 
-        echo "Your average humidity for the last month  is <span class='" .$HumidityUsageStyle . "'>";
+        echo "Your average humidity for the last month  was <span class='" .$HumidityUsageStyle . "'>";
 
 	echo $average_humidity_last_month . "%</span>.";
 	echo "<br>";
-
+	$average_temperature_last_month = $DB->average_temperature_last_month();
+	echo "Your average temperature for the last month was " .$average_temperature_last_month. "&deg;C.";
 
 
 } 
@@ -172,7 +173,8 @@ Highcharts.chart('container', {
         series: [{
             type: 'area',
             name: 'Humidity',
-            data: [<?php echo join($data, ',') ?>]
+            data: [Date.UTC(2014,7,4), 60]//[<?php echo join($data, ',') ?>]
+	}]
         
     });
 
