@@ -29,23 +29,16 @@ if ($message == '89hab723hd') {
  
 	// Calculate total litres of water usage for water sensor for the last hour
 
-	$host = "127.0.0.1";
+	$host = "localhost";
 	$dbname = "sensor";
-	$user = "root";
-	$password = "";
+	$user = "toxicCheese";
+	$password = "1234567890";
 	$usageStyle = "";
 
 	$pdo = new PDO("mysql:dbname=$dbname;host=$host" , $user , $password);
 
 	$totalWater = $pdo->prepare("SELECT * FROM water WHERE timestamp>NOW()-INTERVAL 1 MONTH");
 	$waterTotal =0;
-
-
-	/*while ($row = mysql_fetch_array($result)) {
-   		extract $row;
-   		$datetime *= 1000; // convert from Unix timestamp to JavaScript time
-   		$data[] = "[$datetime, $value]";
-	}*/
 	
 	if ($totalWater->execute())
 	{
@@ -173,7 +166,7 @@ Highcharts.chart('container', {
         series: [{
             type: 'area',
             name: 'Humidity',
-            data: [Date.UTC(2014,7,4), 60]//[<?php echo join($data, ',') ?>]
+            data: [Date.UTC(2014,7,4), 60]
 	}]
         
     });
