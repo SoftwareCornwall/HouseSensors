@@ -227,7 +227,7 @@ public class SensorService extends Service {
                         JSONObject productJSON = jObj.getJSONObject("user");
                         int waterUsageReceived = productJSON.getInt("waterUsage");
 
-                        if(waterUsageReceived > 1000)
+                        if(waterUsageReceived > 28)
                         {
                             startNotification();
                         }
