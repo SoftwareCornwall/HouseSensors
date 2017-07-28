@@ -14,7 +14,7 @@ IMUController::IMUController()
 
 IMUController::~IMUController()
 {
-    Utility::printStyled("~IMUController() called. Destructing...", Utility::StringStyle::BOLD);
+    Utility::printStyled("Destructing IMUController Object", Utility::StringStyle::BOLD);
 }
 
 

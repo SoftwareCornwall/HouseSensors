@@ -15,9 +15,8 @@ Curl::Curl()
 
 Curl::~Curl()
 {
-    Utility::printStyled("~Curl() called. Destructing...", Utility::StringStyle::BOLD);
+    Utility::printStyled("Destructing Curl Object.", Utility::StringStyle::BOLD);
     curl_global_cleanup();
-    Utility::printStyled("Cleaned up Curl.", Utility::StringStyle::BOLD);
 }
 
 bool Curl::initialise()
@@ -33,10 +32,10 @@ bool Curl::initialise()
 
 bool Curl::postStringTo(const string& data, const string& destination)
 {
+    if (!isInitialised_ || data.length() == 0 || destination.length() == 0) return false;
+
     if (doDisplayMessages)
         cout << "Curl | POSTING DATA:\n     | Data: " << data << "\n     | Destination: " << destination << endl;
-
-    if (!isInitialised_ || data.length() == 0 || destination.length() == 0) return false;
 
     CURL* curl = curl_easy_init();
     CURLcode result = CURLE_FAILED_INIT;
