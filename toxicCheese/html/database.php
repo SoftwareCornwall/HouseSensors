@@ -5,10 +5,10 @@ class database
 	private $pdo;
 
 	public function __construct() {
-		$host = "127.0.0.1";
+		$host = "localhost";
 		$dbname = "sensor";
-		$user = "root";
-		$password = "";
+		$user = "toxicCheese";
+		$password = "1234567890";
 		$this->pdo = new PDO("mysql:dbname=$dbname;host=$host" , $user , $password);
 	}
 
@@ -128,6 +128,26 @@ class database
 		
 		}
 		throw new Exception("Unable to calculate humidity");
+
+	}
+
+	public function average_temperature_last_month() {
+		$averageTemperature = $this->pdo->prepare("SELECT * FROM temperature WHERE timestamp>NOW()-INTERVAL 1 MONTH");
+		$total = 0;
+		$counter = 0;
+		
+		if ($averageTemperature->execute())
+		{
+		    while ($row = $averageTemperature->fetch())
+		    {
+		        $total = $total + $row['temperature'];
+			$counter++;
+		    }
+		
+			return round($total / $counter);
+		
+		}
+		throw new Exception("Unable to calculate temperature");
 
 	}
 	
