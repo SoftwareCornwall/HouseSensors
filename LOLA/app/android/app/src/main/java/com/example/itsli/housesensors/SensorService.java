@@ -247,7 +247,7 @@ public class SensorService extends Service {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplication().getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplication().getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -256,8 +256,8 @@ public class SensorService extends Service {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("HELLO", "Registration Error: " + error.getMessage());
-                Toast.makeText(getApplication().getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplication().getApplicationContext(),
+                       // error.getMessage(), Toast.LENGTH_LONG).show();
             }
         }) {
 
