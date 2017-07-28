@@ -129,10 +129,10 @@ void useWaterSensor(WaterController& controller, Curl& curl, const string& mACAd
 
 int main()
 {
+    signal(SIGINT, handleSIGINT);
+
     const bool doLoopOnInvalidInput = true;
     SensorType sensorType = getSensorTypeFromUser(doLoopOnInvalidInput);
-
-    signal(SIGINT, handleSIGINT);
 
     string mACAddress = getMACAddress();
     Curl curl;
