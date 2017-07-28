@@ -84,7 +84,7 @@ class ViewController: UIViewController {
             
             self.dataValues = try! JSONSerialization.jsonObject(with: data! as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
             let dataLine = self.dataValues.object(forKey: "user") as! NSDictionary
-            let water = dataLine.value(forKey: "waterUsage") as! Int64
+            let water = dataLine.value(forKey: "waterUsage") as! Float64
             self.water.text = "\(water)"
             self.water.textColor = UIColor.orange
             if water < 3000 {
