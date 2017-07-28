@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ public class DashboardFragment extends Fragment
         SQLiteHandler databaseHandler;
         String house;
         ProgressBar humidityProgressBar, temperatureProgressBar, waterProgressBar;
+        SwipeRefreshLayout mSwipeRefreshLayout;
 
         public static DashboardFragment newInstance() {
         DashboardFragment fragment = new DashboardFragment();
@@ -61,6 +63,8 @@ public class DashboardFragment extends Fragment
         temperatureProgressBar = view.findViewById(R.id.temperature_progress_bar);
         waterProgressBar = view.findViewById(R.id.water_progress_bar);
 
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+
         databaseHandler = new SQLiteHandler(getActivity());
         sqLiteDatabase = databaseHandler.getReadableDatabase();
         cursor = databaseHandler.getLoggedInUser(sqLiteDatabase);
@@ -79,13 +83,31 @@ public class DashboardFragment extends Fragment
         getTemperatureAverage(house);
         getWaterUsage(house);
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                refreshItems();
+            }
+        });
 
 
         return view;
 
     }
 
+        void refreshItems() {
 
+            getHumidityAverage(house);
+            getTemperatureAverage(house);
+            getWaterUsage(house);
+            onItemsLoadComplete();
+        }
+
+        void onItemsLoadComplete() {
+
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
 
         private void getHumidityAverage(final String house) {
             // Tag used to cancel the request
