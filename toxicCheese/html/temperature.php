@@ -16,8 +16,9 @@ $macaddress = $_POST['mac'];
 
 // Insert temperature POST values into database
 
-$stmt = $pdo->prepare("INSERT INTO temperature (temperature, timestamp, macaddress) values (:temperature, :time, :mac)");
+$stmt = $pdo->prepare("INSERT INTO temperature (temperature, date, timestamp, macaddress) values (:temperature, :date, :time, :mac)");
 $stmt->bindParam(':temperature', $temperatureValue, PDO::PARAM_INT);
+$stmt->bindParam(':date', $_POST['date'], PDO::PARAM_STR);
 $stmt->bindParam(':time', $timestamp, PDO::PARAM_STR);
 $stmt->bindParam(':mac', $macaddress, PDO::PARAM_STR);
 $result = $stmt->execute();

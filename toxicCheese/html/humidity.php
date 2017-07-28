@@ -19,13 +19,14 @@ $macaddress = $_POST['mac'];
 
 // Insert humidity POST values into database
 
-$stmt = $pdo->prepare("INSERT INTO humidity (humidity, timestamp, macaddress) values (:humidity, :time, :mac)");
+$stmt = $pdo->prepare("INSERT INTO humidity (humidity, date, timestamp, macaddress) values (:humidity, :date, :time, :mac)");
 $stmt->bindParam(':humidity', $humidityValue, PDO::PARAM_INT);
+$stmt->bindParam(':date', $_POST['date'], PDO::PARAM_STR);
 $stmt->bindParam(':time', $timestamp, PDO::PARAM_STR);
 $stmt->bindParam(':mac', $macaddress, PDO::PARAM_STR);
 $result = $stmt->execute();
 echo "OK :";
-print_r ($_POST);
+print_r ($result);
 
 // Insert waterflow POST values into database
 
