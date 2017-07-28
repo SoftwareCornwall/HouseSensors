@@ -26,18 +26,20 @@ echo "OK :";
 
 require_once "database.php"; // database usage class
 require_once "water-spike-check.php";
+require_once "sms.php";
 
 $DB = new database(); // set up database object
 
-function sendSMS($message) 
+function sendAlert($message) 
 	{
-		echo $message;
+		$response = sendSMS('2eaTYE', 'DvBGcA', '44', $message, 'ALERT');
+		echo $response;
 	}
 
 try {
 	$waterReadings = $DB->last_two_water_sensor_readings();
 	print_r($waterReadings);
-	waterSpikeCheck($waterReadings,'sendSMS'); 	
+	waterSpikeCheck($waterReadings,'sendAlert'); 	
 
 } catch (Exception $e) {
 	echo "ERROR calculating total water usage";

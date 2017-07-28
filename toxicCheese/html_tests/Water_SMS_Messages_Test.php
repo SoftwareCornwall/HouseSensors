@@ -17,7 +17,7 @@ final class Water_Spike_SMS_Messages extends PHPUnit_Framework_TestCase
 	{
 		global $sentMessage;
 
-		$waterUsage = [20, 10];
+		$waterUsage = [1, 0.4];
 
 		waterSpikeCheck($waterUsage, 'fakeSendSMS');
 
@@ -28,7 +28,7 @@ final class Water_Spike_SMS_Messages extends PHPUnit_Framework_TestCase
 	{
 		global $sentMessage;
 
-		$waterUsage = [15, 14];
+		$waterUsage = [0.5, 0.4];
 
 		waterSpikeCheck($waterUsage, 'fakeSendSMS');
 
@@ -40,7 +40,7 @@ final class Water_Spike_SMS_Messages extends PHPUnit_Framework_TestCase
 	{
 		global $sentMessage;
 
-		$waterUsage = [14, 10];
+		$waterUsage = [0.4, 0.1];
 
 		waterSpikeCheck($waterUsage, 'fakeSendSMS');
 			
@@ -53,7 +53,7 @@ final class Water_Spike_SMS_Messages extends PHPUnit_Framework_TestCase
 		
 		global $sentMessage;
 
-		$waterUsage = [15, 15];
+		$waterUsage = [0.5, 0.5];
 
 		waterSpikeCheck($waterUsage, 'fakeSendSMS');
 			
