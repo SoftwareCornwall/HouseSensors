@@ -1,29 +1,31 @@
 <?php
 
 include "config.php";
+require_once 'fetch_data.php';
+require_once 'print_csv.php';
 
 $houseSelection = $pdo->prepare("SELECT DISTINCT house_id FROM sensor_location");
 
 if(isset($_POST['printReport']))
 {
-    
-    header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=data.csv');
-    $output = fopen("php://output", "w");
-    fputcsv($output, array('ID', 'Humidity Timestamp', 'Humidity Value', 'Sensor Location'));
+    $selectedHouse = $_GET['houseId'];
 
-    $printReport = $pdo->prepare("SELECT humidity.id, humidity.humidity_timestamp, humidity.humidity_value, sensor_location.room FROM humidity INNER JOIN sensor_location ON humidity.mac_address = sensor_location.mac_address");
+    if(isset($_POST['export'])) {
 
-
-    if($printReport->execute())
-    {
-        while($row = $printReport->fetch(PDO::FETCH_ASSOC))
+        if($_POST['export'] == "humidityCheck")
         {
-            fputcsv($output, $row);
+            PrintCSV::printHumidityReport($selectedHouse);
         }
+        else  if($_POST['export'] == "temperatureCheck")
+        {
+            PrintCSV::printTemperatureReport($selectedHouse);
+        }
+        else  if($_POST['export'] == "waterCheck")
+        {
+            PrintCSV::printWaterReport($selectedHouse);
+        }
+
     }
-    fclose($output);
-    exit;
 }
 
 ?>
@@ -278,7 +280,7 @@ if(isset($_POST['printReport']))
                             </div>
                             <div class="text-right">
                                 <div class="checkbox">
-                                    <label><input type="checkbox" value="">Check to print humidity report</label>
+                                    <label><input type="radio" name="export" id="humidityCheck" value="humidityCheck">Check to print humidity report</label>
                                 </div>
                             </div>
                         </div>
@@ -349,7 +351,7 @@ if(isset($_POST['printReport']))
                             </div>
                             <div class="text-right">
                                 <div class="checkbox">
-                                    <label><input type="checkbox" value="">Check to print temperature report</label>
+                                    <label><input type="radio" name="export" id="temperatureCheck" value="temperatureCheck">Check to print temperature report</label>
                                 </div>
                             </div>
                         </div>
@@ -419,7 +421,7 @@ if(isset($_POST['printReport']))
                             </div>
                             <div class="text-right">
                                 <div class="checkbox">
-                                    <label><input type="checkbox" value="" disabled>Check to print water report</label>
+                                    <label><input type="radio" id="waterCheck" name="export" value="waterCheck">Check to print water report</label>
                                 </div>
                             </div>
                         </div>

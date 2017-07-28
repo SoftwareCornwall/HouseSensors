@@ -66,7 +66,6 @@ public class DashboardFragment extends Fragment
         cursor = databaseHandler.getLoggedInUser(sqLiteDatabase);
         if (cursor.moveToFirst()) {
             do {
-
                 house = cursor.getString(5);
             } while (cursor.moveToNext());
         }
@@ -125,12 +124,12 @@ public class DashboardFragment extends Fragment
                             // Error occurred in registration. Get the error
                             // message
                             String errorMsg = jObj.getString("error_msg");
-                            Toast.makeText(getActivity().getApplicationContext(),
-                                    errorMsg, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getActivity().getApplicationContext(),
+                                    //errorMsg, Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Toast.makeText(getActivity().getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity().getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -139,8 +138,8 @@ public class DashboardFragment extends Fragment
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("HELLO", "Registration Error: " + error.getMessage());
-                    Toast.makeText(getActivity().getApplicationContext(),
-                            error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity().getApplicationContext(),
+                           // error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }) {
 
@@ -203,7 +202,7 @@ public class DashboardFragment extends Fragment
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Toast.makeText(getActivity().getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity().getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -212,8 +211,8 @@ public class DashboardFragment extends Fragment
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("HELLO", "Registration Error: " + error.getMessage());
-                    Toast.makeText(getActivity().getApplicationContext(),
-                            error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity().getApplicationContext(),
+                            //error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }) {
 
@@ -257,10 +256,10 @@ public class DashboardFragment extends Fragment
 
 
                             JSONObject productJSON = jObj.getJSONObject("user");
-                            String waterUsageReceived = productJSON.getString("waterUsage");
+                            Double waterUsageReceived = productJSON.getDouble("waterUsage");
 
                             waterUsage.setText(waterUsageReceived + " L/mo");
-                            waterProgressBar.setProgress(Integer.valueOf(waterUsageReceived));
+                            waterProgressBar.setProgress(waterUsageReceived.intValue());
 
 
                             Log.e("FRIEND REQUESTS", "variables are: " +house + " " + waterUsageReceived);
@@ -271,12 +270,12 @@ public class DashboardFragment extends Fragment
                             // Error occurred in registration. Get the error
                             // message
                             String errorMsg = jObj.getString("error_msg");
-                            Toast.makeText(getActivity().getApplicationContext(),
-                                    errorMsg, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getActivity().getApplicationContext(),
+                                    //errorMsg, Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Toast.makeText(getActivity().getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity().getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -285,8 +284,8 @@ public class DashboardFragment extends Fragment
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("HELLO", "Registration Error: " + error.getMessage());
-                    Toast.makeText(getActivity().getApplicationContext(),
-                            error.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity().getApplicationContext(),
+                           // error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }) {
 
