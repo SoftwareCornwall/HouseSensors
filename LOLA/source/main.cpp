@@ -27,10 +27,10 @@ void useIMUSensor(IMUController& controller, Curl& curl, const string& mACAddres
 {
     curl.initialise();
     printStyled("Controller Initialisation...", StringStyle::BOLD);
+
     bool success = controller.initialise();
     if (success)
     {
-        IMUReading reading;
 
         while (true)
         {
@@ -41,7 +41,7 @@ void useIMUSensor(IMUController& controller, Curl& curl, const string& mACAddres
                 break;
 
 
-            reading = controller.read();
+            IMUReading reading = controller.read();
             cout << "Reading Details: \n    Humidity:" << reading.humidity << "\n    Temperature: " << reading.temperature << endl;
 
             curl.postStringTo("mac=" + mACAddress + "&timestamp=" + to_string(getUnixTime()) + "&" + serialiseIMUReading(reading), SERVER_URL IMU_DATA_DESTINATION);
@@ -57,10 +57,10 @@ void useWaterSensor(WaterController& controller, Curl& curl, const string& mACAd
 {
     curl.initialise();
     printStyled("Controller Initialisation...", StringStyle::BOLD);
+
     bool success = controller.initialise();
     if (success)
     {
-        float reading;
 
         while (true)
         {
@@ -71,10 +71,10 @@ void useWaterSensor(WaterController& controller, Curl& curl, const string& mACAd
                 break;
 
 
-            reading = controller.read();
+            float reading = controller.read();
             cout << "Reading Details: \n    Water Flow:" << reading << endl;
 
-            curl.postStringTo("mac=" + mACAddress + "&timestamp=" + to_string(getUnixTime()) + "&waterValue" + to_string(reading), SERVER_URL WATER_DATA_DESTINATION);
+            curl.postStringTo("mac=" + mACAddress + "&timestamp=" + to_string(getUnixTime()) + "&waterValue=" + to_string(reading), SERVER_URL WATER_DATA_DESTINATION);
 
             Sleep(1);
         }
@@ -87,7 +87,8 @@ int main()
 {
     signal(SIGINT, handleSIGINT);
 
-    SensorType sensorType = getSensorTypeFromUser(true);
+    const bool doLoopOnInvalidInput = true;
+    SensorType sensorType = getSensorTypeFromUser(doLoopOnInvalidInput);
 
     string mACAddress = getMACAddress();
     Curl curl;

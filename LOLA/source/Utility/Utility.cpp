@@ -88,10 +88,13 @@ void Utility::printStyled(const string& message, Utility::StringStyle style)
 }
 
 
+
 void Utility::Sleep(int seconds)
 {
     this_thread::sleep_for(chrono::seconds(seconds));
 }
+
+
 
 string Utility::serialiseIMUReading(const IMUReading& reading)
 {
