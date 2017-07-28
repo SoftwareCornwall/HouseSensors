@@ -8,13 +8,14 @@ int interruptCounter;
 WaterController::WaterController()
 {
     isInitialised_ = false;
+    timeAtLastRead_ = 0;
 }
 
 
 
 WaterController::~WaterController()
 {
-    Utility::printStyled("~WaterController() called. Destructing...", Utility::StringStyle::BOLD);
+    Utility::printStyled("Destructing WaterController Object", Utility::StringStyle::BOLD);
 }
 
 bool WaterController::initialise()
@@ -38,6 +39,8 @@ bool WaterController::initialise()
 
 float WaterController::read()
 {
+    if (!isInitialised_) return -1;
+
     float readValue = quietRead();
     timeAtLastRead_ = Utility::getUnixTime();
     interruptCounter = 0;
@@ -49,6 +52,8 @@ float WaterController::read()
 
 float WaterController::quietRead()
 {
+    if (!isInitialised_) return -1;
+
     return interruptCounter / 2200.0f / (Utility::getUnixTime() - timeAtLastRead_);
 }
 
