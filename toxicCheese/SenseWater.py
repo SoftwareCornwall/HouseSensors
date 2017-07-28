@@ -10,7 +10,7 @@ import csv
 
 #globals
 
-url = "http://10.160.50.195/water.php"
+url = "http://178.62.96.109/water.php"
 #WaterFileLoc = "/home/pi/Desktop/WaterFlow.csv"
 #relation ship between raw number and liters
 timesFactorForMin = 230
