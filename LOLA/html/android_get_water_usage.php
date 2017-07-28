@@ -46,7 +46,7 @@ if($_POST['houseId'])
     $valuesSum = array_sum($waterArray);
 
     $response["error"] = FALSE;
-    $response["user"]["waterUsage"] = round($valuesSum);
+    $response["user"]["waterUsage"] = round($valuesSum, 2);
 
 
 
